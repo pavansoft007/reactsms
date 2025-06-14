@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  # Node.js API service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sms-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=db
+      - DB_USER=smsuser
+      - DB_PASSWORD=smspassword
+      - DB_NAME=multismsdb
+      - JWT_SECRET=your_jwt_secret_key_here
+      - JWT_EXPIRATION=3600
+      - JWT_REFRESH_EXPIRATION=86400
+      - CORS_ORIGIN=http://localhost:8081
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_SECURE=false
+      - SMTP_USER=user@example.com
+      - SMTP_PASS=password
+      - SMTP_FROM=noreply@school.com
+      - FRONTEND_URL=http://localhost:8081
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - db
+    networks:
+      - sms-network
+
+  # MySQL database service
+  db:
+    image: mysql:8.0
+    container_name: sms-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=multismsdb
+      - MYSQL_USER=smsuser
+      - MYSQL_PASSWORD=smspassword
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - sms-network
+
+  # phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sms-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    depends_on:
+      - db
+    networks:
+      - sms-network
+
+volumes:
+  mysql-data:
+
+networks:
+  sms-network:
+    driver: bridge
