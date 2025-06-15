@@ -192,9 +192,6 @@ exports.saveRolePermissions = async (req, res) => {
     const roleId = req.params.id;
     const { permissions } = req.body;
 
-    console.log("Saving permissions for role ID:", roleId);
-    console.log("Received permissions:", JSON.stringify(permissions, null, 2));
-
     if (!permissions || !Array.isArray(permissions)) {
       return res.status(400).json({ 
         success: false, 
@@ -209,89 +206,59 @@ exports.saveRolePermissions = async (req, res) => {
         replacements: [roleId],
         type: StaffPrivilege.sequelize.QueryTypes.DELETE 
       }
-    );    // Get all permission IDs to validate
+    );
+
+    // Get all permission IDs to validate
     const allPermissions = await Permission.sequelize.query(
       'SELECT id, name FROM permission',
       { type: Permission.sequelize.QueryTypes.SELECT }
-    );
-
-    console.log("Available permissions in database:", allPermissions.length);
-    if (allPermissions.length > 0) {
-      console.log("Permission names:", allPermissions.map(p => p.name));
-    }
-
-    // If no permissions exist in database, create basic ones from frontend
+    );    // If no permissions exist in database, create basic ones from frontend
     if (allPermissions.length === 0) {
-      console.log("No permissions found in database. Creating basic permissions...");
-      
       // Get unique feature names from frontend
       const uniqueFeatures = [...new Set(permissions.map(p => p.feature))];
       
-      // Create permissions for each feature
-      for (let i = 0; i < uniqueFeatures.length; i++) {
-        const feature = uniqueFeatures[i];
+      // Use batch insert for better performance
+      const insertValues = uniqueFeatures.map((feature, index) => {
         const prefix = feature.toLowerCase().replace(/\s+/g, '_');
+        return `(1, '${feature}', '${prefix}', 1, 1, 1, 1)`;
+      }).join(',');
+      
+      if (insertValues) {
         await Permission.sequelize.query(
-          'INSERT INTO permission (module_id, name, prefix, show_view, show_add, show_edit, show_delete) VALUES (?, ?, ?, 1, 1, 1, 1)',
-          { 
-            replacements: [1, feature, prefix],
-            type: Permission.sequelize.QueryTypes.INSERT 
-          }
+          `INSERT INTO permission (module_id, name, prefix, show_view, show_add, show_edit, show_delete) VALUES ${insertValues}`,
+          { type: Permission.sequelize.QueryTypes.INSERT }
         );
-      }
-      
-      // Re-fetch permissions after creation
-      const newPermissions = await Permission.sequelize.query(
-        'SELECT id, name FROM permission',
-        { type: Permission.sequelize.QueryTypes.SELECT }
-      );
-      allPermissions.length = 0; // Clear array
-      allPermissions.push(...newPermissions);
-      console.log("Created permissions, new count:", allPermissions.length);
-    }
-
-    // Insert new permissions
-    let savedCount = 0;
-    for (const permission of permissions) {
-      // Find permission ID by name
-      const permissionRecord = allPermissions.find(p => p.name === permission.feature);
-      
-      console.log(`Processing permission: ${permission.feature}, found in DB: ${!!permissionRecord}`);
-      
-      if (permissionRecord && (permission.view || permission.add || permission.edit || permission.delete)) {
-        console.log(`Saving permission for ${permission.feature}:`, {
-          view: permission.view,
-          add: permission.add,
-          edit: permission.edit,
-          delete: permission.delete
-        });
         
-        await StaffPrivilege.sequelize.query(
-          'INSERT INTO staff_privileges (role_id, permission_id, is_view, is_add, is_edit, is_delete) VALUES (?, ?, ?, ?, ?, ?)',
-          { 
-            replacements: [
-              roleId, 
-              permissionRecord.id,
-              permission.view ? 1 : 0,
-              permission.add ? 1 : 0,
-              permission.edit ? 1 : 0,
-              permission.delete ? 1 : 0
-            ],
-            type: StaffPrivilege.sequelize.QueryTypes.INSERT 
-          }
+        // Re-fetch permissions after creation
+        const newPermissions = await Permission.sequelize.query(
+          'SELECT id, name FROM permission',
+          { type: Permission.sequelize.QueryTypes.SELECT }
         );
-        savedCount++;
-      } else if (!permissionRecord) {
-        console.log(`Warning: Permission '${permission.feature}' not found in database`);
+        allPermissions.length = 0; // Clear array
+        allPermissions.push(...newPermissions);
       }
-    }
+    }    // Batch insert permissions for better performance
+    const validPermissions = permissions.filter(permission => {
+      const permissionRecord = allPermissions.find(p => p.name === permission.feature);
+      return permissionRecord && (permission.view || permission.add || permission.edit || permission.delete);
+    });
 
-    console.log(`Saved ${savedCount} permissions for role ${roleId}`);
+    if (validPermissions.length > 0) {
+      const insertValues = validPermissions.map(permission => {
+        const permissionRecord = allPermissions.find(p => p.name === permission.feature);
+        return `(${roleId}, ${permissionRecord.id}, ${permission.view ? 1 : 0}, ${permission.add ? 1 : 0}, ${permission.edit ? 1 : 0}, ${permission.delete ? 1 : 0})`;
+      }).join(',');
+
+      await StaffPrivilege.sequelize.query(
+        `INSERT INTO staff_privileges (role_id, permission_id, is_view, is_add, is_edit, is_delete) VALUES ${insertValues}`,
+        { type: StaffPrivilege.sequelize.QueryTypes.INSERT }
+      );
+    }
 
     res.json({ 
       success: true, 
       message: "Role permissions updated successfully",
-      savedCount: savedCount 
+      savedCount: validPermissions.length 
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

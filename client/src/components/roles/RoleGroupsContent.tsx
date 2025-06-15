@@ -58,12 +58,14 @@ const RoleGroupsContent: React.FC = () => {
     fetchRoleGroups();
     fetchRoles();
   }, []);
-
   const fetchRoleGroups = async () => {
     try {
       setLoading(true);
+      console.log("Fetching role groups...");
       const response = await api.get("/api/role-groups");
+      console.log("Role groups response:", response.data);
       setRoleGroups(response.data.data || []);
+      console.log("Role groups set:", response.data.data || []);
     } catch (error: any) {
       console.error("Failed to fetch role groups:", error);
       notifications.show({
@@ -164,13 +166,6 @@ const RoleGroupsContent: React.FC = () => {
     }
   };
 
-  const getRoleNames = (roleGroup: RoleGroup): string => {
-    return (
-      roleGroup.roles?.map((role) => role.name).join(", ") ||
-      "No roles assigned"
-    );
-  };
-
   return (
     <Paper
       shadow="xs"
@@ -196,75 +191,82 @@ const RoleGroupsContent: React.FC = () => {
             <Tabs.Tab value="create" leftSection={<IconPlus size={16} />}>
               {editingGroup ? "Edit Role Group" : "Create Role Group"}
             </Tabs.Tab>
-          </Tabs.List>
-
+          </Tabs.List>{" "}
           <Tabs.Panel value="list" pt="xs">
-            <Table striped highlightOnHover>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Name</Table.Th>
-                  <Table.Th>Description</Table.Th>
-                  <Table.Th>Roles</Table.Th>
-                  <Table.Th>Actions</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {roleGroups.map((group) => (
-                  <Table.Tr key={group.id}>
-                    <Table.Td>
-                      <Text fw={500}>{group.name}</Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Text>{group.description || "-"}</Text>
-                    </Table.Td>
-                    <Table.Td>
-                      <Group gap={4}>
-                        {group.roles && group.roles.length > 0 ? (
-                          group.roles.map((role) => (
-                            <Badge key={role.id} size="sm" variant="outline">
-                              {role.name}
-                            </Badge>
-                          ))
-                        ) : (
-                          <Text c="dimmed" fs="italic">
-                            No roles assigned
-                          </Text>
-                        )}
-                      </Group>
-                    </Table.Td>
-                    <Table.Td>
-                      <Group gap="xs">
-                        <ActionIcon
-                          variant="subtle"
-                          color="blue"
-                          onClick={() => handleEdit(group)}
-                          title="Edit Role Group"
-                        >
-                          <IconEdit size={16} />
-                        </ActionIcon>
-                        <ActionIcon
-                          variant="subtle"
-                          color="red"
-                          onClick={() => handleDelete(group.id)}
-                          title="Delete Role Group"
-                        >
-                          <IconTrash size={16} />
-                        </ActionIcon>
-                      </Group>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-
-            {roleGroups.length === 0 && !loading && (
+            {roleGroups.length === 0 && !loading ? (
               <Text ta="center" py="xl" c="dimmed">
                 No role groups found. Click "Create Role Group" to add your
                 first group.
               </Text>
-            )}
+            ) : (
+              <div>
+                <Text size="sm" c="dimmed" mb="md">
+                  Found {roleGroups.length} role group(s)
+                </Text>
+                <Table striped highlightOnHover>
+                  <Table.Thead>
+                    <Table.Tr>
+                      <Table.Th>Name</Table.Th>
+                      <Table.Th>Description</Table.Th>
+                      <Table.Th>Roles</Table.Th>
+                      <Table.Th>Actions</Table.Th>
+                    </Table.Tr>
+                  </Table.Thead>
+                  <Table.Tbody>
+                    {roleGroups.map((group) => (
+                      <Table.Tr key={group.id}>
+                        <Table.Td>
+                          <Text fw={500}>{group.name}</Text>
+                        </Table.Td>
+                        <Table.Td>
+                          <Text>{group.description || "-"}</Text>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap={4}>
+                            {group.roles && group.roles.length > 0 ? (
+                              group.roles.map((role) => (
+                                <Badge
+                                  key={role.id}
+                                  size="sm"
+                                  variant="outline"
+                                >
+                                  {role.name}
+                                </Badge>
+                              ))
+                            ) : (
+                              <Text c="dimmed" fs="italic">
+                                No roles assigned
+                              </Text>
+                            )}
+                          </Group>
+                        </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            <ActionIcon
+                              variant="subtle"
+                              color="blue"
+                              onClick={() => handleEdit(group)}
+                              title="Edit Role Group"
+                            >
+                              <IconEdit size={16} />
+                            </ActionIcon>
+                            <ActionIcon
+                              variant="subtle"
+                              color="red"
+                              onClick={() => handleDelete(group.id)}
+                              title="Delete Role Group"
+                            >
+                              <IconTrash size={16} />
+                            </ActionIcon>
+                          </Group>
+                        </Table.Td>
+                      </Table.Tr>
+                    ))}
+                  </Table.Tbody>
+                </Table>
+              </div>
+            )}{" "}
           </Tabs.Panel>
-
           <Tabs.Panel value="create" pt="xs">
             {validationErrors.length > 0 && (
               <div style={{ marginBottom: 16 }}>

@@ -33,9 +33,7 @@ exports.findAll = async (req, res) => {
         }
       );
       group.roles = roles;
-    }
-
-    res.json(groups);
+    }    res.json({ success: true, data: groups });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

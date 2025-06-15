@@ -114,6 +114,9 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
     "Dashboard",
   ]);
 
+  // Memoize expensive calculations to prevent recalculation on every render
+  const allFeatureNames = Object.values(PERMISSION_CATEGORIES).flat();
+
   useEffect(() => {
     fetchRoles();
   }, []);
@@ -126,13 +129,10 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
       }
     }
   }, [preSelectedRoleId, roles]);
-
   const fetchRoles = async () => {
     try {
       setLoading(true);
-      console.log("Fetching roles from:", "/api/roles");
       const response = await api.get("/api/roles");
-      console.log("Roles response:", response.data);
       setRoles(response.data.data || []);
     } catch (error) {
       console.error("Error fetching roles:", error);
@@ -163,13 +163,9 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
           edit: false,
           delete: false,
         })
-      );
-
-      // Try to fetch existing permissions from backend
+      ); // Try to fetch existing permissions from backend
       try {
-        console.log("Fetching permissions for role:", roleId);
         const response = await api.get(`/api/roles/${roleId}/permissions`);
-        console.log("Permissions response:", response.data);
         const existingPermissions = response.data.data || [];
 
         // Merge existing permissions with all features
@@ -302,19 +298,9 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
     }
     try {
       setSaving(true);
-
-      // Debug: Log the permissions being sent
-      console.log("Saving permissions for role:", selectedRole);
-      console.log("Permissions data:", permissions);
-
-      const response = await api.post(
-        `/api/roles/${selectedRole}/permissions`,
-        {
-          permissions: permissions,
-        }
-      );
-
-      console.log("Save response:", response.data);
+      await api.post(`/api/roles/${selectedRole}/permissions`, {
+        permissions: permissions,
+      });
 
       notifications.show({
         title: "Success",
@@ -323,7 +309,6 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
       });
     } catch (error: any) {
       console.error("Error saving permissions:", error);
-      console.error("Error response:", error.response?.data);
 
       notifications.show({
         title: "Error",
