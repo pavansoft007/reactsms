@@ -64,6 +64,7 @@ db.payment = require("./payment.model.js")(sequelize, Sequelize);
 db.loginCredential = require("./loginCredential.model.js")(sequelize, Sequelize);
 db.roleGroup = require("./roleGroup.model.js")(sequelize, Sequelize);
 db.roleGroupRole = require("./roleGroupRole.model.js")(sequelize, Sequelize);
+db.subject = require("./subject.model.js")(sequelize, Sequelize);
 
 // Define relationships between models
 db.role.belongsToMany(db.user, {
@@ -400,5 +401,8 @@ db.role.belongsToMany(db.roleGroup, {
 
 // Define RBAC roles
 db.ROLES = ["admin", "accountant", "teacher", "student", "parent"];
+
+// Add Subject <-> Branch association
+if (db.subject.associate) db.subject.associate(db);
 
 module.exports = db;

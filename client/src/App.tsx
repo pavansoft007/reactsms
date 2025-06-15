@@ -36,6 +36,7 @@ import EmployeePage from "./pages/EmployeePage";
 import Layout from "./components/Layout";
 import RoleGroupPage from "./pages/RoleGroupPage";
 import RolePermissionPage from "./pages/RolePermissionPage";
+import SubjectPage from "./pages/SubjectPage";
 
 // Create custom theme
 const theme = createTheme({
@@ -122,6 +123,14 @@ function App() {
                     element={<div>Certificate Management - Coming Soon</div>}
                   />
                   <Route path="hrm/*" element={<div>HRM - Coming Soon</div>} />
+                  <Route
+                    path="academic/classes"
+                    element={<ClassPage />}
+                  />
+                  <Route
+                    path="academic/subject"
+                    element={<SubjectPage />}
+                  />
                   <Route
                     path="academic/*"
                     element={<div>Academic - Coming Soon</div>}

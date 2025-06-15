@@ -10,6 +10,17 @@ const logger = require("../utils/logger");
 const { Op } = require("sequelize");
 
 /**
+ * Helper to ensure a field is a string
+ * @param {any} field - The field to check
+ * @returns {string} - The string value of the field, or an empty string if the field is an object
+ */
+function getStringField(field) {
+  if (Array.isArray(field)) return field[0];
+  if (typeof field === "object" && field !== null) return "";
+  return field;
+}
+
+/**
  * Create a new branch
  * 
  * @param {Object} req - Express request object
@@ -17,16 +28,25 @@ const { Op } = require("sequelize");
  */
 exports.create = async (req, res) => {
   try {
+    // Ensure name and code are strings
+    const name = getStringField(req.body.name);
+    const code = getStringField(req.body.code);
+    const address = getStringField(req.body.address);
+    const city = getStringField(req.body.city);
+    const state = getStringField(req.body.state);
+    const country = getStringField(req.body.country);
+    const phone = getStringField(req.body.phone);
+    const email = getStringField(req.body.email);
     // Create branch from request body
     const branch = await Branch.create({
-      name: req.body.name,
-      code: req.body.code,
-      address: req.body.address,
-      city: req.body.city,
-      state: req.body.state,
-      country: req.body.country,
-      phone: req.body.phone,
-      email: req.body.email,
+      name,
+      code,
+      address,
+      city,
+      state,
+      country,
+      phone,
+      email,
       is_active: req.body.is_active !== undefined ? req.body.is_active : true
     });
 

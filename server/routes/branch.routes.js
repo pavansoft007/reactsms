@@ -10,6 +10,7 @@ const filter = require("../middleware/filter.middleware");
 const { detailedAuditLog } = require("../middleware/audit-logger.middleware");
 const { check } = require("express-validator");
 const branchController = require("../controllers/branch.controller");
+const branchUpload = require("../middleware/multer.middleware");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -43,6 +44,7 @@ module.exports = function(app) {
     [
       authJwt.verifyToken,
       roleMiddleware.isAdmin,
+      branchUpload, // <-- multer middleware for file uploads
       ...branchValidationRules,
       validate,
       detailedAuditLog('create', 'branch')
@@ -76,6 +78,7 @@ module.exports = function(app) {
     [
       authJwt.verifyToken,
       roleMiddleware.isAdmin,
+      branchUpload, // <-- multer middleware for file uploads
       ...branchValidationRules.map(rule => rule.optional()),
       validate,
       detailedAuditLog('update', 'branch')

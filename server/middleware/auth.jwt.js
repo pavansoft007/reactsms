@@ -1,8 +1,7 @@
-
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
-const User = db.user;
+const LoginCredential = db.loginCredential;
 const logger = require("../utils/logger");
 
 /**
@@ -30,6 +29,7 @@ verifyToken = (req, res, next) => {
       });
     }
     req.userId = decoded.id;
+    req.userRole = decoded.role; // Save role for quick access
     next();
   });
 };
@@ -39,21 +39,15 @@ verifyToken = (req, res, next) => {
  */
 isAdmin = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.userId);
+    const user = await LoginCredential.findByPk(req.userId);
     if (!user) {
       return res.status(404).send({
         message: "User not found!"
       });
     }
-    
-    const roles = await user.getRoles();
-    
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "admin") {
-        return next();
-      }
+    if (user.role === 1 || user.role === 2) { // 1: Super Admin, 2: Admin
+      return next();
     }
-
     logger.warn(`User ${req.userId} attempted to access admin-only resource`);
     return res.status(403).send({
       message: "Admin role required!"
@@ -71,21 +65,15 @@ isAdmin = async (req, res, next) => {
  */
 isAccountant = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.userId);
+    const user = await LoginCredential.findByPk(req.userId);
     if (!user) {
       return res.status(404).send({
         message: "User not found!"
       });
     }
-    
-    const roles = await user.getRoles();
-    
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "accountant" || roles[i].name === "admin") {
-        return next();
-      }
+    if (user.role === "accountant" || user.role === "admin") {
+      return next();
     }
-
     logger.warn(`User ${req.userId} attempted to access accountant-only resource`);
     return res.status(403).send({
       message: "Accountant role required!"
@@ -103,21 +91,15 @@ isAccountant = async (req, res, next) => {
  */
 isTeacher = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.userId);
+    const user = await LoginCredential.findByPk(req.userId);
     if (!user) {
       return res.status(404).send({
         message: "User not found!"
       });
     }
-    
-    const roles = await user.getRoles();
-    
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "teacher" || roles[i].name === "admin") {
-        return next();
-      }
+    if (user.role === "teacher" || user.role === "admin") {
+      return next();
     }
-
     logger.warn(`User ${req.userId} attempted to access teacher-only resource`);
     return res.status(403).send({
       message: "Teacher role required!"
@@ -135,21 +117,15 @@ isTeacher = async (req, res, next) => {
  */
 isStudent = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.userId);
+    const user = await LoginCredential.findByPk(req.userId);
     if (!user) {
       return res.status(404).send({
         message: "User not found!"
       });
     }
-    
-    const roles = await user.getRoles();
-    
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "student" || roles[i].name === "admin") {
-        return next();
-      }
+    if (user.role === "student" || user.role === "admin") {
+      return next();
     }
-
     logger.warn(`User ${req.userId} attempted to access student-only resource`);
     return res.status(403).send({
       message: "Student role required!"
@@ -167,21 +143,15 @@ isStudent = async (req, res, next) => {
  */
 isParent = async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.userId);
+    const user = await LoginCredential.findByPk(req.userId);
     if (!user) {
       return res.status(404).send({
         message: "User not found!"
       });
     }
-    
-    const roles = await user.getRoles();
-    
-    for (let i = 0; i < roles.length; i++) {
-      if (roles[i].name === "parent" || roles[i].name === "admin") {
-        return next();
-      }
+    if (user.role === "parent" || user.role === "admin") {
+      return next();
     }
-
     logger.warn(`User ${req.userId} attempted to access parent-only resource`);
     return res.status(403).send({
       message: "Parent role required!"
@@ -200,21 +170,15 @@ isParent = async (req, res, next) => {
 hasRoles = (roleNames) => {
   return async (req, res, next) => {
     try {
-      const user = await User.findByPk(req.userId);
+      const user = await LoginCredential.findByPk(req.userId);
       if (!user) {
         return res.status(404).send({
           message: "User not found!"
         });
       }
-      
-      const roles = await user.getRoles();
-      
-      for (let i = 0; i < roles.length; i++) {
-        if (roleNames.includes(roles[i].name) || roles[i].name === "admin") {
-          return next();
-        }
+      if (roleNames.includes(user.role) || user.role === "admin") {
+        return next();
       }
-  
       logger.warn(`User ${req.userId} attempted to access resource requiring roles: ${roleNames.join(', ')}`);
       return res.status(403).send({
         message: `Required roles: ${roleNames.join(', ')}`
@@ -234,25 +198,25 @@ hasRoles = (roleNames) => {
 isBranchMember = (req, res, next) => {
   try {
     const branchId = parseInt(req.params.branchId || req.body.branch_id);
-    
+
     if (!branchId) {
       return res.status(400).send({
         message: "Branch ID is required!"
       });
     }
-    
+
     // Admin can access all branches
     if (req.userRole === "admin") {
       return next();
     }
-    
+
     if (req.userBranchId !== branchId) {
       logger.warn(`User ${req.userId} attempted to access resource from another branch`);
       return res.status(403).send({
         message: "You can only access resources from your branch!"
       });
     }
-    
+
     next();
   } catch (error) {
     logger.error(`Branch validation error: ${error.message}`);

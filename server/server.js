@@ -69,6 +69,8 @@ require("./routes/section.routes")(app);
 require("./routes/fee.routes")(app);
 require("./routes/feeType.routes")(app);
 require("./routes/roleGroup.routes")(app);
+require("./routes/role.routes")(app);
+require("./routes/subject.routes")(app);
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
