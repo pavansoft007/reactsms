@@ -37,6 +37,7 @@ import Layout from "./components/Layout";
 import RoleGroupPage from "./pages/RoleGroupPage";
 import RolePermissionPage from "./pages/RolePermissionPage";
 import SubjectPage from "./pages/SubjectPage";
+import Mainmenu from "./pages/Mainmenu";
 
 // Create custom theme
 const theme = createTheme({
@@ -78,7 +79,8 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               {isAuthenticated ? (
                 <Route path="/" element={<Layout />}>
-                  <Route index element={<Dashboard />} />
+                  <Route index element={<Mainmenu />} />
+                  <Route path="mainmenu" element={<Mainmenu />} />
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="students/*" element={<StudentsPage />} />
                   <Route path="parents/*" element={<ParentsPage />} />

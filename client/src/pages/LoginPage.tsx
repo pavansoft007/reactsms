@@ -32,8 +32,8 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("user_email", res.data.email || "");
       localStorage.setItem("school_name", "School Management System");
 
-      console.log("✅ Login successful, redirecting to dashboard...");
-      window.location.href = "/dashboard";
+      console.log("✅ Login successful, redirecting to main menu...");
+      window.location.href = "/mainmenu";
     } catch (err: any) {
       console.error("❌ Login failed:", err);
       const errorMessage =
