@@ -71,6 +71,8 @@ require("./routes/feeType.routes")(app);
 require("./routes/roleGroup.routes")(app);
 require("./routes/role.routes")(app);
 require("./routes/subject.routes")(app);
+const admissionRoutes = require('./routes/admission.routes');
+app.use('/api/admission', admissionRoutes);
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
