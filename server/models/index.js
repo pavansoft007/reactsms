@@ -43,6 +43,7 @@ db.sequelize = sequelize;
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.permission = require("./permission.model.js")(sequelize, Sequelize);
+db.staffPrivilege = require("./staffPrivilege.model.js")(sequelize, Sequelize);
 db.refreshToken = require("./refreshToken.model.js")(sequelize, Sequelize);
 db.student = require("./student.model.js")(sequelize, Sequelize);
 db.branch = require("./branch.model.js")(sequelize, Sequelize);

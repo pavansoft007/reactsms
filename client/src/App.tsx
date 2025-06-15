@@ -36,7 +36,10 @@ import ParentsPage from "./pages/ParentsPage";
 import EmployeePage from "./pages/EmployeePage";
 import Layout from "./components/Layout";
 import RoleGroupPage from "./pages/RoleGroupPage";
-import RolePermissionPage from "./pages/RolePermissionPage";
+import RolePermissionsPage from "./pages/RolePermissionsPage";
+import RolesPage from "./pages/RolesPage";
+import RoleGroupsPage from "./pages/RoleGroupsPage";
+import RoleManagementPage from "./pages/RoleManagementPage";
 import SubjectPage from "./pages/SubjectPage";
 import Mainmenu from "./pages/Mainmenu";
 import AppShellLayout from "./layout/AppShell";
@@ -88,13 +91,22 @@ function AppContent() {
             <Route path="fees" element={<FeesPage />} />
             <Route path="library" element={<LibraryPage />} />
             <Route path="events" element={<EventsPage />} />
-            <Route path="whatsapp" element={<WhatsAppPage />} />
+            <Route path="whatsapp" element={<WhatsAppPage />} />{" "}
             <Route path="reports" element={<ReportsPage />} />{" "}
             <Route path="settings" element={<SettingsPage />} />
-            <Route path="settings/role-groups" element={<RoleGroupPage />} />
+            {/* Unified Role Management Page */}
+            <Route
+              path="settings/role-management"
+              element={<RoleManagementPage />}
+            />
+            {/* Legacy individual role pages for backward compatibility */}
+            <Route
+              path="settings/role-groups"
+              element={<RoleGroupPage />}
+            />{" "}
             <Route
               path="settings/role-permission"
-              element={<RolePermissionPage />}
+              element={<RolePermissionsPage />}
             />
             <Route path="settings/create-user" element={<UserCreatePage />} />
             {userRole === "1" && (
@@ -155,9 +167,11 @@ function AppContent() {
             <Route
               path="accounting/*"
               element={<div>Office Accounting - Coming Soon</div>}
-            />
+            />{" "}
             <Route path="message" element={<div>Message - Coming Soon</div>} />
             <Route path="admission/create" element={<AdmissionCreate />} />
+            <Route path="roles" element={<RolesPage />} />
+            <Route path="role-groups" element={<RoleGroupsPage />} />
           </Route>
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />

@@ -8,17 +8,40 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
-        type: DataTypes.STRING,
+      module_id: {
+        type: DataTypes.INTEGER,
         allowNull: false
       },
-      description: {
-        type: DataTypes.TEXT
+      name: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+      },
+      prefix: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+      },
+      show_view: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      show_add: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      show_edit: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      show_delete: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
       }
     },
     {
-      timestamps: false,
-      tableName: 'permission'
+      timestamps: true,
+      tableName: 'permission',
+      createdAt: 'created_at',
+      updatedAt: false
     }
   );
 

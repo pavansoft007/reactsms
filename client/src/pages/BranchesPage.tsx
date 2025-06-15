@@ -7,6 +7,7 @@ import {
   Table,
   Modal,
   TextInput,
+  PasswordInput,
   Textarea,
   Group,
   ActionIcon,
@@ -20,16 +21,18 @@ import {
   Divider,
   Grid,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import {
-  IconBuildingBank,
   IconEdit,
   IconTrash,
   IconPlus,
   IconList,
   IconUpload,
+  IconUser,
+  IconLock,
+  IconMail,
+  IconPhone,
 } from "@tabler/icons-react";
 import api from "../api/config";
 
@@ -63,7 +66,6 @@ const BranchesPage: React.FC = () => {
   const [branches, setBranches] = useState<Branch[]>([]);
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
   const [loading, setLoading] = useState(false);
-  const [opened, { open, close }] = useDisclosure(false);
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [activeTab, setActiveTab] = useState<string>("list");
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -73,7 +75,6 @@ const BranchesPage: React.FC = () => {
   const [textLogoFile, setTextLogoFile] = useState<File | null>(null);
   const [printFile, setPrintFile] = useState<File | null>(null);
   const [reportCardFile, setReportCardFile] = useState<File | null>(null);
-
   const form = useForm({
     initialValues: {
       name: "",
@@ -86,7 +87,13 @@ const BranchesPage: React.FC = () => {
       city: "",
       state: "",
       address: "",
-      role_group_id: "",
+      role_group_id: "", // Admin credentials
+      admin_name: "",
+      admin_username: "",
+      admin_password: "",
+      admin_email: "",
+      admin_mobile: "",
+      admin_role_group_id: "", // Changed from admin_role to admin_role_group_id
     },
     validate: {
       name: (value: string) =>
@@ -96,16 +103,38 @@ const BranchesPage: React.FC = () => {
       school_name: (value: string) =>
         !value || value.trim().length === 0 ? "School name is required" : null,
       email: (value: string) =>
-        value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? null : "Invalid email",
+        value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? null
+          : "Invalid email",
       mobileno: (value: string) =>
-        !value || value.trim().length === 0 ? "Mobile number is required" : null,
+        !value || value.trim().length === 0
+          ? "Mobile number is required"
+          : null,
       currency: (value: string) =>
         !value || value.trim().length === 0 ? "Currency is required" : null,
       symbol: (value: string) =>
-        !value || value.trim().length === 0 ? "Currency symbol is required" : null,
+        !value || value.trim().length === 0
+          ? "Currency symbol is required"
+          : null,
+      // Admin validation
+      admin_name: (value: string) =>
+        !editingBranch && (!value || value.trim().length === 0)
+          ? "Admin name is required"
+          : null,
+      admin_username: (value: string) =>
+        !editingBranch && (!value || value.trim().length === 0)
+          ? "Admin username is required"
+          : null,
+      admin_password: (value: string) =>
+        !editingBranch && (!value || value.length < 6)
+          ? "Admin password must be at least 6 characters"
+          : null,
+      admin_role_group_id: (value: string) =>
+        !editingBranch && (!value || value.trim().length === 0)
+          ? "Admin role group is required"
+          : null,
     },
   });
-
   useEffect(() => {
     fetchBranches();
     fetchRoleGroups();
@@ -126,11 +155,10 @@ const BranchesPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   const fetchRoleGroups = async () => {
     try {
       const response = await api.get("/api/roles");
-      setRoleGroups(response.data.data || []); // Ensure always an array
+      setRoleGroups(response.data.data ?? []); // Ensure always an array
     } catch (error) {
       console.error("Failed to fetch role groups:", error);
     }
@@ -173,7 +201,9 @@ const BranchesPage: React.FC = () => {
         });
         notifications.show({
           title: "Success",
-          message: "Branch created successfully",
+          message: form.values.admin_username
+            ? "Branch and admin credentials created successfully"
+            : "Branch created successfully",
           color: "green",
         });
       }
@@ -194,7 +224,6 @@ const BranchesPage: React.FC = () => {
       });
     }
   };
-
   const resetForm = () => {
     form.reset();
     setEditingBranch(null);
@@ -203,7 +232,6 @@ const BranchesPage: React.FC = () => {
     setPrintFile(null);
     setReportCardFile(null);
     setValidationErrors([]);
-    close();
   };
 
   const handleEdit = (branch: Branch) => {
@@ -354,35 +382,30 @@ const BranchesPage: React.FC = () => {
                       required
                       {...form.getInputProps("name")}
                     />
-
                     <TextInput
                       label="Branch Code"
                       placeholder="Enter branch code"
                       required
                       {...form.getInputProps("code")}
                     />
-
                     <TextInput
                       label="School Name"
                       placeholder="Enter school name"
                       required
                       {...form.getInputProps("school_name")}
                     />
-
                     <TextInput
                       label="Email"
                       placeholder="Enter email address"
                       required
                       {...form.getInputProps("email")}
                     />
-
                     <TextInput
                       label="Mobile No"
                       placeholder="Enter mobile number"
                       required
                       {...form.getInputProps("mobileno")}
                     />
-
                     <Grid>
                       <Grid.Col span={6}>
                         <TextInput
@@ -401,7 +424,6 @@ const BranchesPage: React.FC = () => {
                         />
                       </Grid.Col>
                     </Grid>
-
                     <Grid>
                       <Grid.Col span={6}>
                         <TextInput
@@ -418,14 +440,12 @@ const BranchesPage: React.FC = () => {
                         />
                       </Grid.Col>
                     </Grid>
-
                     <Textarea
                       label="Address"
                       placeholder="Enter branch address"
                       rows={3}
                       {...form.getInputProps("address")}
-                    />
-
+                    />{" "}
                     <Select
                       label="Role Group"
                       placeholder="Select Role Group"
@@ -434,14 +454,96 @@ const BranchesPage: React.FC = () => {
                         label: group.name,
                       }))}
                       {...form.getInputProps("role_group_id")}
+                      onChange={(value) => {
+                        form.setFieldValue("role_group_id", value ?? "");
+                        // No need to reset admin role since it's independent now
+                      }}
                     />
-
+                    {!editingBranch && (
+                      <>
+                        <Divider my="md" />
+                        <Text
+                          fw={500}
+                          mb="md"
+                          style={{
+                            color: "#667eea",
+                            fontSize: "1.1rem",
+                          }}
+                        >
+                          Branch Admin Credentials
+                        </Text>
+                        <Text size="sm" c="dimmed" mb="md">
+                          Create login credentials for the branch administrator
+                        </Text>{" "}
+                        <Grid>
+                          <Grid.Col span={6}>
+                            <TextInput
+                              label="Admin Name"
+                              placeholder="Enter admin full name"
+                              required={!editingBranch}
+                              leftSection={<IconUser size={16} />}
+                              {...form.getInputProps("admin_name")}
+                            />
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <TextInput
+                              label="Admin Username"
+                              placeholder="Enter admin username"
+                              required={!editingBranch}
+                              leftSection={<IconUser size={16} />}
+                              {...form.getInputProps("admin_username")}
+                            />
+                          </Grid.Col>
+                        </Grid>
+                        <Grid>
+                          <Grid.Col span={6}>
+                            <PasswordInput
+                              label="Admin Password"
+                              placeholder="Enter admin password"
+                              required={!editingBranch}
+                              leftSection={<IconLock size={16} />}
+                              {...form.getInputProps("admin_password")}
+                            />
+                          </Grid.Col>{" "}
+                          <Grid.Col span={6}>
+                            <Select
+                              label="Admin Role"
+                              placeholder="Select admin role group"
+                              data={roleGroups.map((group) => ({
+                                value: group.id.toString(),
+                                label: group.name,
+                              }))}
+                              {...form.getInputProps("admin_role_group_id")}
+                            />
+                            <Text size="sm" c="dimmed" mt="xs">
+                              Select the role group for the branch administrator
+                            </Text>
+                          </Grid.Col>
+                        </Grid>
+                        <Grid>
+                          <Grid.Col span={6}>
+                            <TextInput
+                              label="Admin Email (Optional)"
+                              placeholder="Enter admin email"
+                              leftSection={<IconMail size={16} />}
+                              {...form.getInputProps("admin_email")}
+                            />
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <TextInput
+                              label="Admin Mobile (Optional)"
+                              placeholder="Enter admin mobile"
+                              leftSection={<IconPhone size={16} />}
+                              {...form.getInputProps("admin_mobile")}
+                            />
+                          </Grid.Col>
+                        </Grid>
+                      </>
+                    )}
                     <Divider my="md" />
-
                     <Text fw={500} mb="md">
                       Upload Images
                     </Text>
-
                     <Grid>
                       <Grid.Col span={6}>
                         <Text size="sm" mb="xs">
@@ -463,7 +565,10 @@ const BranchesPage: React.FC = () => {
                         <Text size="sm" mb="xs">
                           Text Logo
                         </Text>
-                        <FileButton onChange={setTextLogoFile} accept="image/png">
+                        <FileButton
+                          onChange={setTextLogoFile}
+                          accept="image/png"
+                        >
                           {(props) => (
                             <Button
                               {...props}
@@ -478,7 +583,6 @@ const BranchesPage: React.FC = () => {
                         </FileButton>
                       </Grid.Col>
                     </Grid>
-
                     <Grid>
                       <Grid.Col span={6}>
                         <Text size="sm" mb="xs">
@@ -520,7 +624,6 @@ const BranchesPage: React.FC = () => {
                         </FileButton>
                       </Grid.Col>
                     </Grid>
-
                     <Group justify="flex-start" mt="lg">
                       <Button
                         type="submit"
