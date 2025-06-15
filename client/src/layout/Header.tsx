@@ -17,7 +17,9 @@ import {
   IconChevronDown,
   IconSun,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAcademicYear } from "../context/AcademicYearContext";
+import { fetchAcademicYears } from "../api/academicYear";
 
 export function Header({
   opened,
@@ -35,6 +37,12 @@ export function Header({
     localStorage.getItem("user_email") ||
     localStorage.getItem("email") ||
     "admin@school.com";
+
+  const { academicYear, setAcademicYear, years, setYears } = useAcademicYear();
+
+  useEffect(() => {
+    fetchAcademicYears().then(setYears);
+  }, [setYears]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -110,6 +118,24 @@ export function Header({
       </Group>
 
       <Group gap="md">
+        {/* Academic Year Dropdown */}
+        <select
+          value={academicYear?.id || ""}
+          onChange={e => {
+            const selected = years.find(y => y.id === Number(e.target.value));
+            if (selected) setAcademicYear(selected);
+          }}
+          className="form-control"
+          style={{ width: 200 }}
+        >
+          <option value="">Select Academic Year</option>
+          {years.map(year => (
+            <option key={year.id} value={year.id}>
+              {year.school_year}
+            </option>
+          ))}
+        </select>
+
         {/* Search Bar - Hidden on mobile */}
         <Box
           style={{

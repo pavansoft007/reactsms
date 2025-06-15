@@ -36,7 +36,8 @@ import {
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
-import axios from 'axios';
+import api from '../api/config';
+import { useAcademicYear } from '../context/AcademicYearContext';
 
 interface Student {
   id: number;
@@ -88,6 +89,7 @@ const StudentsPage: React.FC = () => {
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { academicYear } = useAcademicYear();
 
   const form = useForm({
     initialValues: {
@@ -116,36 +118,28 @@ const StudentsPage: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchStudents();
+    if (academicYear) {
+      fetchStudents(1, '', selectedClass || '', academicYear.id);
+    }
     fetchClasses();
     fetchSections();
-  }, []);
+  }, [academicYear]);
 
-  const fetchStudents = async (page = 1, query = '', classId = '') => {
+  const fetchStudents = async (page = 1, search = '', classId = '', sessionId = '') => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const params = new URLSearchParams({
         page: page.toString(),
         limit: '10',
-        ...(query && { search: query }),
+        ...(search && { search }),
         ...(classId && { class_id: classId }),
-      });
-
-      const response = await axios.get(`/api/students?${params}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
+        ...(sessionId && { session_id: sessionId })
+      }).toString();
+      const response = await api.get(`/api/students?${params}`);
       setStudents(response.data.students || []);
       setTotalPages(response.data.totalPages || 1);
-      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching students:', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to fetch students',
-        color: 'red',
-      });
     } finally {
       setLoading(false);
     }
@@ -153,10 +147,7 @@ const StudentsPage: React.FC = () => {
 
   const fetchClasses = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/classes', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/classes');
       setClasses(response.data.classes || []);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -165,10 +156,7 @@ const StudentsPage: React.FC = () => {
 
   const fetchSections = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('/api/sections', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await api.get('/api/sections');
       setSections(response.data.sections || []);
     } catch (error) {
       console.error('Error fetching sections:', error);
@@ -178,24 +166,18 @@ const StudentsPage: React.FC = () => {
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const endpoint = editingStudent ? `/api/students/${editingStudent.id}` : '/api/students';
       const method = editingStudent ? 'put' : 'post';
-
-      await axios[method](endpoint, values, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
+      await api[method](endpoint, values);
       notifications.show({
         title: 'Success',
         message: `Student ${editingStudent ? 'updated' : 'created'} successfully`,
         color: 'green',
       });
-
       setModalOpened(false);
       setEditingStudent(null);
       form.reset();
-      fetchStudents();
+      fetchStudents(1, '', selectedClass || '', academicYear.id);
     } catch (error: any) {
       notifications.show({
         title: 'Error',
@@ -230,37 +212,29 @@ const StudentsPage: React.FC = () => {
     setModalOpened(true);
   };
 
-  const handleDelete = (studentId: number) => {
-    modals.openConfirmModal({
-      title: 'Delete Student',
-      children: 'Are you sure you want to delete this student? This action cannot be undone.',
-      labels: { confirm: 'Delete', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
-      onConfirm: async () => {
-        try {
-          const token = localStorage.getItem('token');
-          await axios.delete(`/api/students/${studentId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          notifications.show({
-            title: 'Success',
-            message: 'Student deleted successfully',
-            color: 'green',
-          });
-          fetchStudents();
-        } catch (error) {
-          notifications.show({
-            title: 'Error',
-            message: 'Failed to delete student',
-            color: 'red',
-          });
-        }
-      },
-    });
+  const handleDelete = async (studentId: number) => {
+    setLoading(true);
+    try {
+      await api.delete(`/api/students/${studentId}`);
+      notifications.show({
+        title: 'Success',
+        message: 'Student deleted successfully',
+        color: 'green',
+      });
+      fetchStudents(currentPage, '', selectedClass || '', academicYear.id);
+    } catch (error) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to delete student',
+        color: 'red',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = () => {
-    fetchStudents(1, searchQuery, selectedClass || '');
+    fetchStudents(1, searchQuery, selectedClass || '', academicYear.id);
   };
 
   const bloodGroups = [
@@ -434,7 +408,7 @@ const StudentsPage: React.FC = () => {
             <Group justify="center" mt="md">
               <Pagination
                 value={currentPage}
-                onChange={(page) => fetchStudents(page, searchQuery, selectedClass || '')}
+                onChange={(page) => fetchStudents(page, searchQuery, selectedClass || '', academicYear.id)}
                 total={totalPages}
               />
             </Group>

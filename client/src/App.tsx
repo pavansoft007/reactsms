@@ -46,17 +46,20 @@ import AppShellLayout from "./layout/AppShell";
 import { theme } from "./theme";
 import AdmissionCreate from "./pages/AdmissionCreate";
 import UserCreatePage from "./pages/UserCreatePage";
+import { AcademicYearProvider } from "./context/AcademicYearContext";
 
 function App() {
   return (
-    <MantineProvider theme={theme}>
-      <ModalsProvider>
-        <Notifications position="top-right" />
-        <Router>
-          <AppContent />
-        </Router>
-      </ModalsProvider>
-    </MantineProvider>
+    <AcademicYearProvider>
+      <MantineProvider theme={theme}>
+        <ModalsProvider>
+          <Notifications position="top-right" />
+          <Router>
+            <AppContent />
+          </Router>
+        </ModalsProvider>
+      </MantineProvider>
+    </AcademicYearProvider>
   );
 }
 

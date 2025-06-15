@@ -139,6 +139,20 @@ exports.findAll = async (req, res) => {
       };
     }
     
+    // Filter by session_id (academic year) using enroll table
+    let studentIds = undefined;
+    if (req.query.session_id) {
+      const enrolls = await db.enroll.findAll({
+        where: { session_id: req.query.session_id },
+        attributes: ['student_id']
+      });
+      studentIds = enrolls.map(e => e.student_id);
+      if (studentIds.length === 0) {
+        return res.json({ total: 0, fees: [] });
+      }
+      where.student_id = studentIds;
+    }
+    
     // Branch permission check
     if (req.userRole !== 'admin') {
       where.branch_id = req.userBranchId;
