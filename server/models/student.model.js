@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, DataTypes) => {
   const Student = sequelize.define(
     "student",
@@ -59,6 +58,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       branch_id: {
         type: DataTypes.INTEGER
+      },
+      session_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1
       }
     },
     {

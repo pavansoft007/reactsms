@@ -1,8 +1,11 @@
 import React from 'react';
 import { Container, Title, Text, Card, Button, Group } from '@mantine/core';
 import { IconCurrencyRupee, IconPlus } from '@tabler/icons-react';
+import { useAcademicYear } from '../context/AcademicYearContext';
 
 const FeesPage: React.FC = () => {
+  const { academicYear } = useAcademicYear();
+
   return (
     <Container size="xl">
       <Group justify="space-between" mb="lg">
@@ -32,6 +35,9 @@ const FeesPage: React.FC = () => {
           </div>
         </Group>
       </Card>
+
+      {/* Example: use academicYear.id in your API requests */}
+      {/* axios.get(`/api/fees?session_id=${academicYear?.id}`) */}
     </Container>
   );
 };

@@ -43,7 +43,7 @@ module.exports = function(app) {
     "/api/students", 
     [
       authJwt.verifyToken, 
-      authJwt.hasRoles(["admin", "teacher", "accountant"]),
+      authJwt.hasRoles(["admin", "teacher", "accountant", "parent", "student"]), // Added parent and student roles
       pagination,
       filter(['name', 'student_id', 'branch_id', 'gender', 'is_active'])
     ], 

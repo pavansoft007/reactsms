@@ -152,7 +152,7 @@ exports.findAll = async (req, res) => {
         {
           model: User,
           as: 'teacher',
-          attributes: ['id', 'username', 'email', 'firstName', 'lastName']
+          attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
         }
       ]
     });
@@ -200,7 +200,7 @@ exports.findOne = async (req, res) => {
         {
           model: User,
           as: 'teacher',
-          attributes: ['id', 'username', 'email', 'firstName', 'lastName']
+          attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
         }
       ]
     });
@@ -319,7 +319,7 @@ exports.update = async (req, res) => {
           {
             model: User,
             as: 'teacher',
-            attributes: ['id', 'username', 'email', 'firstName', 'lastName']
+            attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
           }
         ]
       });

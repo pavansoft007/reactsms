@@ -65,6 +65,8 @@ db.loginCredential = require("./loginCredential.model.js")(sequelize, Sequelize)
 db.roleGroup = require("./roleGroup.model.js")(sequelize, Sequelize);
 db.roleGroupRole = require("./roleGroupRole.model.js")(sequelize, Sequelize);
 db.subject = require("./subject.model.js")(sequelize, Sequelize);
+db.schoolyear = require("./schoolyear.model.js")(sequelize, Sequelize);
+db.enroll = require("./enroll.model.js")(sequelize, Sequelize);
 
 // Define relationships between models
 db.role.belongsToMany(db.user, {
@@ -404,5 +406,28 @@ db.ROLES = ["admin", "accountant", "teacher", "student", "parent"];
 
 // Add Subject <-> Branch association
 if (db.subject.associate) db.subject.associate(db);
+
+// Enroll relationships
+// Each enroll belongs to a student
+if (db.enroll && db.student) {
+  db.enroll.belongsTo(db.student, { foreignKey: 'student_id', as: 'student' });
+  db.student.hasMany(db.enroll, { foreignKey: 'student_id', as: 'enrollments' });
+}
+// Each enroll belongs to a class
+if (db.enroll && db.class) {
+  db.enroll.belongsTo(db.class, { foreignKey: 'class_id', as: 'class' });
+}
+// Each enroll belongs to a section
+if (db.enroll && db.section) {
+  db.enroll.belongsTo(db.section, { foreignKey: 'section_id', as: 'section' });
+}
+// Each enroll belongs to a session (schoolyear)
+if (db.enroll && db.schoolyear) {
+  db.enroll.belongsTo(db.schoolyear, { foreignKey: 'session_id', as: 'session' });
+}
+// Each enroll belongs to a branch
+if (db.enroll && db.branch) {
+  db.enroll.belongsTo(db.branch, { foreignKey: 'branch_id', as: 'branch' });
+}
 
 module.exports = db;
