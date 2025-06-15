@@ -1,4 +1,3 @@
-
 const db = require("../models");
 const Student = db.student;
 const Class = db.class;
@@ -72,76 +71,82 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const { page, limit, offset, sort } = req.pagination || { page: 1, limit: 10, offset: 0 };
-    const where = req.filters || {};
-    
-    // Handle specific filters
-    if (req.query.branch && !where.branch_id) {
-      where.branch_id = req.query.branch;
+    const enrollWhere = {};
+    if (req.query.session_id) {
+      enrollWhere.session_id = req.query.session_id;
     }
-    
-    if (req.query.class) {
-      // This requires a join with the class_students table
-      // For simplicity, we'll just filter by class_id if it exists in the student table
-      if (Student.rawAttributes.class_id) {
-        where.class_id = req.query.class;
-      }
+    if (req.query.class_id) {
+      enrollWhere.class_id = req.query.class_id;
     }
-    
-    // Handle search term if provided
+    if (req.query.section_id) {
+      enrollWhere.section_id = req.query.section_id;
+    }
+    if (req.query.branch_id) {
+      enrollWhere.branch_id = req.query.branch_id;
+    }
+    // Search by student fields
+    let studentWhere = {};
     if (req.query.search) {
       const searchTerm = `%${req.query.search}%`;
-      where[Op.or] = [
-        { name: { [Op.like]: searchTerm } },
-        { email: { [Op.like]: searchTerm } },
-        { register_no: { [Op.like]: searchTerm } },
-        { phone: { [Op.like]: searchTerm } }
-      ];
+      studentWhere = {
+        [Op.or]: [
+          { name: { [Op.like]: searchTerm } },
+          { email: { [Op.like]: searchTerm } },
+          { register_no: { [Op.like]: searchTerm } },
+          { phone: { [Op.like]: searchTerm } }
+        ]
+      };
     }
-    
-    // Set up order based on sort parameter or default to id DESC
-    const order = sort 
-      ? [[sort.field, sort.order]] 
-      : [['id', 'DESC']];
-    
-    // Find students with pagination
-    const { count, rows } = await Student.findAndCountAll({
-      where,
-      order,
+    // Join with login_credential to ensure only active students (role = 'student')
+    const { count, rows } = await db.enroll.findAndCountAll({
+      where: enrollWhere,
       limit,
       offset,
+      order: sort ? [[sort.field, sort.order]] : [['id', 'DESC']],
       include: [
         {
-          model: Branch,
-          as: 'branch',
-          attributes: ['id', 'name', 'code']
+          model: db.student,
+          as: 'student',
+          where: studentWhere,
+          include: [
+            {
+              model: db.loginCredential,
+              as: 'loginCredential',
+              required: true,
+              where: { role: 'student', active: true }
+            },
+            {
+              model: db.studentCategory,
+              as: 'category',
+              required: false
+            }
+          ]
+        },
+        {
+          model: db.class,
+          as: 'class',
+        },
+        {
+          model: db.section,
+          as: 'section',
         }
       ]
     });
-    
-    // Calculate pagination metadata
-    const totalPages = Math.ceil(count / limit);
-    const hasNext = page < totalPages;
-    const hasPrev = page > 1;
-    
-    logger.info(`Retrieved ${rows.length} students (page ${page}/${totalPages})`);
-    
-    res.send({
-      success: true,
-      data: rows,
-      meta: {
-        total: count,
-        page,
-        limit,
-        totalPages,
-        hasNext,
-        hasPrev
-      }
+    res.json({
+      total: count,
+      students: rows.map(enroll => ({
+        ...enroll.student.get(),
+        class: enroll.class,
+        section: enroll.section,
+        enroll_id: enroll.id,
+        roll: enroll.roll
+      }))
     });
   } catch (err) {
-    logger.error(`Error retrieving students: ${err.message}`);
+    logger.error(`Error fetching students: ${err.message}`);
     res.status(500).send({
       success: false,
-      message: err.message || "Some error occurred while retrieving students."
+      message: err.message || "Some error occurred while fetching students."
     });
   }
 };
