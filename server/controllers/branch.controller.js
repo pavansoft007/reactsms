@@ -6,8 +6,11 @@
 
 const db = require("../models");
 const Branch = db.branch;
+const LoginCredential = db.loginCredential;
+const User = db.user;
 const logger = require("../utils/logger");
 const { Op } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
 /**
  * Helper to ensure a field is a string
@@ -27,7 +30,12 @@ function getStringField(field) {
  * @param {Object} res - Express response object
  */
 exports.create = async (req, res) => {
+  let transaction;
+  
   try {
+    // Start transaction
+    transaction = await db.sequelize.transaction();
+    
     // Ensure name and code are strings
     const name = getStringField(req.body.name);
     const code = getStringField(req.body.code);
@@ -37,6 +45,15 @@ exports.create = async (req, res) => {
     const country = getStringField(req.body.country);
     const phone = getStringField(req.body.phone);
     const email = getStringField(req.body.email);
+    
+    // Validate required fields
+    if (!name || !code) {
+      return res.status(400).json({
+        success: false,
+        message: "Branch name and code are required"
+      });
+    }
+    
     // Create branch from request body
     const branch = await Branch.create({
       name,
@@ -48,7 +65,44 @@ exports.create = async (req, res) => {
       phone,
       email,
       is_active: req.body.is_active !== undefined ? req.body.is_active : true
-    });
+    }, { transaction });
+
+    // Create login credentials for branch admin if provided
+    if (req.body.admin_username && req.body.admin_password && req.body.admin_name) {
+      // First create a user record (if User model exists)
+      let userId = null;
+      if (User) {
+        const user = await User.create({
+          name: req.body.admin_name,
+          email: req.body.admin_email || email,
+          mobile_no: req.body.admin_mobile || phone,
+          password: bcrypt.hashSync(req.body.admin_password, 8),
+          created_at: new Date(),
+          updated_at: new Date()
+        }, { transaction });
+        userId = user.id;
+      }
+        // Create login credentials for branch admin
+      await LoginCredential.create({
+        user_id: userId || branch.id, // Use user ID if available, otherwise branch ID
+        username: req.body.admin_username,
+        name: req.body.admin_name,
+        password: bcrypt.hashSync(req.body.admin_password, 8),
+        role: req.body.admin_role_group_id || "2", // Use admin role group ID
+        active: true,
+        branch_id: branch.id, // Associate with the branch
+        created_at: new Date(),
+        updated_at: new Date()
+      }, { transaction });
+
+      logger.info(`Branch admin credentials created for branch: ${branch.name}`, {
+        branchId: branch.id,
+        adminUsername: req.body.admin_username,
+        userId: req.userId
+      });
+    }
+
+    await transaction.commit();
 
     logger.info(`Branch created: ${branch.name}`, {
       branchId: branch.id,
@@ -58,10 +112,12 @@ exports.create = async (req, res) => {
     // Return success response
     res.status(201).json({
       success: true,
-      message: "Branch created successfully",
+      message: "Branch and admin credentials created successfully",
       data: branch
     });
   } catch (error) {
+    if (transaction) await transaction.rollback();
+    
     logger.error(`Error creating branch: ${error.message}`, { error });
     res.status(500).json({
       success: false,

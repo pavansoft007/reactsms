@@ -18,6 +18,7 @@ import {
   IconEdit,
   IconChevronRight,
   IconSchool,
+  IconShield,
 } from "@tabler/icons-react";
 import { useLocation, Link } from "react-router-dom";
 import { useState } from "react";
@@ -56,6 +57,16 @@ const navItems = [
       // Add more admission-related links here if needed
     ],
   },
+  {
+    label: "Role Permissions",
+    icon: IconShield,
+    color: "#7c3aed",
+    masterAdminOnly: true,
+    children: [
+      { label: "Roles", to: "/roles" },
+      { label: "Role Groups", to: "/role-groups" },
+    ],
+  },
 ];
 
 interface SidebarProps {
@@ -65,13 +76,37 @@ interface SidebarProps {
 
 export function Sidebar({ opened, setOpened }: SidebarProps) {
   const location = useLocation();
-  const [openedCollapse, setOpenedCollapse] = useState<string | null>(null);
+  const [openedCollapse, setOpenedCollapse] = useState<string | null>(null); // Get user role from localStorage
+  const userRole = localStorage.getItem("user_role");
+
+  // Check if user is Master Admin (role ID 1) - handle both string and number formats
+  const isMasterAdmin = userRole === "1" || parseInt(userRole || "0") === 1;
+
+  // Debug logging to help troubleshoot
+  console.log("=== Role Debug Info ===");
+  console.log("Current user role:", userRole);
+  console.log("Role type:", typeof userRole);
+  console.log("Parsed role:", parseInt(userRole || "0"));
+  console.log("Is Master Admin:", isMasterAdmin);
+  console.log("======================");
 
   if (!opened) return null;
-
   const handleCollapseToggle = (label: string) => {
+    console.log("=== Collapse Toggle Debug ===");
+    console.log("Clicked menu item:", label);
+    console.log("Current opened:", openedCollapse);
+    console.log("Will set to:", openedCollapse === label ? null : label);
+    console.log("============================");
     setOpenedCollapse(openedCollapse === label ? null : label);
   };
+
+  // Filter navigation items based on user role
+  const filteredNavItems = navItems.filter((item) => {
+    if (item.masterAdminOnly && !isMasterAdmin) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <Box
@@ -125,11 +160,19 @@ export function Sidebar({ opened, setOpened }: SidebarProps) {
             </Text>
           </Box>
         </Group>
-      </Box>
-
+      </Box>{" "}
       <ScrollArea style={{ flex: 1 }} p="md">
-        {navItems.map((item) => {
+        {filteredNavItems.map((item) => {
+          console.log(
+            "Rendering nav item:",
+            item.label,
+            "Has children:",
+            !!item.children,
+            "Children:",
+            item.children
+          );
           if (item.children) {
+            console.log("📂 Rendering as collapsible menu:", item.label);
             const isOpen = openedCollapse === item.label;
             const hasActiveChild = item.children.some(
               (child) => location.pathname === child.to
@@ -137,8 +180,16 @@ export function Sidebar({ opened, setOpened }: SidebarProps) {
 
             return (
               <Box key={item.label} mb="xs">
+                {" "}
                 <UnstyledButton
-                  onClick={() => handleCollapseToggle(item.label)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log(
+                      "Role Permissions clicked - preventing navigation"
+                    );
+                    handleCollapseToggle(item.label);
+                  }}
                   style={{
                     display: "block",
                     width: "100%",
@@ -169,7 +220,6 @@ export function Sidebar({ opened, setOpened }: SidebarProps) {
                     />
                   </Group>
                 </UnstyledButton>
-
                 <Collapse in={isOpen}>
                   <Box ml="md" mt="xs">
                     {item.children.map((child) => {
@@ -206,6 +256,11 @@ export function Sidebar({ opened, setOpened }: SidebarProps) {
                 </Collapse>
               </Box>
             );
+          }
+
+          // Skip items without 'to' property (like parent menus without navigation)
+          if (!item.to) {
+            return null;
           }
 
           const isActive = location.pathname === item.to;

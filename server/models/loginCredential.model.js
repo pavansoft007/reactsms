@@ -23,10 +23,17 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      role: {
+      },      role: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      branch_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'branches',
+          key: 'id'
+        }
       },
       active: {
         type: DataTypes.BOOLEAN,

@@ -15,7 +15,14 @@ const app = express();
 
 // CORS options
 var corsOptions = {
-  origin: process.env.CORS_ORIGIN || "http://localhost:8081"
+  origin: [
+    process.env.CORS_ORIGIN || "http://localhost:3001",
+    "http://localhost:3000",
+    "http://localhost:8081"
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 // Security middleware

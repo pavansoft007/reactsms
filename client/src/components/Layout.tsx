@@ -509,8 +509,7 @@ const Layout: React.FC = () => {
         { label: "Global Settings", path: "/settings/global" },
         { label: "School Settings", path: "/settings/school" },
         { label: "Create User", path: "/settings/create-user" },
-        { label: "Role Permission", path: "/settings/roles" },
-        { label: "Role Groups", path: "/settings/role-groups" },
+        { label: "Role Management", path: "/settings/role-management" },
         { label: "Session Settings", path: "/settings/session" },
         { label: "Translations", path: "/settings/translations" },
         { label: "Cron Job", path: "/settings/cron" },
@@ -546,66 +545,6 @@ const Layout: React.FC = () => {
       header={{ height: 70 }}
       padding="md"
     >
-      <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Group>
-            <Burger
-              opened={opened}
-              onClick={() => setOpened((o) => !o)}
-              size="sm"
-              mr="xl"
-              hiddenFrom="sm"
-            />
-            <Text fw={600} size="xl" c="blue">
-              {schoolName}
-            </Text>
-          </Group>
-
-          <Group>
-            <ActionIcon variant="light" size="lg">
-              <Indicator color="red" size={6}>
-                <IconBell size={20} />
-              </Indicator>
-            </ActionIcon>
-
-            <Menu width={260} position="bottom-end">
-              <Menu.Target>
-                <UnstyledButton>
-                  <Group gap={7}>
-                    <Avatar size={32} radius="xl" color="blue">
-                      {userName.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <Box style={{ flex: 1 }}>
-                      <Text size="sm" fw={500}>
-                        {userName}
-                      </Text>
-                    </Box>
-                    <IconChevronRight size={12} stroke={1.5} />
-                  </Group>
-                </UnstyledButton>
-              </Menu.Target>
-
-              <Menu.Dropdown>
-                <Menu.Item leftSection={<IconUser size={16} />}>
-                  Profile
-                </Menu.Item>
-                <Menu.Item leftSection={<IconSettings size={16} />}>
-                  Account Settings
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item
-                  leftSection={<IconLogout size={16} />}
-                  onClick={handleLogout}
-                  color="red"
-                >
-                  Logout
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
-        </Group>
-      </AppShell.Header>
-
       <AppShell.Navbar
         p="md"
         style={{ overflowY: "auto", maxHeight: "calc(100vh - 70px)" }}
