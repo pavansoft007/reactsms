@@ -73,6 +73,7 @@ require("./routes/role.routes")(app);
 require("./routes/subject.routes")(app);
 const admissionRoutes = require('./routes/admission.routes');
 app.use('/api/admission', admissionRoutes);
+require("./routes/studentCategory.routes")(app); // Add this line
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {
