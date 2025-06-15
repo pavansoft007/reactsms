@@ -11,11 +11,14 @@ module.exports = (sequelize, DataTypes) => {
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
-      },
-      username: {
+      },      username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       password: {
         type: DataTypes.STRING,

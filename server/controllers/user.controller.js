@@ -4,6 +4,79 @@ const Role = db.role;
 const Op = db.Sequelize.Op;
 const bcrypt = require("bcryptjs");
 
+// Create a new User and corresponding login credentials
+exports.create = async (req, res) => {
+  let transaction;
+  
+  try {
+    // Start transaction
+    transaction = await db.sequelize.transaction();
+    
+    // Validate request
+    if (!req.body.name || !req.body.username || !req.body.password) {
+      return res.status(400).send({
+        message: "Name, username, and password are required!"
+      });
+    }
+
+    // Create user in users table
+    const user = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      mobile_no: req.body.mobile_no,
+      password: bcrypt.hashSync(req.body.password, 8),
+      created_at: new Date(),
+      updated_at: new Date()
+    }, { transaction });
+
+    // Create login credentials
+    const LoginCredential = db.loginCredential;
+    await LoginCredential.create({
+      user_id: user.id,
+      username: req.body.username,
+      name: req.body.name, // Include name field
+      password: bcrypt.hashSync(req.body.password, 8),
+      role: req.body.role || "2", // Default role
+      active: true,
+      created_at: new Date(),
+      updated_at: new Date()
+    }, { transaction });
+
+    // Assign roles if provided
+    if (req.body.roles) {
+      const roles = await Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        },
+        transaction
+      });
+      await user.setRoles(roles, { transaction });
+    } else {
+      // Default role = 2 (admin)
+      await user.setRoles([2], { transaction });
+    }
+
+    await transaction.commit();
+    
+    res.status(201).send({
+      message: "User and login credentials created successfully!",
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        mobile_no: user.mobile_no
+      }
+    });
+  } catch (error) {
+    if (transaction) await transaction.rollback();
+    res.status(500).send({ 
+      message: error.message || "Error creating user and login credentials."
+    });
+  }
+};
+
 // Retrieve all Users from the database
 exports.findAll = async (req, res) => {
   try {

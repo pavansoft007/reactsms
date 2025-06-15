@@ -66,7 +66,10 @@ const Layout: React.FC = () => {
   const location = useLocation();
 
   const userRole = localStorage.getItem("user_role");
-  const userName = localStorage.getItem("user_name") || "User";
+  const userName =
+    localStorage.getItem("user_name") ||
+    localStorage.getItem("username") ||
+    "User";
   const schoolName =
     localStorage.getItem("school_name") || "School Management System";
 
@@ -505,6 +508,7 @@ const Layout: React.FC = () => {
       subItems: [
         { label: "Global Settings", path: "/settings/global" },
         { label: "School Settings", path: "/settings/school" },
+        { label: "Create User", path: "/settings/create-user" },
         { label: "Role Permission", path: "/settings/roles" },
         { label: "Role Groups", path: "/settings/role-groups" },
         { label: "Session Settings", path: "/settings/session" },

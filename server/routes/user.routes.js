@@ -14,6 +14,12 @@ module.exports = function(app) {
   app.get("/api/test/all", controller.allAccess);
 
   // User management endpoints
+  app.post(
+    "/api/users",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.create
+  );
+
   app.get(
     "/api/users",
     [authJwt.verifyToken, authJwt.isAdmin],

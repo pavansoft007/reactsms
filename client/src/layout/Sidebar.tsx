@@ -1,5 +1,11 @@
-import { ScrollArea, useMantineTheme, Group, Text } from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
+import {
+  ScrollArea,
+  Group,
+  Text,
+  Box,
+  Collapse,
+  UnstyledButton,
+} from "@mantine/core";
 import {
   IconLayoutDashboard,
   IconUsers,
@@ -10,113 +16,234 @@ import {
   IconReportAnalytics,
   IconSettings,
   IconEdit,
-} from '@tabler/icons-react';
-import { useLocation, Link } from 'react-router-dom';
+  IconChevronRight,
+  IconSchool,
+} from "@tabler/icons-react";
+import { useLocation, Link } from "react-router-dom";
+import { useState } from "react";
 
 const navItems = [
-  { label: 'Dashboard', icon: IconLayoutDashboard, to: '/' },
-  { label: 'Students', icon: IconUsers, to: '/students' },
-  { label: 'Teachers', icon: IconChalkboard, to: '/teachers' },
-  { label: 'Classes', icon: IconBook, to: '/classes' },
-  { label: 'Attendance', icon: IconCalendarEvent, to: '/attendance' },
-  { label: 'Fees', icon: IconCash, to: '/fees' },
-  { label: 'Reports', icon: IconReportAnalytics, to: '/reports' },
-  { label: 'Settings', icon: IconSettings, to: '/settings' },
+  { label: "Dashboard", icon: IconLayoutDashboard, to: "/", color: "#0ea5e9" },
+  { label: "Students", icon: IconUsers, to: "/students", color: "#22c55e" },
   {
-    label: 'Admission',
+    label: "Teachers",
+    icon: IconChalkboard,
+    to: "/teachers",
+    color: "#f59e0b",
+  },
+  { label: "Classes", icon: IconBook, to: "/classes", color: "#8b5cf6" },
+  {
+    label: "Attendance",
+    icon: IconCalendarEvent,
+    to: "/attendance",
+    color: "#ef4444",
+  },
+  { label: "Fees", icon: IconCash, to: "/fees", color: "#06b6d4" },
+  {
+    label: "Reports",
+    icon: IconReportAnalytics,
+    to: "/reports",
+    color: "#84cc16",
+  },
+  { label: "Settings", icon: IconSettings, to: "/settings", color: "#6b7280" },
+  {
+    label: "Admission",
     icon: IconEdit,
-    to: '/admission',
+    to: "/admission",
+    color: "#ec4899",
     children: [
-      { label: 'Create Admission', to: '/admission/create' },
+      { label: "Create Admission", to: "/admission/create" },
       // Add more admission-related links here if needed
     ],
   },
 ];
 
-export function Sidebar({ opened }: { opened: boolean }) {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
+interface SidebarProps {
+  opened: boolean;
+  setOpened: (opened: boolean) => void;
+}
+
+export function Sidebar({ opened, setOpened }: SidebarProps) {
   const location = useLocation();
+  const [openedCollapse, setOpenedCollapse] = useState<string | null>(null);
 
   if (!opened) return null;
 
+  const handleCollapseToggle = (label: string) => {
+    setOpenedCollapse(openedCollapse === label ? null : label);
+  };
+
   return (
-    <div
+    <Box
       style={{
-        width: 250,
-        height: '100vh',
-        background: colorScheme === 'dark' ? theme.colors.dark[7] : '#fff',
-        borderRight: `1px solid ${theme.colors.gray[2]}`,
-        position: 'fixed',
+        height: "100vh",
+        width: 280,
+        position: "fixed",
         top: 0,
         left: 0,
         zIndex: 100,
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
+        paddingTop: 70, // Account for header height
       }}
     >
-      <ScrollArea style={{ flex: 1 }}>
+      {/* Logo Section */}
+      <Box
+        p="xl"
+        style={{ borderBottom: "1px solid rgba(226, 232, 240, 0.8)" }}
+      >
+        <Group gap="md">
+          <Box
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: "12px",
+              background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 8px 20px -4px rgba(14, 165, 233, 0.3)",
+            }}
+          >
+            <IconSchool size={24} color="white" />
+          </Box>
+          <Box>
+            <Text
+              size="lg"
+              style={{
+                fontWeight: 700,
+                background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              EduManage Pro
+            </Text>
+            <Text size="xs" color="dimmed" style={{ fontWeight: 500 }}>
+              School Management
+            </Text>
+          </Box>
+        </Group>
+      </Box>
+
+      <ScrollArea style={{ flex: 1 }} p="md">
         {navItems.map((item) => {
           if (item.children) {
-            const active = location.pathname.startsWith(item.to);
+            const isOpen = openedCollapse === item.label;
+            const hasActiveChild = item.children.some(
+              (child) => location.pathname === child.to
+            );
+
             return (
-              <div key={item.label}>
-                <Group style={{ padding: '10px 20px', fontWeight: active ? 600 : 400 }}>
-                  <item.icon size={20} />
-                  <Text size="md">{item.label}</Text>
-                </Group>
-                <div style={{ marginLeft: 32 }}>
-                  {item.children.map((child) => (
-                    <Link
-                      key={child.label}
-                      to={child.to}
+              <Box key={item.label} mb="xs">
+                <UnstyledButton
+                  onClick={() => handleCollapseToggle(item.label)}
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    padding: "12px 16px",
+                    borderRadius: "12px",
+                    color: hasActiveChild ? item.color : "#64748b",
+                    background: hasActiveChild
+                      ? `linear-gradient(135deg, ${item.color}15, ${item.color}08)`
+                      : "transparent",
+                    border: hasActiveChild
+                      ? `1px solid ${item.color}30`
+                      : "1px solid transparent",
+                    transition: "all 0.2s ease",
+                    fontWeight: hasActiveChild ? 600 : 500,
+                  }}
+                >
+                  <Group justify="space-between">
+                    <Group gap="sm">
+                      <item.icon size={20} />
+                      <Text size="sm">{item.label}</Text>
+                    </Group>
+                    <IconChevronRight
+                      size={16}
                       style={{
-                        textDecoration: 'none',
-                        color: location.pathname === child.to ? theme.colors.blue[7] : theme.colors.gray[7],
+                        transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                        transition: "transform 0.2s ease",
                       }}
-                    >
-                      <Group style={{ padding: '6px 0', fontWeight: location.pathname === child.to ? 600 : 400 }}>
-                        <Text size="sm">{child.label}</Text>
-                      </Group>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+                    />
+                  </Group>
+                </UnstyledButton>
+
+                <Collapse in={isOpen}>
+                  <Box ml="md" mt="xs">
+                    {item.children.map((child) => {
+                      const isActive = location.pathname === child.to;
+                      return (
+                        <Link
+                          key={child.label}
+                          to={child.to}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <UnstyledButton
+                            style={{
+                              display: "block",
+                              width: "100%",
+                              padding: "8px 16px",
+                              borderRadius: "8px",
+                              color: isActive ? item.color : "#64748b",
+                              background: isActive
+                                ? `linear-gradient(135deg, ${item.color}15, ${item.color}08)`
+                                : "transparent",
+                              border: isActive
+                                ? `1px solid ${item.color}30`
+                                : "1px solid transparent",
+                              transition: "all 0.2s ease",
+                              fontWeight: isActive ? 600 : 500,
+                            }}
+                          >
+                            <Text size="sm">{child.label}</Text>
+                          </UnstyledButton>
+                        </Link>
+                      );
+                    })}
+                  </Box>
+                </Collapse>
+              </Box>
             );
           }
-          const active = location.pathname === item.to;
+
+          const isActive = location.pathname === item.to;
+
           return (
             <Link
               key={item.label}
               to={item.to}
-              style={{
-                textDecoration: 'none',
-                color: active ? theme.colors.blue[7] : theme.colors.gray[7],
-              }}
+              style={{ textDecoration: "none" }}
             >
-              <Group
-                spacing={12}
+              <UnstyledButton
                 style={{
-                  padding: '10px 20px',
-                  borderRadius: 8,
-                  margin: '4px 8px',
-                  background: active
-                    ? colorScheme === 'dark'
-                      ? theme.colors.dark[5]
-                      : theme.colors.blue[0]
-                    : 'transparent',
-                  fontWeight: active ? 600 : 400,
-                  transition: 'background 0.2s',
-                  cursor: 'pointer',
+                  display: "block",
+                  width: "100%",
+                  padding: "12px 16px",
+                  borderRadius: "12px",
+                  marginBottom: "6px",
+                  color: isActive ? item.color : "#64748b",
+                  background: isActive
+                    ? `linear-gradient(135deg, ${item.color}15, ${item.color}08)`
+                    : "transparent",
+                  border: isActive
+                    ? `1px solid ${item.color}30`
+                    : "1px solid transparent",
+                  transition: "all 0.2s ease",
+                  fontWeight: isActive ? 600 : 500,
+                  cursor: "pointer",
                 }}
               >
-                <item.icon size={20} />
-                <Text size="md">{item.label}</Text>
-              </Group>
+                <Group gap="sm">
+                  <item.icon size={20} />
+                  <Text size="sm">{item.label}</Text>
+                </Group>
+              </UnstyledButton>
             </Link>
           );
         })}
       </ScrollArea>
-    </div>
+    </Box>
   );
 }
