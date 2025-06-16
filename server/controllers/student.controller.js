@@ -108,12 +108,11 @@ exports.findAll = async (req, res) => {
           model: db.student,
           as: 'student',
           where: studentWhere,
-          include: [
-            {
+          include: [            {
               model: db.loginCredential,
               as: 'loginCredential',
               required: true,
-              where: { role: 'student', active: true }
+              where: { role: 7, active: true } // 7 = student role
             },
             {
               model: db.studentCategory,
@@ -131,16 +130,36 @@ exports.findAll = async (req, res) => {
           as: 'section',
         }
       ]
-    });
-    res.json({
+    });    res.json({
       total: count,
-      students: rows.map(enroll => ({
-        ...enroll.student.get(),
-        class: enroll.class,
-        section: enroll.section,
-        enroll_id: enroll.id,
-        roll: enroll.roll
-      }))
+      totalPages: Math.ceil(count / limit),
+      students: rows.map(enroll => {
+        const studentData = enroll.student.get();
+        const loginCredential = studentData.loginCredential;
+        
+        return {
+          id: studentData.id,
+          admission_no: studentData.register_no,
+          roll: enroll.roll,
+          user: {
+            name: loginCredential ? loginCredential.name || `${studentData.first_name} ${studentData.last_name}`.trim() : `${studentData.first_name} ${studentData.last_name}`.trim(),
+            email: studentData.email,
+            phone: studentData.mobileno
+          },
+          class: enroll.class,
+          section: enroll.section,
+          father_name: studentData.father_name,
+          father_phone: studentData.father_phone,
+          mother_name: studentData.mother_name,
+          mother_phone: studentData.mother_phone,
+          guardian_name: studentData.guardian_name,
+          guardian_phone: studentData.guardian_phone,
+          admission_date: studentData.admission_date,
+          blood_group: studentData.blood_group,
+          current_address: studentData.current_address,
+          enroll_id: enroll.id
+        };
+      })
     });
   } catch (err) {
     logger.error(`Error fetching students: ${err.message}`);

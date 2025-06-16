@@ -15,7 +15,7 @@ const DEFAULT_FILTERS = {
   user: ['name', 'email', 'role', 'branch_id', 'status'],
   branch: ['name', 'code', 'is_active'],
   class: ['name', 'branch_id'],
-  section: ['name', 'class_id', 'branch_id', 'teacher_id'],
+  section: ['name', 'class_id', 'branch_id'],
   book: ['title', 'author', 'category_id', 'branch_id'],
   account: ['name', 'branch_id']
 };

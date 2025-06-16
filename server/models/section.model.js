@@ -22,14 +22,6 @@ module.exports = (sequelize, Sequelize) => {
         }
       }
     },
-    class_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'classes',
-        key: 'id'
-      }
-    },
     branch_id: {
       type: Sequelize.INTEGER,
       allowNull: false,
@@ -53,15 +45,6 @@ module.exports = (sequelize, Sequelize) => {
         }
       }
     },
-    teacher_id: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'master_admins',
-        key: 'id'
-      },
-      comment: "Class teacher/homeroom teacher ID"
-    },
     is_active: {
       type: Sequelize.BOOLEAN,
       defaultValue: true
@@ -71,16 +54,10 @@ module.exports = (sequelize, Sequelize) => {
     paranoid: true, // Enables soft deletes
     indexes: [
       {
-        fields: ['class_id']
-      },
-      {
         fields: ['branch_id']
       },
       {
-        fields: ['teacher_id']
-      },
-      {
-        fields: ['name', 'class_id', 'branch_id'],
+        fields: ['name', 'branch_id'],
         unique: true
       }
     ]
@@ -88,22 +65,10 @@ module.exports = (sequelize, Sequelize) => {
 
   // Add associations
   Section.associate = (models) => {
-    // Section belongs to a Class
-    Section.belongsTo(models.class, {
-      foreignKey: 'class_id',
-      as: 'class'
-    });
-
     // Section belongs to a Branch
     Section.belongsTo(models.branch, {
       foreignKey: 'branch_id',
       as: 'branch'
-    });
-
-    // Section belongs to a Teacher (User)
-    Section.belongsTo(models.user, {
-      foreignKey: 'teacher_id',
-      as: 'teacher'
     });
   };
 

@@ -124,4 +124,18 @@ module.exports = function(app) {
     ],
     classController.toggleActive
   );
+
+  // Assign sections to a class
+  app.post(
+    "/api/classes/:classId/sections",
+    [authJwt.verifyToken, roleMiddleware.isAdmin],
+    classController.assignSections
+  );
+
+  // Remove section from a class
+  app.delete(
+    "/api/classes/:classId/sections/:sectionId",
+    [authJwt.verifyToken, roleMiddleware.isAdmin],
+    classController.removeSection
+  );
 };

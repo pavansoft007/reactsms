@@ -21,25 +21,19 @@ module.exports = function(app) {
   });
 
   // Define the allowed filter fields
-  const allowedFilters = ['name', 'class_id', 'branch_id', 'teacher_id', 'is_active'];
+  const allowedFilters = ['name', 'class_id', 'branch_id', 'is_active'];
 
   // Section validation rules
   const sectionValidationRules = [
     check('name')
       .notEmpty().withMessage('Section name is required')
       .isLength({ min: 1, max: 50 }).withMessage('Section name must be between 1 and 50 characters'),
-    check('class_id')
-      .notEmpty().withMessage('Class ID is required')
-      .isInt().withMessage('Class ID must be an integer'),
     check('branch_id')
       .notEmpty().withMessage('Branch ID is required')
       .isInt().withMessage('Branch ID must be an integer'),
     check('capacity')
       .optional()
-      .isInt({ min: 1, max: 200 }).withMessage('Capacity must be an integer between 1 and 200'),
-    check('teacher_id')
-      .optional()
-      .isInt().withMessage('Teacher ID must be an integer')
+      .isInt({ min: 1, max: 200 }).withMessage('Capacity must be an integer between 1 and 200')
   ];
 
   // Create a new section

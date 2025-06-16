@@ -20,15 +20,6 @@ const { Op } = require("sequelize");
  */
 exports.create = async (req, res) => {
   try {
-    // Check if class exists
-    const classData = await Class.findByPk(req.body.class_id);
-    if (!classData) {
-      return res.status(404).json({
-        success: false,
-        message: `Class with id ${req.body.class_id} not found`
-      });
-    }
-
     // Check if branch exists
     const branch = await Branch.findByPk(req.body.branch_id);
     if (!branch) {
@@ -38,22 +29,10 @@ exports.create = async (req, res) => {
       });
     }
 
-    // Check if teacher exists (if provided)
-    if (req.body.teacher_id) {
-      const teacher = await User.findByPk(req.body.teacher_id);
-      if (!teacher) {
-        return res.status(404).json({
-          success: false,
-          message: `Teacher with id ${req.body.teacher_id} not found`
-        });
-      }
-    }
-
-    // Check if section with the same name already exists in this class
+    // Check if section with the same name already exists in this branch
     const existingSection = await Section.findOne({
       where: {
         name: req.body.name,
-        class_id: req.body.class_id,
         branch_id: req.body.branch_id
       }
     });
@@ -61,23 +40,36 @@ exports.create = async (req, res) => {
     if (existingSection) {
       return res.status(409).json({
         success: false,
-        message: `Section with name '${req.body.name}' already exists in this class`
+        message: `Section with name '${req.body.name}' already exists in this branch`
+      });
+    }
+
+    // Validate numeric fields
+    if (req.body.capacity && isNaN(parseInt(req.body.capacity))) {
+      return res.status(400).json({
+        success: false,
+        message: "Capacity must be an integer"
       });
     }
 
     // Create section from request body
     const section = await Section.create({
       name: req.body.name,
-      class_id: req.body.class_id,
       branch_id: req.body.branch_id,
       capacity: req.body.capacity,
-      teacher_id: req.body.teacher_id,
       is_active: req.body.is_active !== undefined ? req.body.is_active : true
     });
 
+    // If class_id is provided, associate it with the class
+    if (req.body.class_id) {
+      const classData = await Class.findByPk(req.body.class_id);
+      if (classData) {
+        await section.setClasses([classData]);
+      }
+    }
+
     logger.info(`Section created: ${section.name}`, {
       sectionId: section.id,
-      classId: section.class_id,
       branchId: section.branch_id,
       userId: req.userId
     });
@@ -116,12 +108,11 @@ exports.findAll = async (req, res) => {
         condition.name = { [Op.like]: `%${req.filters.name}%` };
       }
       
-      // Filter by class_id (exact match)
-      if (req.filters.class_id) {
-        condition.class_id = req.filters.class_id;
-      }
-      
       // Filter by branch_id (exact match)
+      if (req.filters.branch_id) {
+        condition.branch_id = req.filters.branch_id;
+      }
+        // Filter by branch_id (exact match)
       if (req.filters.branch_id) {
         condition.branch_id = req.filters.branch_id;
       }
@@ -132,39 +123,59 @@ exports.findAll = async (req, res) => {
       }
     }
     
+    // Set up include options
+    const includeOptions = [
+      {
+        model: Branch,
+        as: 'branch',
+        attributes: ['id', 'name']
+      },
+      {
+        model: Class,
+        as: 'classes',
+        attributes: ['id', 'name', 'numeric_name'],
+        through: { attributes: [] } // Don't include join table data
+      }
+    ];
+    
+    // If filtering by class_id, filter through the many-to-many relationship
+    if (req.filters && req.filters.class_id) {
+      const classId = req.filters.class_id;
+      includeOptions.find(inc => inc.model === Class).where = { id: classId };
+    }
+
     // Get sections with pagination
     const { count, rows } = await Section.findAndCountAll({
       where: condition,
+      include: includeOptions,
+      distinct: true, // Important for correct count with includes
       limit: limit,
       offset: offset,
-      order: [['name', 'ASC']],
-      include: [
-        {
-          model: Class,
-          as: 'class',
-          attributes: ['id', 'name']
-        },
-        {
-          model: Branch,
-          as: 'branch',
-          attributes: ['id', 'name']
-        },
-        {
-          model: User,
-          as: 'teacher',
-          attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
-        }
+      order: [
+        ['name', 'ASC']
       ]
     });
     
-    // Return paginated result
+    // Format pagination metadata
+    const totalItems = count;
+    const totalPages = Math.ceil(totalItems / limit);
+    const currentPage = page;
+    const hasNext = currentPage < totalPages;
+    const hasPrev = currentPage > 1;
+    
     res.status(200).json({
       success: true,
-      message: "Sections retrieved successfully",
-      totalItems: count,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-      data: rows
+      data: rows,
+      pagination: {
+        total: totalItems,
+        per_page: limit,
+        current_page: currentPage,
+        last_page: totalPages,
+        from: offset + 1,
+        to: offset + rows.length,
+        has_next_page: hasNext,
+        has_prev_page: hasPrev
+      }
     });
   } catch (error) {
     logger.error(`Error retrieving sections: ${error.message}`, { error });
@@ -184,23 +195,18 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
   try {
     const id = req.params.id;
-    
-    const section = await Section.findByPk(id, {
+      const section = await Section.findByPk(id, {
       include: [
         {
           model: Class,
-          as: 'class',
-          attributes: ['id', 'name']
+          as: 'classes',
+          attributes: ['id', 'name', 'numeric_name'],
+          through: { attributes: [] } // Don't include join table data
         },
         {
           model: Branch,
           as: 'branch',
           attributes: ['id', 'name']
-        },
-        {
-          model: User,
-          as: 'teacher',
-          attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
         }
       ]
     });
@@ -245,8 +251,8 @@ exports.update = async (req, res) => {
       });
     }
     
-    // If class_id is being updated, check if class exists
-    if (req.body.class_id && req.body.class_id !== section.class_id) {
+    // If class_id is provided, update class association
+    if (req.body.class_id) {
       const classData = await Class.findByPk(req.body.class_id);
       if (!classData) {
         return res.status(404).json({
@@ -254,6 +260,9 @@ exports.update = async (req, res) => {
           message: `Class with id ${req.body.class_id} not found`
         });
       }
+      
+      // Update class association
+      await section.setClasses([classData]);
     }
     
     // If branch_id is being updated, check if branch exists
@@ -266,24 +275,11 @@ exports.update = async (req, res) => {
         });
       }
     }
-    
-    // If teacher_id is being updated, check if teacher exists
-    if (req.body.teacher_id && req.body.teacher_id !== section.teacher_id) {
-      const teacher = await User.findByPk(req.body.teacher_id);
-      if (!teacher) {
-        return res.status(404).json({
-          success: false,
-          message: `Teacher with id ${req.body.teacher_id} not found`
-        });
-      }
-    }
-    
-    // Check for duplicate section name in the class
+      // Check for duplicate section name in the branch
     if (req.body.name && req.body.name !== section.name) {
       const existingSection = await Section.findOne({
         where: {
           name: req.body.name,
-          class_id: req.body.class_id || section.class_id,
           branch_id: req.body.branch_id || section.branch_id,
           id: { [Op.ne]: id } // Exclude current section
         }
@@ -292,13 +288,21 @@ exports.update = async (req, res) => {
       if (existingSection) {
         return res.status(409).json({
           success: false,
-          message: `Section with name '${req.body.name}' already exists in this class`
+          message: `Section with name '${req.body.name}' already exists in this branch`
         });
       }
     }
     
+    // Create update object (excluding teacher_id)
+    const updateData = {
+      name: req.body.name,
+      branch_id: req.body.branch_id,
+      capacity: req.body.capacity,
+      is_active: req.body.is_active !== undefined ? req.body.is_active : section.is_active
+    };
+    
     // Update section with request body
-    const [updated] = await Section.update(req.body, {
+    const [updated] = await Section.update(updateData, {
       where: { id: id }
     });
     
@@ -308,18 +312,14 @@ exports.update = async (req, res) => {
         include: [
           {
             model: Class,
-            as: 'class',
-            attributes: ['id', 'name']
+            as: 'classes',
+            attributes: ['id', 'name'],
+            through: { attributes: [] } // Don't include join table data
           },
           {
             model: Branch,
             as: 'branch',
             attributes: ['id', 'name']
-          },
-          {
-            model: User,
-            as: 'teacher',
-            attributes: ['id', 'name', 'email', 'mobile_no'] // Only fields that exist in master_admins
           }
         ]
       });

@@ -134,8 +134,10 @@ require("./routes/subject.routes")(app);
 const admissionRoutes = require('./routes/admission.routes');
 app.use('/api/admission', admissionRoutes);
 require("./routes/studentCategory.routes")(app); // Add this line
+require("./routes/studentCategory.sequelize.routes")(app); // Add new Sequelize-based routes
 require("./routes/schoolyear.routes")(app); // Registering schoolyear.routes.js
 require("./routes/attachment.routes")(app); // Registering attachment.routes.js
+require("./routes/sections_allocation.routes")(app); // Registering sections_allocation.routes.js
 
 // Serve static files from the React app in production
 if (process.env.NODE_ENV === 'production') {

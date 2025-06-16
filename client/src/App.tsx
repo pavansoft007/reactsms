@@ -45,6 +45,7 @@ import DoubleNavbarUltra from "./layout/DoubleNavbarUltra";
 import { theme } from "./theme";
 import AdmissionCreate from "./pages/AdmissionCreate";
 import UserCreatePage from "./pages/UserCreatePage";
+import StudentCategoryPage from "./pages/StudentCategoryPage";
 import { AcademicYearProvider } from "./context/AcademicYearContext";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
@@ -131,7 +132,8 @@ function AppContent() {
             <Route
               path="frontend/*"
               element={<div>Frontend Management - Coming Soon</div>}
-            />
+            />{" "}
+            <Route path="admission/create" element={<AdmissionCreate />} />
             <Route
               path="admission/*"
               element={<div>Admission Management - Coming Soon</div>}
@@ -185,6 +187,10 @@ function AppContent() {
             />
             <Route path="message" element={<div>Message - Coming Soon</div>} />
             <Route path="admission/create" element={<AdmissionCreate />} />
+            <Route
+              path="admission/category"
+              element={<StudentCategoryPage />}
+            />
             <Route path="roles" element={<RolesPage />} />
             <Route path="role-groups" element={<RoleGroupsPage />} />
           </>

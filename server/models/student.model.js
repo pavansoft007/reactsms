@@ -7,9 +7,53 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      register_no: {
+        type: DataTypes.STRING
+      },
+      admission_date: {
+        type: DataTypes.STRING
+      },
+      first_name: {
+        type: DataTypes.STRING
+      },
+      last_name: {
+        type: DataTypes.STRING
+      },
+      gender: {
+        type: DataTypes.STRING
+      },
+      birthday: {
+        type: DataTypes.STRING
+      },
+      religion: {
+        type: DataTypes.STRING
+      },
+      caste: {
+        type: DataTypes.STRING
+      },
+      blood_group: {
+        type: DataTypes.STRING
+      },
+      mother_tongue: {
+        type: DataTypes.STRING
+      },
+      current_address: {
+        type: DataTypes.TEXT
+      },
+      permanent_address: {
+        type: DataTypes.TEXT
+      },
+      city: {
+        type: DataTypes.STRING
+      },
+      state: {
+        type: DataTypes.STRING
+      },
+      mobileno: {
+        type: DataTypes.STRING
+      },
+      category_id: {
+        type: DataTypes.INTEGER
       },
       email: {
         type: DataTypes.STRING,
@@ -17,52 +61,36 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         }
       },
-      gender: {
-        type: DataTypes.STRING
-      },
-      blood_group: {
-        type: DataTypes.STRING
-      },
-      birthday: {
-        type: DataTypes.DATE
-      },
-      religion: {
-        type: DataTypes.STRING
-      },
-      present_address: {
-        type: DataTypes.TEXT
-      },
-      permanent_address: {
-        type: DataTypes.TEXT
-      },
-      phone: {
-        type: DataTypes.STRING
-      },
-      category_id: {
-        type: DataTypes.INTEGER
-      },
-      register_no: {
-        type: DataTypes.STRING
-      },
       parent_id: {
         type: DataTypes.INTEGER
       },
-      email_verified_at: {
-        type: DataTypes.DATE
+      route_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      vehicle_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      hostel_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      room_id: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
+      previous_details: {
+        type: DataTypes.TEXT
+      },
+      photo: {
+        type: DataTypes.STRING
       },
       created_at: {
         type: DataTypes.DATE
       },
       updated_at: {
         type: DataTypes.DATE
-      },
-      branch_id: {
-        type: DataTypes.INTEGER
-      },
-      session_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1
       }
     },
     {
