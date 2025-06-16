@@ -12,3 +12,5 @@ export {
   UltraTableBadge,
 } from "./UltraTable";
 export { default as UltraModal } from "./UltraModal";
+export { UltraListPage } from "./UltraListPage";
+export { default as EnhancedListPage } from "./EnhancedListPage";

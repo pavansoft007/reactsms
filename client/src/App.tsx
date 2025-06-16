@@ -46,6 +46,10 @@ import { theme } from "./theme";
 import AdmissionCreate from "./pages/AdmissionCreate";
 import UserCreatePage from "./pages/UserCreatePage";
 import StudentCategoryPage from "./pages/StudentCategoryPage";
+import ProductsPageExample from "./pages/ProductsPageExample";
+import StudentsListPage from "./pages/StudentsListPage";
+import TeachersListPage from "./pages/TeachersListPage";
+import ListingPagesDemo from "./pages/ListingPagesDemo";
 import { AcademicYearProvider } from "./context/AcademicYearContext";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
@@ -187,12 +191,13 @@ function AppContent() {
             />
             <Route path="message" element={<div>Message - Coming Soon</div>} />
             <Route path="admission/create" element={<AdmissionCreate />} />
-            <Route
-              path="admission/category"
-              element={<StudentCategoryPage />}
-            />
             <Route path="roles" element={<RolesPage />} />
             <Route path="role-groups" element={<RoleGroupsPage />} />
+            <Route path="products" element={<ProductsPageExample />} />
+            <Route path="students-list" element={<StudentsListPage />} />
+            <Route path="teachers-list" element={<TeachersListPage />} />
+            <Route path="listing-demo" element={<ListingPagesDemo />} />
+            <Route path="student-category" element={<StudentCategoryPage />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />
