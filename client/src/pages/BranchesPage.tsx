@@ -9,7 +9,29 @@ import {
   FileButton,
   Tabs,
   LoadingOverlay,
+  Card,
+  Paper,
+  Button,
+  TextInput,
+  PasswordInput,
+  Textarea,
+  Select,
+  Table,
+  ActionIcon,
+  Badge,
+  Grid,
 } from "@mantine/core";
+import {
+  IconList,
+  IconPlus,
+  IconEdit,
+  IconTrash,
+  IconUser,
+  IconLock,
+  IconMail,
+  IconPhone,
+  IconUpload,
+} from "@tabler/icons-react";
 import {
   MdBusiness,
   MdSchool,
@@ -31,22 +53,12 @@ import {
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useTheme } from "../context/ThemeContext";
-import {
-  UltraCard,
-  UltraButton,
-  UltraInput,
-  UltraPassword,
-  UltraTextarea,
-  UltraSelect,
-  UltraTable,
-  UltraTableActions,
-  UltraTableBadge,
-} from "../components/ui";
 import api from "../api/config";
 
 interface Branch {
   id: number;
   name: string;
+  code?: string;
   school_name: string;
   email: string;
   mobileno: string;

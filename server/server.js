@@ -133,6 +133,9 @@ require("./routes/role.routes")(app);
 require("./routes/subject.routes")(app);
 const admissionRoutes = require('./routes/admission.routes');
 app.use('/api/admission', admissionRoutes);
+// Add finance routes
+const financeRoutes = require('./routes/finance.routes');
+app.use('/api/finance', financeRoutes);
 require("./routes/studentCategory.routes")(app); // Add this line
 require("./routes/studentCategory.sequelize.routes")(app); // Add new Sequelize-based routes
 require("./routes/schoolyear.routes")(app); // Registering schoolyear.routes.js
