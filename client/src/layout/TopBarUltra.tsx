@@ -12,6 +12,7 @@ import {
   Indicator,
   Tooltip,
   Paper,
+  Badge,
 } from "@mantine/core";
 import {
   MdSearch,
@@ -24,8 +25,11 @@ import {
   MdSettings,
   MdKeyboardArrowDown,
   MdSchool,
+  MdCalendarToday,
 } from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
+import { useAcademicYear } from "../context/AcademicYearContext";
+import { fetchAcademicYears } from "../api/academicYear";
 import axios from "axios";
 
 interface AcademicYear {
@@ -52,13 +56,13 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
   schoolLogo: propSchoolLogo,
 }) => {
   const { isDark, toggleColorScheme } = useTheme();
+  const { academicYear, setAcademicYear, years, setYears } = useAcademicYear();
   const [searchValue, setSearchValue] = useState("");
   const [language, setLanguage] = useState("en");
   const [notificationCount] = useState(3);
   const [schoolInfo, setSchoolInfo] = useState<SchoolInfo | null>(null);
-  const [academicYears, setAcademicYears] = useState<AcademicYear[]>([]);
-  const [currentAcademicYear, setCurrentAcademicYear] = useState<string>("");
   const [isLoadingSchoolInfo, setIsLoadingSchoolInfo] = useState(true);
+  const [isLoadingAcademicYears, setIsLoadingAcademicYears] = useState(false);
 
   const userName =
     localStorage.getItem("user_name") ||
@@ -125,92 +129,55 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
 
             console.log("Setting school info:", schoolData);
             setSchoolInfo(schoolData);
-          }
-        } else {
+          }        } else {
           console.warn("No branches found in response");
-        }
-
-        // Fetch academic years
-        try {
-          const academicResponse = await axios.get("/api/academic-years", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
-          if (academicResponse.data && Array.isArray(academicResponse.data)) {
-            const years = academicResponse.data.map((year: any) => ({
-              value: year.id?.toString() || year.year,
-              label:
-                year.name || year.year || `${year.start_year}-${year.end_year}`,
-            }));
-            setAcademicYears(years);
-
-            // Set current academic year
-            const currentYear = academicResponse.data.find(
-              (year: any) => year.is_current || year.active
-            );
-            if (currentYear) {
-              setCurrentAcademicYear(
-                currentYear.id?.toString() || currentYear.year
-              );
-            } else if (years.length > 0) {
-              setCurrentAcademicYear(years[0].value);
-            }
-          } else {
-            // Fallback academic years
-            const currentYear = new Date().getFullYear();
-            const fallbackYears = [
-              {
-                value: `${currentYear - 1}-${currentYear}`,
-                label: `${currentYear - 1}-${currentYear}`,
-              },
-              {
-                value: `${currentYear}-${currentYear + 1}`,
-                label: `${currentYear}-${currentYear + 1}`,
-              },
-              {
-                value: `${currentYear + 1}-${currentYear + 2}`,
-                label: `${currentYear + 1}-${currentYear + 2}`,
-              },
-            ];
-            setAcademicYears(fallbackYears);
-            setCurrentAcademicYear(`${currentYear}-${currentYear + 1}`);
-          }
-        } catch (academicError) {
-          console.error("Failed to fetch academic years:", academicError);
-          // Set fallback academic years
-          const currentYear = new Date().getFullYear();
-          const fallbackYears = [
-            {
-              value: `${currentYear - 1}-${currentYear}`,
-              label: `${currentYear - 1}-${currentYear}`,
-            },
-            {
-              value: `${currentYear}-${currentYear + 1}`,
-              label: `${currentYear}-${currentYear + 1}`,
-            },
-            {
-              value: `${currentYear + 1}-${currentYear + 2}`,
-              label: `${currentYear + 1}-${currentYear + 2}`,
-            },
-          ];
-          setAcademicYears(fallbackYears);
-          setCurrentAcademicYear(`${currentYear}-${currentYear + 1}`);
         }
       } catch (error) {
         console.error("Failed to fetch school info:", error);
-        // Use default values only as last resort
+        // Set fallback school info
         setSchoolInfo({
           id: 1,
-          name: "School Management System",
-          logo: undefined,
+          name: propSchoolName || "School Management System",
+          logo: propSchoolLogo,
         });
       } finally {
         setIsLoadingSchoolInfo(false);
       }
+    };    fetchSchoolInfo();
+  }, [propSchoolName, propSchoolLogo]);
+
+  // Load academic years using the same logic as TopBar.tsx
+  useEffect(() => {
+    const loadAcademicYears = async () => {
+      try {
+        setIsLoadingAcademicYears(true);
+        console.log('Fetching academic years...');
+        const academicYears = await fetchAcademicYears();
+        console.log('Academic years fetched:', academicYears);
+        setYears(academicYears);
+        
+        // Set the first year as default if no year is selected
+        if (academicYears.length > 0 && !academicYear) {
+          setAcademicYear(academicYears[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch academic years:', error);
+        // Set fallback academic years if API fails
+        const currentYear = new Date().getFullYear();
+        const fallbackYears = [
+          { id: 1, school_year: `${currentYear - 1}-${currentYear}` },
+          { id: 2, school_year: `${currentYear}-${currentYear + 1}` },
+          { id: 3, school_year: `${currentYear + 1}-${currentYear + 2}` },
+        ];
+        setYears(fallbackYears);
+        setAcademicYear(fallbackYears[1]); // Set current year as default
+      } finally {
+        setIsLoadingAcademicYears(false);
+      }
     };
 
-    fetchSchoolInfo();
-  }, [propSchoolName, propSchoolLogo]);
+    loadAcademicYears();
+  }, [setYears, setAcademicYear, academicYear]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -346,37 +313,34 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
 
       {/* Right Section - Controls */}
       <Group gap="md">
-        {" "}
-        {/* Academic Year Selector */}
-        <Select
-          data={academicYears}
-          value={currentAcademicYear}
-          onChange={(value) => {
-            if (value) {
-              setCurrentAcademicYear(value);
-              localStorage.setItem("current_academic_year", value);
-            }
-          }}
-          placeholder="Academic Year"
-          size="sm"
-          style={{
-            width: "140px",
-          }}
-          styles={{
-            input: {
-              background: isDark
-                ? "rgba(55, 65, 81, 0.8)"
-                : "rgba(248, 250, 252, 0.8)",
-              border: `1px solid ${
-                isDark ? "rgba(75, 85, 99, 0.3)" : "rgba(226, 232, 240, 0.5)"
-              }`,
-              borderRadius: "10px",
-              fontSize: "13px",
-              fontWeight: 500,
-              backdropFilter: "blur(8px)",
-              color: isDark ? "#e5e7eb" : "#374151",
-            },
-            dropdown: {
+        {" "}        {/* Academic Year Selector */}
+        <Menu position="bottom-end" withArrow>
+          <Menu.Target>
+            <Tooltip label="Academic Year" withArrow>
+              <ActionIcon
+                size="md"
+                style={{
+                  background: isDark
+                    ? "rgba(55, 65, 81, 0.8)"
+                    : "rgba(248, 250, 252, 0.8)",
+                  border: `1px solid ${
+                    isDark
+                      ? "rgba(75, 85, 99, 0.3)"
+                      : "rgba(226, 232, 240, 0.5)"
+                  }`,
+                  borderRadius: "10px",
+                  color: isDark ? "#e5e7eb" : "#374151",
+                  backdropFilter: "blur(8px)",
+                  transition: "all 0.2s ease",
+                }}
+                loading={isLoadingAcademicYears}
+              >
+                <MdCalendarToday size={18} />
+              </ActionIcon>
+            </Tooltip>
+          </Menu.Target>
+          <Menu.Dropdown
+            style={{
               background: isDark
                 ? "rgba(31, 41, 55, 0.95)"
                 : "rgba(255, 255, 255, 0.95)",
@@ -385,9 +349,48 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
                 isDark ? "rgba(75, 85, 99, 0.3)" : "rgba(226, 232, 240, 0.5)"
               }`,
               borderRadius: "12px",
-            },
-          }}
-        />
+            }}
+          >
+            <Menu.Label>
+              {academicYear ? `Academic Year: ${academicYear.school_year}` : 'Select Academic Year'}
+            </Menu.Label>
+            {isLoadingAcademicYears ? (
+              <Menu.Item disabled>
+                <Text size="sm" color="dimmed">Loading...</Text>
+              </Menu.Item>
+            ) : years.length === 0 ? (
+              <Menu.Item disabled>
+                <Text size="sm" color="dimmed">No academic years available</Text>
+              </Menu.Item>
+            ) : (
+              years.map((year) => (
+                <Menu.Item
+                  key={year.id}
+                  onClick={() => setAcademicYear(year)}
+                  style={{
+                    background:
+                      academicYear?.id === year.id
+                        ? "#0ea5e9"
+                        : "transparent",
+                    color:
+                      academicYear?.id === year.id
+                        ? "#ffffff"
+                        : isDark ? "#e5e7eb" : "#374151",
+                  }}
+                >
+                  <Group justify="space-between">
+                    <Text size="sm">{year.school_year}</Text>
+                    {academicYear?.id === year.id && (
+                      <Badge size="xs" color="white" variant="filled">
+                        Current
+                      </Badge>
+                    )}
+                  </Group>
+                </Menu.Item>
+              ))
+            )}
+          </Menu.Dropdown>
+        </Menu>
         {/* Language Selector */}
         <Menu shadow="lg" position="bottom-end" offset={8}>
           <Menu.Target>

@@ -42,6 +42,7 @@ export function TopBar({
   const [searchValue, setSearchValue] = useState("");
   const [notifications] = useState(3);
   const [language, setLanguage] = useState("en");
+  const [isLoadingAcademicYears, setIsLoadingAcademicYears] = useState(false);
 
   // Get user info
   const userName =
@@ -62,12 +63,38 @@ export function TopBar({
       .join("")
       .slice(0, 2)
       .toUpperCase();
-  };
-
-  // Load academic years
+  };  // Load academic years
   useEffect(() => {
-    fetchAcademicYears().then(setYears);
-  }, [setYears]);
+    const loadAcademicYears = async () => {
+      try {
+        setIsLoadingAcademicYears(true);
+        console.log('Fetching academic years...');
+        const academicYears = await fetchAcademicYears();
+        console.log('Academic years fetched:', academicYears);
+        setYears(academicYears);
+        
+        // Set the first year as default if no year is selected
+        if (academicYears.length > 0 && !academicYear) {
+          setAcademicYear(academicYears[0]);
+        }
+      } catch (error) {
+        console.error('Failed to fetch academic years:', error);
+        // Set fallback academic years if API fails
+        const currentYear = new Date().getFullYear();
+        const fallbackYears = [
+          { id: 1, school_year: `${currentYear - 1}-${currentYear}` },
+          { id: 2, school_year: `${currentYear}-${currentYear + 1}` },
+          { id: 3, school_year: `${currentYear + 1}-${currentYear + 2}` },
+        ];
+        setYears(fallbackYears);
+        setAcademicYear(fallbackYears[1]); // Set current year as default
+      } finally {
+        setIsLoadingAcademicYears(false);
+      }
+    };
+
+    loadAcademicYears();
+  }, [setYears, setAcademicYear, academicYear]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -157,8 +184,7 @@ export function TopBar({
       </Box>
 
       {/* Right Section - Actions */}
-      <Group gap="sm">
-        {/* Academic Year Selector */}
+      <Group gap="sm">        {/* Academic Year Selector */}
         <Menu position="bottom-end" withArrow>
           <Menu.Target>
             <ActionIcon
@@ -169,6 +195,7 @@ export function TopBar({
                 color: theme.colors.textPrimary,
                 backdropFilter: "blur(10px)",
               }}
+              loading={isLoadingAcademicYears}
             >
               <MdCalendarToday size={18} />
             </ActionIcon>
@@ -180,33 +207,44 @@ export function TopBar({
               border: `1px solid ${theme.colors.border}`,
             }}
           >
-            <Menu.Label>Academic Year</Menu.Label>
-            {years.map((year) => (
-              <Menu.Item
-                key={year.id}
-                onClick={() => setAcademicYear(year)}
-                style={{
-                  background:
-                    academicYear?.id === year.id
-                      ? theme.colors.primary
-                      : "transparent",
-                  color:
-                    academicYear?.id === year.id
-                      ? "#ffffff"
-                      : theme.colors.textPrimary,
-                }}
-              >
-                {" "}
-                <Group justify="space-between">
-                  <Text size="sm">{year.school_year}</Text>
-                  {academicYear?.id === year.id && (
-                    <Badge size="xs" color="white" variant="filled">
-                      Current
-                    </Badge>
-                  )}
-                </Group>
+            <Menu.Label>
+              {academicYear ? `Academic Year: ${academicYear.school_year}` : 'Select Academic Year'}
+            </Menu.Label>
+            {isLoadingAcademicYears ? (
+              <Menu.Item disabled>
+                <Text size="sm" color="dimmed">Loading...</Text>
               </Menu.Item>
-            ))}
+            ) : years.length === 0 ? (
+              <Menu.Item disabled>
+                <Text size="sm" color="dimmed">No academic years available</Text>
+              </Menu.Item>
+            ) : (
+              years.map((year) => (
+                <Menu.Item
+                  key={year.id}
+                  onClick={() => setAcademicYear(year)}
+                  style={{
+                    background:
+                      academicYear?.id === year.id
+                        ? theme.colors.primary
+                        : "transparent",
+                    color:
+                      academicYear?.id === year.id
+                        ? "#ffffff"
+                        : theme.colors.textPrimary,
+                  }}
+                >
+                  <Group justify="space-between">
+                    <Text size="sm">{year.school_year}</Text>
+                    {academicYear?.id === year.id && (
+                      <Badge size="xs" color="white" variant="filled">
+                        Current
+                      </Badge>
+                    )}
+                  </Group>
+                </Menu.Item>
+              ))
+            )}
           </Menu.Dropdown>
         </Menu>
 
