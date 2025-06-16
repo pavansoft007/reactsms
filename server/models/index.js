@@ -49,6 +49,8 @@ db.student = require("./student.model.js")(sequelize, Sequelize);
 db.branch = require("./branch.model.js")(sequelize, Sequelize);
 db.class = require("./class.model.js")(sequelize, Sequelize);
 db.section = require("./section.model.js")(sequelize, Sequelize);
+db.class_sections = require("./class_sections.js")(sequelize, Sequelize);
+db.sections_allocation = require("./sections_allocation.model.js")(sequelize, Sequelize);
 
 // Import new models
 db.account = require("./account.model.js")(sequelize, Sequelize);
@@ -68,6 +70,14 @@ db.roleGroupRole = require("./roleGroupRole.model.js")(sequelize, Sequelize);
 db.subject = require("./subject.model.js")(sequelize, Sequelize);
 db.schoolyear = require("./schoolyear.model.js")(sequelize, Sequelize);
 db.enroll = require("./enroll.model.js")(sequelize, Sequelize);
+db.studentCategory = require("./studentCategory.sequelize.model.js")(sequelize, Sequelize);
+
+// Add new models for admission system
+db.parent = require("./parent.model.js")(sequelize, Sequelize);
+db.route = require("./route.model.js")(sequelize, Sequelize);
+db.vehicle = require("./vehicle.model.js")(sequelize, Sequelize);
+db.hostel = require("./hostel.model.js")(sequelize, Sequelize);
+db.room = require("./room.model.js")(sequelize, Sequelize);
 
 // Define relationships between models
 db.role.belongsToMany(db.user, {
@@ -115,14 +125,17 @@ db.class.belongsTo(db.branch, {
   as: 'branch'
 });
 
-db.class.hasMany(db.section, {
+db.class.belongsToMany(db.section, {
+  through: db.class_sections,
   foreignKey: 'class_id',
+  otherKey: 'section_id',
   as: 'sections'
 });
-
-db.section.belongsTo(db.class, {
-  foreignKey: 'class_id',
-  as: 'class'
+db.section.belongsToMany(db.class, {
+  through: db.class_sections,
+  foreignKey: 'section_id',
+  otherKey: 'class_id',
+  as: 'classes'
 });
 
 db.branch.hasMany(db.section, {
@@ -135,15 +148,7 @@ db.section.belongsTo(db.branch, {
   as: 'branch'
 });
 
-db.user.hasMany(db.section, {
-  foreignKey: 'teacher_id',
-  as: 'teaching_sections'
-});
-
-db.section.belongsTo(db.user, {
-  foreignKey: 'teacher_id',
-  as: 'teacher'
-});
+// Removed teacher_id associations since teacher_id column no longer exists
 
 // Account relationships
 db.branch.hasMany(db.account, {
@@ -430,5 +435,59 @@ if (db.enroll && db.schoolyear) {
 if (db.enroll && db.branch) {
   db.enroll.belongsTo(db.branch, { foreignKey: 'branch_id', as: 'branch' });
 }
+
+// Sections Allocation relationships
+db.sections_allocation.belongsTo(db.class, {
+  foreignKey: 'class_id',
+  as: 'class'
+});
+
+db.sections_allocation.belongsTo(db.section, {
+  foreignKey: 'section_id',
+  as: 'section'
+});
+
+db.class.hasMany(db.sections_allocation, {
+  foreignKey: 'class_id',
+  as: 'section_assignments'
+});
+
+db.section.hasMany(db.sections_allocation, {
+  foreignKey: 'section_id',
+  as: 'class_assignments'
+});
+
+// Student Category relationships
+db.branch.hasMany(db.studentCategory, {
+  foreignKey: 'branch_id',
+  as: 'student_categories'
+});
+
+db.studentCategory.belongsTo(db.branch, {
+  foreignKey: 'branch_id',
+  as: 'branch'
+});
+
+// Student - Category relationship
+db.studentCategory.hasMany(db.student, {
+  foreignKey: 'category_id',
+  as: 'students'
+});
+
+db.student.belongsTo(db.studentCategory, {
+  foreignKey: 'category_id',
+  as: 'category'
+});
+
+// Student - LoginCredential relationship
+db.student.hasOne(db.loginCredential, {
+  foreignKey: 'user_id',
+  as: 'loginCredential'
+});
+
+db.loginCredential.belongsTo(db.student, {
+  foreignKey: 'user_id',
+  as: 'student'
+});
 
 module.exports = db;

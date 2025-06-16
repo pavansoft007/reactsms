@@ -45,7 +45,7 @@ isAdmin = async (req, res, next) => {
         message: "User not found!"
       });
     }
-    if (user.role === 1 || user.role === 2) { // 1: Super Admin, 2: Admin
+    if (user.role === 1 || user.role === 2) { // 1: Admin, 2: Super Admin
       return next();
     }
     logger.warn(`User ${req.userId} attempted to access admin-only resource`);
@@ -71,7 +71,7 @@ isAccountant = async (req, res, next) => {
         message: "User not found!"
       });
     }
-    if (user.role === "accountant" || user.role === "admin") {
+    if (user.role === 4 || user.role === 1 || user.role === 2) { // 4: Accountant, 1-2: Admin
       return next();
     }
     logger.warn(`User ${req.userId} attempted to access accountant-only resource`);
@@ -89,6 +89,9 @@ isAccountant = async (req, res, next) => {
 /**
  * Middleware to check if user has teacher role
  */
+/**
+ * Middleware to check if user has teacher role
+ */
 isTeacher = async (req, res, next) => {
   try {
     const user = await LoginCredential.findByPk(req.userId);
@@ -97,7 +100,7 @@ isTeacher = async (req, res, next) => {
         message: "User not found!"
       });
     }
-    if (user.role === "teacher" || user.role === "admin") {
+    if (user.role === 3 || user.role === 1 || user.role === 2) { // 3: Teacher, 1-2: Admin
       return next();
     }
     logger.warn(`User ${req.userId} attempted to access teacher-only resource`);
@@ -123,7 +126,7 @@ isStudent = async (req, res, next) => {
         message: "User not found!"
       });
     }
-    if (user.role === "student" || user.role === "admin") {
+    if (user.role === 7 || user.role === 1 || user.role === 2) { // 7: Student, 1-2: Admin
       return next();
     }
     logger.warn(`User ${req.userId} attempted to access student-only resource`);
@@ -149,7 +152,7 @@ isParent = async (req, res, next) => {
         message: "User not found!"
       });
     }
-    if (user.role === "parent" || user.role === "admin") {
+    if (user.role === 6 || user.role === 1 || user.role === 2) { // 6: Parent, 1-2: Admin
       return next();
     }
     logger.warn(`User ${req.userId} attempted to access parent-only resource`);
@@ -176,10 +179,26 @@ hasRoles = (roleNames) => {
           message: "User not found!"
         });
       }
-      if (roleNames.includes(user.role) || user.role === "admin") {
+      
+      // Role mapping from numeric IDs to role names
+      const roleMapping = {
+        1: "admin",        // Administrator
+        2: "admin",        // Super Admin (also treat as admin)
+        3: "teacher",      // Teacher
+        4: "accountant",   // Accountant
+        5: "librarian",    // Librarian
+        6: "parent",       // Parent
+        7: "student"       // Student
+      };
+      
+      const userRoleName = roleMapping[user.role];
+      
+      // Check if user has required role or is admin
+      if (roleNames.includes(userRoleName) || userRoleName === "admin") {
         return next();
       }
-      logger.warn(`User ${req.userId} attempted to access resource requiring roles: ${roleNames.join(', ')}`);
+      
+      logger.warn(`User ${req.userId} (role: ${user.role}/${userRoleName}) attempted to access resource requiring roles: ${roleNames.join(', ')}`);
       return res.status(403).send({
         message: `Required roles: ${roleNames.join(', ')}`
       });

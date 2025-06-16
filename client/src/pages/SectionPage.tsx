@@ -20,7 +20,6 @@ interface SectionType {
   class_id: number;
   branch_id: number;
   capacity?: number;
-  teacher_id?: number;
   is_active?: boolean;
 }
 
@@ -38,7 +37,6 @@ const SectionPage: React.FC = () => {
       class_id: "",
       branch_id: "",
       capacity: "",
-      teacher_id: "",
       is_active: true,
     },
   });
@@ -153,7 +151,6 @@ const SectionPage: React.FC = () => {
                 <td>{section.class_id}</td>
                 <td>{section.branch_id}</td>
                 <td>{section.capacity}</td>
-                <td>{section.teacher_id}</td>
                 <td>{section.is_active ? "Yes" : "No"}</td>
                 <td>
                   <Group>
@@ -192,7 +189,6 @@ const SectionPage: React.FC = () => {
             {...form.getInputProps("branch_id")}
           />
           <TextInput label="Capacity" {...form.getInputProps("capacity")} />
-          <TextInput label="Teacher ID" {...form.getInputProps("teacher_id")} />
           <Button type="submit" mt="md" fullWidth>
             {editingSection ? "Update" : "Create"}
           </Button>

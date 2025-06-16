@@ -43,6 +43,21 @@ exports.create = async (req, res) => {
       });
     }
 
+    // Validate numeric fields
+    if (req.body.rank_order && isNaN(parseInt(req.body.rank_order))) {
+      return res.status(400).json({
+        success: false,
+        message: "Rank order must be an integer"
+      });
+    }
+
+    if (req.body.numeric_name && isNaN(parseInt(req.body.numeric_name))) {
+      return res.status(400).json({
+        success: false,
+        message: "Numeric name must be an integer"
+      });
+    }
+
     // Create class from request body
     const classData = await Class.create({
       name: req.body.name,
@@ -234,6 +249,21 @@ exports.update = async (req, res) => {
       }
     }
     
+    // Validate numeric fields
+    if (req.body.rank_order && isNaN(parseInt(req.body.rank_order))) {
+      return res.status(400).json({
+        success: false,
+        message: "Rank order must be an integer"
+      });
+    }
+
+    if (req.body.numeric_name && isNaN(parseInt(req.body.numeric_name))) {
+      return res.status(400).json({
+        success: false,
+        message: "Numeric name must be an integer"
+      });
+    }
+    
     // Update class with request body
     const [updated] = await Class.update(req.body, {
       where: { id: id }
@@ -375,5 +405,41 @@ exports.toggleActive = async (req, res) => {
       success: false,
       message: error.message || "Error toggling class status"
     });
+  }
+};
+
+// Assign sections to a class (POST /api/classes/:classId/sections)
+exports.assignSections = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const { sectionIds } = req.body;
+    const classObj = await Class.findByPk(classId);
+    if (!classObj) return res.status(404).json({ success: false, message: "Class not found" });
+
+    await classObj.setSections(sectionIds); // Sequelize magic method
+    res.json({ success: true, message: "Sections assigned to class" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Remove a section from a class (DELETE /api/classes/:classId/sections/:sectionId)
+exports.removeSection = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const sectionId = req.params.sectionId;
+    
+    const classObj = await Class.findByPk(classId);
+    if (!classObj) return res.status(404).json({ success: false, message: "Class not found" });
+
+    const sections = await classObj.getSections({ where: { id: sectionId } });
+    if (sections.length === 0) {
+      return res.status(404).json({ success: false, message: "Section not assigned to this class" });
+    }
+
+    await classObj.removeSections(sections);
+    res.json({ success: true, message: "Section removed from class" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

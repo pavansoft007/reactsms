@@ -46,6 +46,7 @@ import AppShellLayout from "./layout/AppShell";
 import { theme } from "./theme";
 import AdmissionCreate from "./pages/AdmissionCreate";
 import UserCreatePage from "./pages/UserCreatePage";
+import StudentCategoryPage from "./pages/StudentCategoryPage";
 import { AcademicYearProvider } from "./context/AcademicYearContext";
 
 function App() {
@@ -116,6 +117,9 @@ function AppContent() {
             <Route
               path="frontend/*"
               element={<div>Frontend Management - Coming Soon</div>}
+            />            <Route
+              path="admission/create"
+              element={<AdmissionCreate />}
             />
             <Route
               path="admission/*"
@@ -166,10 +170,10 @@ function AppContent() {
             />
             <Route
               path="accounting/*"
-              element={<div>Office Accounting - Coming Soon</div>}
-            />{" "}
+              element={<div>Office Accounting - Coming Soon</div>}            />{" "}
             <Route path="message" element={<div>Message - Coming Soon</div>} />
             <Route path="admission/create" element={<AdmissionCreate />} />
+            <Route path="admission/category" element={<StudentCategoryPage />} />
             <Route path="roles" element={<RolesPage />} />
             <Route path="role-groups" element={<RoleGroupsPage />} />
           </Route>
