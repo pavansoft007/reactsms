@@ -1,39 +1,47 @@
 import React, { useState, useEffect } from "react";
 import {
   Container,
-  Paper,
-  Title,
-  Button,
-  Table,
-  Modal,
-  TextInput,
-  PasswordInput,
-  Textarea,
-  Group,
-  ActionIcon,
-  Badge,
   Stack,
+  Group,
   Text,
-  LoadingOverlay,
-  Tabs,
-  FileButton,
-  Select,
+  SimpleGrid,
   Divider,
-  Grid,
+  FileButton,
+  Tabs,
+  LoadingOverlay,
 } from "@mantine/core";
+import {
+  MdBusiness,
+  MdSchool,
+  MdEmail,
+  MdPhone,
+  MdLocationCity,
+  MdAttachMoney,
+  MdPerson,
+  MdLock,
+  MdSave,
+  MdCancel,
+  MdAdd,
+  MdEdit,
+  MdDelete,
+  MdList,
+  MdUpload,
+  MdImage,
+} from "react-icons/md";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
+import { useTheme } from "../context/ThemeContext";
 import {
-  IconEdit,
-  IconTrash,
-  IconPlus,
-  IconList,
-  IconUpload,
-  IconUser,
-  IconLock,
-  IconMail,
-  IconPhone,
-} from "@tabler/icons-react";
+  UltraCard,
+  UltraButton,
+  UltraInput,
+  UltraPassword,
+  UltraTextarea,
+  UltraSelect,
+  UltraTable,
+  UltraTableActions,
+  UltraTableBadge,
+} from "../components/ui";
 import api from "../api/config";
 
 interface Branch {
@@ -63,6 +71,7 @@ interface RoleGroup {
 }
 
 const BranchesPage: React.FC = () => {
+  const { theme } = useTheme();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
   const [loading, setLoading] = useState(false);

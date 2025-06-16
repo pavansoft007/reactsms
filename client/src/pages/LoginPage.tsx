@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Paper,
-  Title,
   Container,
   Alert,
   Stack,
@@ -13,22 +8,24 @@ import {
   Box,
   Anchor,
   Divider,
-  BackgroundImage,
-  Center,
+  Title,
 } from "@mantine/core";
-import {
-  IconMail,
-  IconLock,
-  IconSchool,
-  IconShield,
-} from "@tabler/icons-react";
+import { MdEmail, MdLock, MdSchool, MdSecurity } from "react-icons/md";
 import api from "../api/config";
+import { useTheme } from "../context/ThemeContext";
+import {
+  UltraCard,
+  UltraButton,
+  UltraInput,
+  UltraPassword,
+} from "../components/ui";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { theme } = useTheme();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -77,51 +74,73 @@ const LoginPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   return (
     <Box
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        background: theme.gradient.hero,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         padding: "20px",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Animated background elements */}
+      <Box
+        style={{
+          position: "absolute",
+          top: "10%",
+          right: "10%",
+          width: "300px",
+          height: "300px",
+          borderRadius: "50%",
+          background: theme.gradient.accent,
+          opacity: 0.1,
+          filter: "blur(40px)",
+          animation: "float 6s ease-in-out infinite",
+        }}
+      />
+      <Box
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          left: "10%",
+          width: "200px",
+          height: "200px",
+          borderRadius: "50%",
+          background: theme.gradient.success,
+          opacity: 0.1,
+          filter: "blur(30px)",
+          animation: "float 8s ease-in-out infinite reverse",
+        }}
+      />
+
       <Container size={480}>
-        <Paper
-          radius="xl"
-          p={40}
-          style={{
-            background: "rgba(255, 255, 255, 0.95)",
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-          }}
-        >
-          <Stack align="center" spacing="xl">
+        <UltraCard variant="glassmorphic" style={{ padding: "40px" }}>
+          <Stack align="center" gap="xl">
             {/* Logo and Title */}
-            <Group spacing="md">
+            <Group gap="md">
               <Box
                 style={{
                   width: 60,
                   height: 60,
                   borderRadius: "50%",
-                  background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+                  background: theme.gradient.accent,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 10px 25px -5px rgba(14, 165, 233, 0.4)",
+                  boxShadow: `0 10px 25px -5px ${theme.colors.accent}66`,
                 }}
               >
-                <IconSchool size={30} color="white" />
+                <MdSchool size={30} color="white" />
               </Box>
-              <Stack spacing={0}>
+              <Stack gap={0}>
                 <Title
                   order={2}
                   style={{
-                    background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
+                    background: theme.gradient.accent,
                     backgroundClip: "text",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
@@ -130,7 +149,7 @@ const LoginPage: React.FC = () => {
                 >
                   EduManage Pro
                 </Title>
-                <Text size="sm" color="dimmed" style={{ fontWeight: 500 }}>
+                <Text size="sm" c={theme.text.muted} style={{ fontWeight: 500 }}>
                   Smart School Management System
                 </Text>
               </Stack>
@@ -138,7 +157,7 @@ const LoginPage: React.FC = () => {
 
             <Text
               size="lg"
-              color="dimmed"
+              c={theme.text.secondary}
               ta="center"
               style={{ fontWeight: 500 }}
             >
@@ -151,8 +170,9 @@ const LoginPage: React.FC = () => {
                 radius="md"
                 style={{
                   width: "100%",
-                  border: "1px solid #fecaca",
-                  background: "#fef2f2",
+                  background: theme.glassmorphism.hover,
+                  border: `1px solid ${theme.colors.error}`,
+                  backdropFilter: "blur(12px)",
                 }}
               >
                 {error}
@@ -160,113 +180,106 @@ const LoginPage: React.FC = () => {
             )}
 
             <form onSubmit={handleLogin} style={{ width: "100%" }}>
-              <Stack spacing="lg">
-                <TextInput
+              <Stack gap="lg">
+                <UltraInput
                   label="Email Address"
                   placeholder="Enter your email"
-                  leftSection={<IconMail size={18} />}
+                  leftSection={<MdEmail size={18} />}
                   size="md"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  styles={{
-                    label: { fontWeight: 600, marginBottom: 8 },
-                    input: {
-                      height: 48,
-                      borderRadius: 12,
-                      border: "2px solid #e5e7eb",
-                      fontSize: 16,
-                      "&:focus": {
-                        borderColor: "#0ea5e9",
-                        boxShadow: "0 0 0 4px rgba(14, 165, 233, 0.1)",
-                      },
-                    },
-                  }}
+                  variant="glass"
+                  glow
                 />
 
-                <PasswordInput
+                <UltraPassword
                   label="Password"
                   placeholder="Enter your password"
-                  leftSection={<IconLock size={18} />}
+                  leftSection={<MdLock size={18} />}
                   size="md"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  styles={{
-                    label: { fontWeight: 600, marginBottom: 8 },
-                    input: {
-                      height: 48,
-                      borderRadius: 12,
-                      border: "2px solid #e5e7eb",
-                      fontSize: 16,
-                      "&:focus": {
-                        borderColor: "#0ea5e9",
-                        boxShadow: "0 0 0 4px rgba(14, 165, 233, 0.1)",
-                      },
-                    },
-                  }}
+                  variant="glass"
+                  glow
                 />
 
                 <Group justify="space-between" mt="sm">
-                  <Text size="sm">
-                    <input type="checkbox" style={{ marginRight: 8 }} />
+                  <Text size="sm" c={theme.text.secondary}>
+                    <input 
+                      type="checkbox" 
+                      style={{ 
+                        marginRight: 8,
+                        accentColor: theme.colors.primary,
+                      }} 
+                    />
                     Remember me
                   </Text>
                   <Anchor
                     size="sm"
                     href="#"
-                    style={{ color: "#0ea5e9", fontWeight: 500 }}
+                    style={{ 
+                      color: theme.colors.accent, 
+                      fontWeight: 500,
+                      textDecoration: "none",
+                    }}
                   >
                     Forgot password?
                   </Anchor>
-                </Group>
-
-                <Button
-                  type="submit"
+                </Group>                <UltraButton
                   size="lg"
                   loading={loading}
-                  style={{
-                    height: 48,
-                    borderRadius: 12,
-                    background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
-                    border: "none",
-                    fontSize: 16,
-                    fontWeight: 600,
-                    boxShadow: "0 10px 25px -5px rgba(14, 165, 233, 0.4)",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      transform: "translateY(-2px)",
-                      boxShadow: "0 15px 35px -5px rgba(14, 165, 233, 0.5)",
-                    },
-                  }}
+                  variant="gradient"
+                  glow
+                  style={{ marginTop: "16px" }}
+                  type="submit"
                 >
-                  <Group spacing="sm">
-                    <IconShield size={18} />
+                  <Group gap="sm">
+                    <MdSecurity size={18} />
                     Sign In Securely
                   </Group>
-                </Button>
+                </UltraButton>
               </Stack>
-            </form>
-
-            <Divider
+            </form>            <Divider
               label="Secure Authentication"
               labelPosition="center"
-              style={{ width: "100%", color: "#9ca3af" }}
+              style={{ 
+                width: "100%", 
+                color: theme.text.muted,
+                '--divider-color': theme.border,
+              } as any}
+              styles={{
+                label: { color: theme.text.muted },
+              }}
             />
 
-            <Group spacing="xs" style={{ color: "#6b7280", fontSize: 14 }}>
+            <Group gap="xs" style={{ color: theme.text.secondary, fontSize: 14 }}>
               <Text size="sm">Don't have an account?</Text>
               <Anchor
                 size="sm"
                 href="#"
-                style={{ color: "#0ea5e9", fontWeight: 600 }}
+                style={{ 
+                  color: theme.colors.accent, 
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
               >
                 Contact Administrator
               </Anchor>
             </Group>
           </Stack>
-        </Paper>
+        </UltraCard>
       </Container>
+
+      <style>
+        {`
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+          }
+        `}
+      </style>
     </Box>
   );
 };

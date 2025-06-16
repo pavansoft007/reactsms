@@ -15,18 +15,52 @@ const app = express();
 
 // CORS options
 var corsOptions = {
-  origin: [
-    process.env.CORS_ORIGIN || "http://localhost:3001",
-    "http://localhost:3000",
-    "http://localhost:8081"
-  ],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      process.env.CORS_ORIGIN || "http://localhost:3001",
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:8081",
+      "http://127.0.0.1:3001",
+      "http://127.0.0.1:3000"
+    ];
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(null, true); // Allow for development - change to false in production
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'x-access-token',
+    'Origin',
+    'X-Requested-With',
+    'Accept'
+  ],
+  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 };
 
 // Security middleware
 app.use(helmet());
+
+// Handle preflight requests
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-access-token, Origin, X-Requested-With, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
+});
 
 // Standard middleware
 app.use(cors(corsOptions));
@@ -56,6 +90,25 @@ app.get("/", (req, res) => {
   res.json({ 
     message: "Welcome to the Multi SMS API.",
     documentation: "/api-docs"
+  });
+});
+
+// CORS test endpoint
+app.get("/api/test-cors", (req, res) => {
+  res.json({
+    success: true,
+    message: "CORS is working correctly!",
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Health check endpoint  
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
   });
 });
 

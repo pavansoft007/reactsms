@@ -138,6 +138,26 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: true
     },
+    logo_file: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      comment: 'Logo file name'
+    },
+    text_logo: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      comment: 'Text logo file name'
+    },
+    print_file: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      comment: 'Print header file name'
+    },
+    report_card: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      comment: 'Report card template file name'
+    },
     created_at: {
       type: Sequelize.DATE,
       allowNull: false,
@@ -156,7 +176,31 @@ module.exports = (sequelize, Sequelize) => {
         unique: true,
         fields: ['code']
       }
-    ]
+    ],
+    hooks: {
+      beforeValidate: (branch) => {
+        // Ensure name and code are strings
+        if (branch.name !== undefined) {
+          if (Array.isArray(branch.name)) {
+            branch.name = branch.name[0] || '';
+          } else if (typeof branch.name === 'object' && branch.name !== null) {
+            branch.name = '';
+          } else {
+            branch.name = String(branch.name).trim();
+          }
+        }
+        
+        if (branch.code !== undefined) {
+          if (Array.isArray(branch.code)) {
+            branch.code = branch.code[0] || '';
+          } else if (typeof branch.code === 'object' && branch.code !== null) {
+            branch.code = '';
+          } else {
+            branch.code = String(branch.code).trim();
+          }
+        }
+      }
+    }
   });
 
   return Branch;

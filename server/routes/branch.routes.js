@@ -11,13 +11,20 @@ const { detailedAuditLog } = require("../middleware/audit-logger.middleware");
 const { check } = require("express-validator");
 const branchController = require("../controllers/branch.controller");
 const branchUpload = require("../middleware/multer.middleware");
+const path = require("path");
+const fs = require("fs");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
-      "Origin, Content-Type, Accept, x-access-token"
+      "Origin, Content-Type, Accept, x-access-token, Authorization, X-Requested-With"
     );
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    );
+    res.header("Access-Control-Allow-Credentials", "true");
     next();
   });
 
@@ -96,7 +103,6 @@ module.exports = function(app) {
     ],
     branchController.delete
   );
-
   // Toggle branch active status
   app.patch(
     "/api/branches/:id/toggle-status",
@@ -107,4 +113,52 @@ module.exports = function(app) {
     ],
     branchController.toggleActive
   );
+  // Serve branch logo files
+  app.get("/api/branches/logo/:filename", (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, "../uploads/branches/", filename);
+    
+    // Check if file exists
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).json({ success: false, message: "Logo file not found" });
+    }
+  });
+
+  // Serve branch text logo files
+  app.get("/api/branches/text-logo/:filename", (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, "../uploads/branches/", filename);
+    
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).json({ success: false, message: "Text logo file not found" });
+    }
+  });
+
+  // Serve branch print files
+  app.get("/api/branches/print/:filename", (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, "../uploads/branches/", filename);
+    
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).json({ success: false, message: "Print file not found" });
+    }
+  });
+
+  // Serve branch report card files
+  app.get("/api/branches/report-card/:filename", (req, res) => {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, "../uploads/branches/", filename);
+    
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).json({ success: false, message: "Report card file not found" });
+    }
+  });
 };

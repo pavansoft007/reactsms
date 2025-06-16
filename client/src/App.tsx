@@ -34,7 +34,6 @@ import SettingsPage from "./pages/SettingsPage";
 import BranchesPage from "./pages/BranchesPage";
 import ParentsPage from "./pages/ParentsPage";
 import EmployeePage from "./pages/EmployeePage";
-import Layout from "./components/Layout";
 import RoleGroupPage from "./pages/RoleGroupPage";
 import RolePermissionsPage from "./pages/RolePermissionsPage";
 import RolesPage from "./pages/RolesPage";
@@ -42,24 +41,42 @@ import RoleGroupsPage from "./pages/RoleGroupsPage";
 import RoleManagementPage from "./pages/RoleManagementPage";
 import SubjectPage from "./pages/SubjectPage";
 import Mainmenu from "./pages/Mainmenu";
-import AppShellLayout from "./layout/AppShell";
+import DoubleNavbarUltra from "./layout/DoubleNavbarUltra";
 import { theme } from "./theme";
 import AdmissionCreate from "./pages/AdmissionCreate";
 import UserCreatePage from "./pages/UserCreatePage";
 import { AcademicYearProvider } from "./context/AcademicYearContext";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+
+function MantineThemeWrapper({
+  children,
+}: {
+  readonly children: React.ReactNode;
+}) {
+  const { colorScheme } = useTheme();
+
+  const mantineTheme = {
+    ...theme,
+    colorScheme,
+  };
+
+  return <MantineProvider theme={mantineTheme}>{children}</MantineProvider>;
+}
 
 function App() {
   return (
-    <AcademicYearProvider>
-      <MantineProvider theme={theme}>
-        <ModalsProvider>
-          <Notifications position="top-right" />
-          <Router>
-            <AppContent />
-          </Router>
-        </ModalsProvider>
-      </MantineProvider>
-    </AcademicYearProvider>
+    <ThemeProvider>
+      <AcademicYearProvider>
+        <MantineThemeWrapper>
+          <ModalsProvider>
+            <Notifications position="top-right" />
+            <Router>
+              <AppContent />
+            </Router>
+          </ModalsProvider>
+        </MantineThemeWrapper>
+      </AcademicYearProvider>
+    </ThemeProvider>
   );
 }
 
@@ -74,10 +91,11 @@ function AppContent() {
   const content = (
     <div className="App">
       <Routes>
+        {" "}
         <Route path="/login" element={<LoginPage />} />
         {isAuthenticated ? (
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Mainmenu />} />
+          <>
+            <Route path="/" element={<Mainmenu />} />
             <Route path="mainmenu" element={<Mainmenu />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="students/*" element={<StudentsPage />} />
@@ -91,8 +109,8 @@ function AppContent() {
             <Route path="fees" element={<FeesPage />} />
             <Route path="library" element={<LibraryPage />} />
             <Route path="events" element={<EventsPage />} />
-            <Route path="whatsapp" element={<WhatsAppPage />} />{" "}
-            <Route path="reports" element={<ReportsPage />} />{" "}
+            <Route path="whatsapp" element={<WhatsAppPage />} />
+            <Route path="reports" element={<ReportsPage />} />
             <Route path="settings" element={<SettingsPage />} />
             {/* Unified Role Management Page */}
             <Route
@@ -100,10 +118,7 @@ function AppContent() {
               element={<RoleManagementPage />}
             />
             {/* Legacy individual role pages for backward compatibility */}
-            <Route
-              path="settings/role-groups"
-              element={<RoleGroupPage />}
-            />{" "}
+            <Route path="settings/role-groups" element={<RoleGroupPage />} />
             <Route
               path="settings/role-permission"
               element={<RolePermissionsPage />}
@@ -167,12 +182,12 @@ function AppContent() {
             <Route
               path="accounting/*"
               element={<div>Office Accounting - Coming Soon</div>}
-            />{" "}
+            />
             <Route path="message" element={<div>Message - Coming Soon</div>} />
             <Route path="admission/create" element={<AdmissionCreate />} />
             <Route path="roles" element={<RolesPage />} />
             <Route path="role-groups" element={<RoleGroupsPage />} />
-          </Route>
+          </>
         ) : (
           <Route path="*" element={<Navigate to="/login" />} />
         )}
@@ -183,9 +198,12 @@ function AppContent() {
       </Routes>
     </div>
   );
-
-  // Conditionally wrap with AppShellLayout
-  return showLayout ? <AppShellLayout>{content}</AppShellLayout> : content;
+  // Conditionally wrap with DoubleNavbar
+  return showLayout ? (
+    <DoubleNavbarUltra>{content}</DoubleNavbarUltra>
+  ) : (
+    content
+  );
 }
 
 export default App;

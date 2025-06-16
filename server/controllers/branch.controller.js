@@ -18,9 +18,62 @@ const bcrypt = require("bcryptjs");
  * @returns {string} - The string value of the field, or an empty string if the field is an object
  */
 function getStringField(field) {
-  if (Array.isArray(field)) return field[0];
-  if (typeof field === "object" && field !== null) return "";
-  return field;
+  // Handle undefined or null
+  if (field === undefined || field === null) {
+    return "";
+  }
+  
+  // Handle arrays - take the first element if it's a string
+  if (Array.isArray(field)) {
+    if (field.length > 0 && typeof field[0] === 'string') {
+      return field[0];
+    }
+    return "";
+  }
+  
+  // Handle objects (but not null) - convert to empty string
+  if (typeof field === "object") {
+    return "";
+  }
+  
+  // Handle other types - convert to string
+  return String(field).trim();
+}
+
+/**
+ * Process request body to ensure all fields are properly formatted
+ * @param {Object} body - The request body
+ * @returns {Object} - Processed body with proper string fields
+ */
+function processRequestBody(body) {
+  return {
+    name: getStringField(body.name),
+    code: getStringField(body.code),
+    address: getStringField(body.address),
+    city: getStringField(body.city),
+    state: getStringField(body.state),
+    country: getStringField(body.country),
+    phone: getStringField(body.phone),
+    email: getStringField(body.email),
+    school_name: getStringField(body.school_name),
+    mobileno: getStringField(body.mobileno),
+    currency: getStringField(body.currency),
+    symbol: getStringField(body.symbol),
+    stu_username_prefix: getStringField(body.stu_username_prefix),
+    stu_default_password: getStringField(body.stu_default_password),
+    grd_username_prefix: getStringField(body.grd_username_prefix),
+    grd_default_password: getStringField(body.grd_default_password),
+    branch_name: getStringField(body.branch_name),
+    is_active: body.is_active !== undefined ? Boolean(body.is_active) : true,
+    stu_generate: body.stu_generate !== undefined ? Boolean(body.stu_generate) : false,
+    grd_generate: body.grd_generate !== undefined ? Boolean(body.grd_generate) : false,
+    teacher_restricted: body.teacher_restricted !== undefined ? Boolean(body.teacher_restricted) : false,
+    due_with_fine: body.due_with_fine !== undefined ? Boolean(body.due_with_fine) : false,
+    unique_roll: body.unique_roll !== undefined ? Boolean(body.unique_roll) : false,
+    due_days: body.due_days ? parseInt(body.due_days) : null,
+    role_group_id: body.role_group_id ? parseInt(body.role_group_id) : null,
+    master_admin_id: body.master_admin_id ? parseInt(body.master_admin_id) : null
+  };
 }
 
 /**
@@ -32,39 +85,46 @@ function getStringField(field) {
 exports.create = async (req, res) => {
   let transaction;
   
-  try {
-    // Start transaction
+  try {    // Start transaction
     transaction = await db.sequelize.transaction();
     
-    // Ensure name and code are strings
-    const name = getStringField(req.body.name);
-    const code = getStringField(req.body.code);
-    const address = getStringField(req.body.address);
-    const city = getStringField(req.body.city);
-    const state = getStringField(req.body.state);
-    const country = getStringField(req.body.country);
-    const phone = getStringField(req.body.phone);
-    const email = getStringField(req.body.email);
+    // Process request body to ensure proper data types
+    const processedData = processRequestBody(req.body);
+    
+    // Debug logging
+    logger.info('Branch creation request data:', {
+      originalBody: req.body,
+      processedData: processedData
+    });
     
     // Validate required fields
-    if (!name || !code) {
+    if (!processedData.name || !processedData.code) {
       return res.status(400).json({
         success: false,
         message: "Branch name and code are required"
       });
     }
     
-    // Create branch from request body
+    // Handle uploaded files
+    const fileFields = {};
+    if (req.files) {
+      if (req.files.logo_file && req.files.logo_file[0]) {
+        fileFields.logo_file = req.files.logo_file[0].filename;
+      }
+      if (req.files.text_logo && req.files.text_logo[0]) {
+        fileFields.text_logo = req.files.text_logo[0].filename;
+      }
+      if (req.files.print_file && req.files.print_file[0]) {
+        fileFields.print_file = req.files.print_file[0].filename;
+      }
+      if (req.files.report_card && req.files.report_card[0]) {
+        fileFields.report_card = req.files.report_card[0].filename;
+      }
+    }
+      // Create branch from processed data
     const branch = await Branch.create({
-      name,
-      code,
-      address,
-      city,
-      state,
-      country,
-      phone,
-      email,
-      is_active: req.body.is_active !== undefined ? req.body.is_active : true
+      ...processedData,
+      ...fileFields // Include uploaded file names
     }, { transaction });
 
     // Create login credentials for branch admin if provided
@@ -74,8 +134,8 @@ exports.create = async (req, res) => {
       if (User) {
         const user = await User.create({
           name: req.body.admin_name,
-          email: req.body.admin_email || email,
-          mobile_no: req.body.admin_mobile || phone,
+          email: req.body.admin_email || processedData.email,
+          mobile_no: req.body.admin_mobile || processedData.phone,
           password: bcrypt.hashSync(req.body.admin_password, 8),
           created_at: new Date(),
           updated_at: new Date()
@@ -234,8 +294,25 @@ exports.update = async (req, res) => {
       });
     }
     
-    // Update branch with request body
-    const [updated] = await Branch.update(req.body, {
+    // Handle uploaded files
+    const updateData = { ...req.body };
+    if (req.files) {
+      if (req.files.logo_file && req.files.logo_file[0]) {
+        updateData.logo_file = req.files.logo_file[0].filename;
+      }
+      if (req.files.text_logo && req.files.text_logo[0]) {
+        updateData.text_logo = req.files.text_logo[0].filename;
+      }
+      if (req.files.print_file && req.files.print_file[0]) {
+        updateData.print_file = req.files.print_file[0].filename;
+      }
+      if (req.files.report_card && req.files.report_card[0]) {
+        updateData.report_card = req.files.report_card[0].filename;
+      }
+    }
+    
+    // Update branch with request body and files
+    const [updated] = await Branch.update(updateData, {
       where: { id: id }
     });
     
