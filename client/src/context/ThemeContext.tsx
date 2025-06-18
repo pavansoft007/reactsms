@@ -1,10 +1,11 @@
-import React, {
+import {
   createContext,
   useContext,
   useState,
   useEffect,
   useMemo,
   useCallback,
+  ReactNode,
 } from "react";
 import { MantineColorScheme } from "@mantine/core";
 
@@ -114,11 +115,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({
-  children,
-}: {
-  readonly children: React.ReactNode;
-}) {
+export function ThemeProvider({ children }: { readonly children: ReactNode }) {
   const [colorScheme, setColorScheme] = useState<MantineColorScheme>(() => {
     const saved = localStorage.getItem("theme");
     return (saved as MantineColorScheme) || "light";
@@ -247,7 +244,7 @@ export function ThemeProvider({
         secondaryHover: isDark
           ? "rgba(71, 85, 105, 0.9)"
           : "rgba(226, 232, 240, 0.9)",
-        outline: isDark ? "transparent" : "transparent",
+        outline: "transparent",
         outlineHover: isDark
           ? "rgba(59, 130, 246, 0.1)"
           : "rgba(37, 99, 235, 0.1)",

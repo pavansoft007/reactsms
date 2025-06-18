@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Container,
   Title,
@@ -17,7 +16,7 @@ import {
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 
-const ListingPagesDemo: React.FC = () => {
+const ListingPagesDemo = () => {
   const navigate = useNavigate();
 
   const listingPages = [

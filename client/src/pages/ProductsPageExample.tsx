@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 import { Badge, Avatar, Group, Text, ActionIcon, Menu } from "@mantine/core";
 import {
   IconEye,
@@ -22,7 +22,7 @@ interface Product {
   updatedAt: string;
 }
 
-const ProductsPage: React.FC = () => {
+const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

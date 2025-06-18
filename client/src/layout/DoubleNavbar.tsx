@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {  useState, useEffect , ReactNode } from 'react';
 import {
   Box,
   Title,
@@ -108,7 +108,7 @@ const mainCategories = [
 ];
 
 interface DoubleNavbarProps {
-  readonly children: React.ReactNode;
+  readonly children: ReactNode;
 }
 
 export function DoubleNavbar({ children }: DoubleNavbarProps) {

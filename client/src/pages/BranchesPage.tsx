@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Stack,
@@ -8,7 +8,6 @@ import {
   Divider,
   FileButton,
   Tabs,
-  LoadingOverlay,
   Card,
   Paper,
   Button,
@@ -54,6 +53,7 @@ import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { useTheme } from "../context/ThemeContext";
 import api from "../api/config";
+import { UltraLoader } from "../components/ui";
 
 interface Branch {
   id: number;
@@ -82,7 +82,7 @@ interface RoleGroup {
   name: string;
 }
 
-const BranchesPage: React.FC = () => {
+const BranchesPage = () => {
   const { theme } = useTheme();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
@@ -301,9 +301,17 @@ const BranchesPage: React.FC = () => {
   return (
     <>
       <Container size="xl" py="md">
+        {" "}
         <Paper shadow="sm" p="md" radius="md">
           <div style={{ position: "relative" }}>
-            <LoadingOverlay visible={loading} />
+            {loading && (
+              <UltraLoader
+                fullscreen
+                size="lg"
+                message="Managing branches..."
+                variant="detailed"
+              />
+            )}
             <Tabs
               value={activeTab}
               onChange={(value) => setActiveTab(value || "list")}

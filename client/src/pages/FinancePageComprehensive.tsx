@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -27,8 +27,8 @@ import {
   ThemeIcon,
   Flex,
   Box,
-  Divider
-} from '@mantine/core';
+  Divider,
+} from "@mantine/core";
 import {
   IconCurrencyRupee,
   IconPlus,
@@ -49,20 +49,21 @@ import {
   IconFilter,
   IconDownload,
   IconPrinter,
-  IconMail
-} from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
-import { DatePickerInput } from '@mantine/dates';
-import { useForm } from '@mantine/form';
-import { modals } from '@mantine/modals';
-import api from '../api/config';
+  IconMail,
+} from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import { DatePickerInput } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { modals } from "@mantine/modals";
+import api from "../api/config";
+import { UltraLoader } from "../components/ui";
 
 // Import components
-import FeeTypesManagement from '../components/FeeTypesManagement';
-import FeeCollectionInterface from '../components/FeeCollectionInterface';
-import InvoiceManagement from '../components/InvoiceManagement';
-import FinancialReports from '../components/FinancialReports';
+import FeeTypesManagement from "../components/FeeTypesManagement";
+import FeeCollectionInterface from "../components/FeeCollectionInterface";
+import InvoiceManagement from "../components/InvoiceManagement";
+import FinancialReports from "../components/FinancialReports";
 
 interface DashboardStats {
   totalCollected: number;
@@ -78,9 +79,9 @@ interface FeeType {
   name: string;
   description?: string;
   amount: number;
-  frequency: 'one-time' | 'monthly' | 'quarterly' | 'annual';
+  frequency: "one-time" | "monthly" | "quarterly" | "annual";
   is_active: boolean;
-  applicable_to: 'all' | 'class';
+  applicable_to: "all" | "class";
   class_id?: number;
   branch_id: number;
   created_at: string;
@@ -100,7 +101,7 @@ interface Fee {
   fee_type_id: number;
   amount: number;
   due_date: string;
-  status: 'pending' | 'partial' | 'paid' | 'overdue';
+  status: "pending" | "partial" | "paid" | "overdue";
   paid_amount: number;
   payment_date?: string;
   payment_method?: string;
@@ -134,10 +135,12 @@ interface Student {
   section_id: number;
 }
 
-const FinancePageComprehensive: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<string | null>('dashboard');
+const FinancePageComprehensive = () => {
+  const [activeTab, setActiveTab] = useState<string | null>("dashboard");
   const [loading, setLoading] = useState(false);
-  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
+  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
+    null
+  );
   const [feeTypes, setFeeTypes] = useState<FeeType[]>([]);
   const [fees, setFees] = useState<Fee[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
@@ -146,26 +149,35 @@ const FinancePageComprehensive: React.FC = () => {
     page: 1,
     limit: 10,
     total: 0,
-    totalPages: 0
+    totalPages: 0,
   });
 
   // Modal states
-  const [feeTypeModalOpened, { open: openFeeTypeModal, close: closeFeeTypeModal }] = useDisclosure(false);
-  const [feeAssignModalOpened, { open: openFeeAssignModal, close: closeFeeAssignModal }] = useDisclosure(false);
-  const [paymentModalOpened, { open: openPaymentModal, close: closePaymentModal }] = useDisclosure(false);
+  const [
+    feeTypeModalOpened,
+    { open: openFeeTypeModal, close: closeFeeTypeModal },
+  ] = useDisclosure(false);
+  const [
+    feeAssignModalOpened,
+    { open: openFeeAssignModal, close: closeFeeAssignModal },
+  ] = useDisclosure(false);
+  const [
+    paymentModalOpened,
+    { open: openPaymentModal, close: closePaymentModal },
+  ] = useDisclosure(false);
   const [selectedFee, setSelectedFee] = useState<Fee | null>(null);
   const [editingFeeType, setEditingFeeType] = useState<FeeType | null>(null);
   // Forms
   const feeTypeForm = useForm({
     initialValues: {
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       amount: 0,
-      frequency: 'one-time',
-      applicable_to: 'all',
+      frequency: "one-time",
+      applicable_to: "all",
       class_id: null as number | null,
-      is_active: true
-    }
+      is_active: true,
+    },
   });
 
   const feeAssignForm = useForm({
@@ -175,28 +187,28 @@ const FinancePageComprehensive: React.FC = () => {
       amount: 0,
       due_date: new Date(),
       academic_year: new Date().getFullYear().toString(),
-      term: 'Term 1'
-    }
+      term: "Term 1",
+    },
   });
 
   const paymentForm = useForm({
     initialValues: {
       amount_paid: 0,
-      payment_method: '',
-      transaction_id: '',
-      remarks: '',
+      payment_method: "",
+      transaction_id: "",
+      remarks: "",
       discount: 0,
-      fine: 0
-    }
+      fine: 0,
+    },
   });
 
   // Filters
   const [filters, setFilters] = useState({
-    search: '',
-    status: '',
-    class_id: '',
-    fee_type_id: '',
-    overdue_only: false
+    search: "",
+    status: "",
+    class_id: "",
+    fee_type_id: "",
+    overdue_only: false,
   });
 
   // Load initial data
@@ -212,13 +224,13 @@ const FinancePageComprehensive: React.FC = () => {
   const loadDashboardStats = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/api/finance/dashboard-stats');
+      const response = await api.get("/api/finance/dashboard-stats");
       setDashboardStats(response.data.data);
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to load dashboard statistics',
-        color: 'red'
+        title: "Error",
+        message: "Failed to load dashboard statistics",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -226,18 +238,18 @@ const FinancePageComprehensive: React.FC = () => {
   };
 
   // Load fee types
-  const loadFeeTypes = async (page = 1, search = '') => {
+  const loadFeeTypes = async (page = 1, search = "") => {
     try {
-      const response = await api.get('/api/finance/fee-types', {
-        params: { page, limit: pagination.limit, search }
+      const response = await api.get("/api/finance/fee-types", {
+        params: { page, limit: pagination.limit, search },
       });
       setFeeTypes(response.data.data.feeTypes);
-      setPagination(prev => ({ ...prev, ...response.data.data.pagination }));
+      setPagination((prev) => ({ ...prev, ...response.data.data.pagination }));
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to load fee types',
-        color: 'red'
+        title: "Error",
+        message: "Failed to load fee types",
+        color: "red",
       });
     }
   };
@@ -245,16 +257,16 @@ const FinancePageComprehensive: React.FC = () => {
   // Load fees
   const loadFees = async (page = 1) => {
     try {
-      const response = await api.get('/api/finance/fees', {
-        params: { page, limit: pagination.limit, ...filters }
+      const response = await api.get("/api/finance/fees", {
+        params: { page, limit: pagination.limit, ...filters },
       });
       setFees(response.data.data.fees);
-      setPagination(prev => ({ ...prev, ...response.data.data.pagination }));
+      setPagination((prev) => ({ ...prev, ...response.data.data.pagination }));
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to load fees',
-        color: 'red'
+        title: "Error",
+        message: "Failed to load fees",
+        color: "red",
       });
     }
   };
@@ -262,20 +274,20 @@ const FinancePageComprehensive: React.FC = () => {
   // Load students
   const loadStudents = async () => {
     try {
-      const response = await api.get('/api/students');
+      const response = await api.get("/api/students");
       setStudents(response.data.data || []);
     } catch (error) {
-      console.error('Failed to load students:', error);
+      console.error("Failed to load students:", error);
     }
   };
 
   // Load classes
   const loadClasses = async () => {
     try {
-      const response = await api.get('/api/classes');
+      const response = await api.get("/api/classes");
       setClasses(response.data.data || []);
     } catch (error) {
-      console.error('Failed to load classes:', error);
+      console.error("Failed to load classes:", error);
     }
   };
 
@@ -285,16 +297,16 @@ const FinancePageComprehensive: React.FC = () => {
       if (editingFeeType) {
         await api.put(`/api/finance/fee-types/${editingFeeType.id}`, values);
         notifications.show({
-          title: 'Success',
-          message: 'Fee type updated successfully',
-          color: 'green'
+          title: "Success",
+          message: "Fee type updated successfully",
+          color: "green",
         });
       } else {
-        await api.post('/api/finance/fee-types', values);
+        await api.post("/api/finance/fee-types", values);
         notifications.show({
-          title: 'Success',
-          message: 'Fee type created successfully',
-          color: 'green'
+          title: "Success",
+          message: "Fee type created successfully",
+          color: "green",
         });
       }
       closeFeeTypeModal();
@@ -303,9 +315,9 @@ const FinancePageComprehensive: React.FC = () => {
       setEditingFeeType(null);
     } catch (error: any) {
       notifications.show({
-        title: 'Error',
-        message: error.response?.data?.message || 'Failed to save fee type',
-        color: 'red'
+        title: "Error",
+        message: error.response?.data?.message || "Failed to save fee type",
+        color: "red",
       });
     }
   };
@@ -313,20 +325,20 @@ const FinancePageComprehensive: React.FC = () => {
   // Handle fee assignment
   const handleFeeAssign = async (values: any) => {
     try {
-      await api.post('/api/finance/fees', values);
+      await api.post("/api/finance/fees", values);
       notifications.show({
-        title: 'Success',
-        message: 'Fees assigned successfully',
-        color: 'green'
+        title: "Success",
+        message: "Fees assigned successfully",
+        color: "green",
       });
       closeFeeAssignModal();
       loadFees();
       feeAssignForm.reset();
     } catch (error: any) {
       notifications.show({
-        title: 'Error',
-        message: error.response?.data?.message || 'Failed to assign fees',
-        color: 'red'
+        title: "Error",
+        message: error.response?.data?.message || "Failed to assign fees",
+        color: "red",
       });
     }
   };
@@ -338,9 +350,9 @@ const FinancePageComprehensive: React.FC = () => {
     try {
       await api.post(`/api/finance/fees/${selectedFee.id}/collect`, values);
       notifications.show({
-        title: 'Success',
-        message: 'Payment collected successfully',
-        color: 'green'
+        title: "Success",
+        message: "Payment collected successfully",
+        color: "green",
       });
       closePaymentModal();
       loadFees();
@@ -349,9 +361,9 @@ const FinancePageComprehensive: React.FC = () => {
       setSelectedFee(null);
     } catch (error: any) {
       notifications.show({
-        title: 'Error',
-        message: error.response?.data?.message || 'Failed to collect payment',
-        color: 'red'
+        title: "Error",
+        message: error.response?.data?.message || "Failed to collect payment",
+        color: "red",
       });
     }
   };
@@ -359,86 +371,99 @@ const FinancePageComprehensive: React.FC = () => {
   // Handle fee type deletion
   const handleFeeTypeDelete = (feeType: FeeType) => {
     modals.openConfirmModal({
-      title: 'Delete Fee Type',
+      title: "Delete Fee Type",
       children: (
         <Text size="sm">
-          Are you sure you want to delete this fee type? This action cannot be undone.
+          Are you sure you want to delete this fee type? This action cannot be
+          undone.
         </Text>
       ),
-      labels: { confirm: 'Delete', cancel: 'Cancel' },
-      confirmProps: { color: 'red' },
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
       onConfirm: async () => {
         try {
           await api.delete(`/api/finance/fee-types/${feeType.id}`);
           notifications.show({
-            title: 'Success',
-            message: 'Fee type deleted successfully',
-            color: 'green'
+            title: "Success",
+            message: "Fee type deleted successfully",
+            color: "green",
           });
           loadFeeTypes();
         } catch (error: any) {
           notifications.show({
-            title: 'Error',
-            message: error.response?.data?.message || 'Failed to delete fee type',
-            color: 'red'
+            title: "Error",
+            message:
+              error.response?.data?.message || "Failed to delete fee type",
+            color: "red",
           });
         }
-      }
+      },
     });
   };
 
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'green';
-      case 'partial': return 'blue';
-      case 'overdue': return 'red';
-      case 'pending': return 'yellow';
-      default: return 'gray';
+      case "paid":
+        return "green";
+      case "partial":
+        return "blue";
+      case "overdue":
+        return "red";
+      case "pending":
+        return "yellow";
+      default:
+        return "gray";
     }
   };
-
   // Dashboard statistics cards
   const renderDashboardStats = () => {
-    if (!dashboardStats) return <Loader />;
+    if (!dashboardStats)
+      return (
+        <UltraLoader
+          size="md"
+          message="Loading financial dashboard..."
+          variant="minimal"
+        />
+      );
 
     const stats = [
       {
-        title: 'Total Collected',
+        title: "Total Collected",
         value: `₹${dashboardStats.totalCollected.toLocaleString()}`,
         icon: IconCurrencyRupee,
-        color: 'green'
+        color: "green",
       },
       {
-        title: 'Monthly Collection',
+        title: "Monthly Collection",
         value: `₹${dashboardStats.monthlyCollected.toLocaleString()}`,
         icon: IconTrendingUp,
-        color: 'blue'
+        color: "blue",
       },
       {
-        title: 'Pending Fees',
+        title: "Pending Fees",
         value: `₹${dashboardStats.pendingFees.toLocaleString()}`,
         icon: IconClock,
-        color: 'yellow'
+        color: "yellow",
       },
       {
-        title: 'Overdue Fees',
+        title: "Overdue Fees",
         value: dashboardStats.overdueFees.toString(),
         icon: IconAlertTriangle,
-        color: 'red'
+        color: "red",
       },
       {
-        title: 'Total Students',
+        title: "Total Students",
         value: dashboardStats.totalStudents.toString(),
         icon: IconUsers,
-        color: 'indigo'
+        color: "indigo",
       },
       {
-        title: 'Active Fees',
+        title: "Active Fees",
         value: dashboardStats.activeFeesCount.toString(),
         icon: IconFileInvoice,
-        color: 'teal'
-      }
+        color: "teal",
+      },
     ];
 
     return (
@@ -505,28 +530,29 @@ const FinancePageComprehensive: React.FC = () => {
                   <div>
                     <Text fw={500}>{feeType.name}</Text>
                     {feeType.description && (
-                      <Text size="sm" c="dimmed">{feeType.description}</Text>
+                      <Text size="sm" c="dimmed">
+                        {feeType.description}
+                      </Text>
                     )}
                   </div>
                 </Table.Td>
                 <Table.Td>₹{feeType.amount.toLocaleString()}</Table.Td>
                 <Table.Td>
                   <Badge variant="light">
-                    {feeType.frequency.replace('-', ' ')}
+                    {feeType.frequency.replace("-", " ")}
                   </Badge>
                 </Table.Td>
                 <Table.Td>
-                  {feeType.applicable_to === 'class' ? 
-                    feeType.class?.name || 'Specific Class' : 
-                    'All Students'
-                  }
+                  {feeType.applicable_to === "class"
+                    ? feeType.class?.name || "Specific Class"
+                    : "All Students"}
                 </Table.Td>
                 <Table.Td>
-                  <Badge 
-                    color={feeType.is_active ? 'green' : 'red'}
+                  <Badge
+                    color={feeType.is_active ? "green" : "red"}
                     variant="light"
                   >
-                    {feeType.is_active ? 'Active' : 'Inactive'}
+                    {feeType.is_active ? "Active" : "Inactive"}
                   </Badge>
                 </Table.Td>
                 <Table.Td>
@@ -565,10 +591,7 @@ const FinancePageComprehensive: React.FC = () => {
       <Group justify="space-between" mb="md">
         <Title order={3}>Fee Management</Title>
         <Group>
-          <Button
-            variant="light"
-            leftSection={<IconFilter size={16} />}
-          >
+          <Button variant="light" leftSection={<IconFilter size={16} />}>
             Filters
           </Button>
           <Button
@@ -603,15 +626,20 @@ const FinancePageComprehensive: React.FC = () => {
                       {fee.student?.first_name} {fee.student?.last_name}
                     </Text>
                     <Text size="sm" c="dimmed">
-                      {fee.student?.register_no} • {fee.student?.enrolledClass?.name}
+                      {fee.student?.register_no} •{" "}
+                      {fee.student?.enrolledClass?.name}
                     </Text>
                   </div>
                 </Table.Td>
                 <Table.Td>{fee.feeType?.name}</Table.Td>
                 <Table.Td>₹{fee.amount.toLocaleString()}</Table.Td>
                 <Table.Td>₹{fee.paid_amount.toLocaleString()}</Table.Td>
-                <Table.Td>₹{(fee.amount - fee.paid_amount).toLocaleString()}</Table.Td>
-                <Table.Td>{new Date(fee.due_date).toLocaleDateString()}</Table.Td>
+                <Table.Td>
+                  ₹{(fee.amount - fee.paid_amount).toLocaleString()}
+                </Table.Td>
+                <Table.Td>
+                  {new Date(fee.due_date).toLocaleDateString()}
+                </Table.Td>
                 <Table.Td>
                   <Badge color={getStatusColor(fee.status)} variant="light">
                     {fee.status.toUpperCase()}
@@ -619,7 +647,7 @@ const FinancePageComprehensive: React.FC = () => {
                 </Table.Td>
                 <Table.Td>
                   <Group gap="xs">
-                    {fee.status !== 'paid' && (
+                    {fee.status !== "paid" && (
                       <ActionIcon
                         variant="light"
                         color="green"
@@ -627,11 +655,11 @@ const FinancePageComprehensive: React.FC = () => {
                           setSelectedFee(fee);
                           paymentForm.setValues({
                             amount_paid: fee.amount - fee.paid_amount,
-                            payment_method: 'cash',
-                            transaction_id: '',
-                            remarks: '',
+                            payment_method: "cash",
+                            transaction_id: "",
+                            remarks: "",
                             discount: 0,
-                            fine: 0
+                            fine: 0,
                           });
                           openPaymentModal();
                         }}
@@ -660,22 +688,33 @@ const FinancePageComprehensive: React.FC = () => {
       <Group justify="space-between" mb="xl">
         <div>
           <Title order={1}>Finance Management</Title>
-          <Text c="dimmed">Comprehensive fee collection and payment tracking</Text>
+          <Text c="dimmed">
+            Comprehensive fee collection and payment tracking
+          </Text>
         </div>
       </Group>
 
       <Tabs value={activeTab} onChange={setActiveTab}>
         <Tabs.List>
-          <Tabs.Tab value="dashboard" leftSection={<IconTrendingUp size={16} />}>
+          <Tabs.Tab
+            value="dashboard"
+            leftSection={<IconTrendingUp size={16} />}
+          >
             Dashboard
           </Tabs.Tab>
-          <Tabs.Tab value="fee-types" leftSection={<IconFileInvoice size={16} />}>
+          <Tabs.Tab
+            value="fee-types"
+            leftSection={<IconFileInvoice size={16} />}
+          >
             Fee Types
           </Tabs.Tab>
           <Tabs.Tab value="fees" leftSection={<IconCurrencyRupee size={16} />}>
             Fee Management
           </Tabs.Tab>
-          <Tabs.Tab value="collection" leftSection={<IconCreditCard size={16} />}>
+          <Tabs.Tab
+            value="collection"
+            leftSection={<IconCreditCard size={16} />}
+          >
             Collection
           </Tabs.Tab>
           <Tabs.Tab value="invoices" leftSection={<IconReceipt size={16} />}>
@@ -685,41 +724,41 @@ const FinancePageComprehensive: React.FC = () => {
             Reports
           </Tabs.Tab>
         </Tabs.List>
-
         <Tabs.Panel value="dashboard" pt="xl">
           <Stack gap="xl">
             {renderDashboardStats()}
-            
+
             <SimpleGrid cols={{ base: 1, lg: 2 }} spacing="md">
               <Card withBorder radius="md" p="xl">
-                <Title order={4} mb="md">Recent Collections</Title>
+                <Title order={4} mb="md">
+                  Recent Collections
+                </Title>
                 <Text c="dimmed">Last 5 payments collected</Text>
                 {/* Add recent collections table */}
               </Card>
-              
+
               <Card withBorder radius="md" p="xl">
-                <Title order={4} mb="md">Overdue Payments</Title>
+                <Title order={4} mb="md">
+                  Overdue Payments
+                </Title>
                 <Text c="dimmed">Students with overdue fees</Text>
                 {/* Add overdue payments list */}
               </Card>
             </SimpleGrid>
           </Stack>
-        </Tabs.Panel>        <Tabs.Panel value="fee-types" pt="xl">
+        </Tabs.Panel>{" "}
+        <Tabs.Panel value="fee-types" pt="xl">
           <FeeTypesManagement />
         </Tabs.Panel>
-
         <Tabs.Panel value="fees" pt="xl">
           {renderFeesTable()}
         </Tabs.Panel>
-
         <Tabs.Panel value="collection" pt="xl">
           <FeeCollectionInterface />
         </Tabs.Panel>
-
         <Tabs.Panel value="invoices" pt="xl">
           <InvoiceManagement />
         </Tabs.Panel>
-
         <Tabs.Panel value="reports" pt="xl">
           <FinancialReports />
         </Tabs.Panel>
@@ -729,7 +768,7 @@ const FinancePageComprehensive: React.FC = () => {
       <Modal
         opened={feeTypeModalOpened}
         onClose={closeFeeTypeModal}
-        title={editingFeeType ? 'Edit Fee Type' : 'Add Fee Type'}
+        title={editingFeeType ? "Edit Fee Type" : "Add Fee Type"}
         size="md"
       >
         <form onSubmit={feeTypeForm.onSubmit(handleFeeTypeSubmit)}>
@@ -738,56 +777,59 @@ const FinancePageComprehensive: React.FC = () => {
               label="Fee Type Name"
               placeholder="e.g., Tuition Fee"
               required
-              {...feeTypeForm.getInputProps('name')}
+              {...feeTypeForm.getInputProps("name")}
             />
-            
+
             <Textarea
               label="Description"
               placeholder="Optional description"
-              {...feeTypeForm.getInputProps('description')}
+              {...feeTypeForm.getInputProps("description")}
             />
-            
+
             <NumberInput
               label="Amount"
               placeholder="0"
               min={0}
               prefix="₹"
               required
-              {...feeTypeForm.getInputProps('amount')}
+              {...feeTypeForm.getInputProps("amount")}
             />
-            
+
             <Select
               label="Frequency"
               data={[
-                { value: 'one-time', label: 'One Time' },
-                { value: 'monthly', label: 'Monthly' },
-                { value: 'quarterly', label: 'Quarterly' },
-                { value: 'annual', label: 'Annual' }
+                { value: "one-time", label: "One Time" },
+                { value: "monthly", label: "Monthly" },
+                { value: "quarterly", label: "Quarterly" },
+                { value: "annual", label: "Annual" },
               ]}
-              {...feeTypeForm.getInputProps('frequency')}
+              {...feeTypeForm.getInputProps("frequency")}
             />
-            
+
             <Select
               label="Applicable To"
               data={[
-                { value: 'all', label: 'All Students' },
-                { value: 'class', label: 'Specific Class' }
+                { value: "all", label: "All Students" },
+                { value: "class", label: "Specific Class" },
               ]}
-              {...feeTypeForm.getInputProps('applicable_to')}
+              {...feeTypeForm.getInputProps("applicable_to")}
             />
-            
-            {feeTypeForm.values.applicable_to === 'class' && (
+
+            {feeTypeForm.values.applicable_to === "class" && (
               <Select
                 label="Class"
                 placeholder="Select class"
-                data={classes.map(cls => ({ value: cls.id.toString(), label: cls.name }))}
-                {...feeTypeForm.getInputProps('class_id')}
+                data={classes.map((cls) => ({
+                  value: cls.id.toString(),
+                  label: cls.name,
+                }))}
+                {...feeTypeForm.getInputProps("class_id")}
               />
             )}
-            
+
             <Group justify="flex-end">
               <Button type="submit">
-                {editingFeeType ? 'Update' : 'Create'} Fee Type
+                {editingFeeType ? "Update" : "Create"} Fee Type
               </Button>
             </Group>
           </Stack>
@@ -807,46 +849,49 @@ const FinancePageComprehensive: React.FC = () => {
               label="Fee Type"
               placeholder="Select fee type"
               required
-              data={feeTypes.map(ft => ({ value: ft.id.toString(), label: `${ft.name} - ₹${ft.amount}` }))}
-              {...feeAssignForm.getInputProps('fee_type_id')}
+              data={feeTypes.map((ft) => ({
+                value: ft.id.toString(),
+                label: `${ft.name} - ₹${ft.amount}`,
+              }))}
+              {...feeAssignForm.getInputProps("fee_type_id")}
             />
-            
+
             <NumberInput
               label="Amount"
               placeholder="0"
               min={0}
               prefix="₹"
               required
-              {...feeAssignForm.getInputProps('amount')}
+              {...feeAssignForm.getInputProps("amount")}
             />
-            
+
             <DatePickerInput
               label="Due Date"
               required
-              {...feeAssignForm.getInputProps('due_date')}
+              {...feeAssignForm.getInputProps("due_date")}
             />
-            
+
             <TextInput
               label="Academic Year"
               placeholder="2024-2025"
-              {...feeAssignForm.getInputProps('academic_year')}
+              {...feeAssignForm.getInputProps("academic_year")}
             />
-            
+
             <Select
               label="Term"
               data={[
-                { value: 'Term 1', label: 'Term 1' },
-                { value: 'Term 2', label: 'Term 2' },
-                { value: 'Term 3', label: 'Term 3' }
+                { value: "Term 1", label: "Term 1" },
+                { value: "Term 2", label: "Term 2" },
+                { value: "Term 3", label: "Term 3" },
               ]}
-              {...feeAssignForm.getInputProps('term')}
+              {...feeAssignForm.getInputProps("term")}
             />
-            
+
             {/* Student selection would go here */}
             <Text size="sm" c="dimmed">
               Student selection interface would be implemented here
             </Text>
-            
+
             <Group justify="flex-end">
               <Button type="submit">Assign Fees</Button>
             </Group>
@@ -867,26 +912,41 @@ const FinancePageComprehensive: React.FC = () => {
               <Paper withBorder p="md" bg="gray.0">
                 <Stack gap="xs">
                   <Group justify="space-between">
-                    <Text size="sm" fw={500}>Fee Type:</Text>
+                    <Text size="sm" fw={500}>
+                      Fee Type:
+                    </Text>
                     <Text size="sm">{selectedFee.feeType?.name}</Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm" fw={500}>Total Amount:</Text>
-                    <Text size="sm">₹{selectedFee.amount.toLocaleString()}</Text>
+                    <Text size="sm" fw={500}>
+                      Total Amount:
+                    </Text>
+                    <Text size="sm">
+                      ₹{selectedFee.amount.toLocaleString()}
+                    </Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm" fw={500}>Paid Amount:</Text>
-                    <Text size="sm">₹{selectedFee.paid_amount.toLocaleString()}</Text>
+                    <Text size="sm" fw={500}>
+                      Paid Amount:
+                    </Text>
+                    <Text size="sm">
+                      ₹{selectedFee.paid_amount.toLocaleString()}
+                    </Text>
                   </Group>
                   <Group justify="space-between">
-                    <Text size="sm" fw={500} c="red">Balance:</Text>
+                    <Text size="sm" fw={500} c="red">
+                      Balance:
+                    </Text>
                     <Text size="sm" fw={700} c="red">
-                      ₹{(selectedFee.amount - selectedFee.paid_amount).toLocaleString()}
+                      ₹
+                      {(
+                        selectedFee.amount - selectedFee.paid_amount
+                      ).toLocaleString()}
                     </Text>
                   </Group>
                 </Stack>
               </Paper>
-              
+
               <NumberInput
                 label="Payment Amount"
                 placeholder="0"
@@ -894,53 +954,53 @@ const FinancePageComprehensive: React.FC = () => {
                 max={selectedFee.amount - selectedFee.paid_amount}
                 prefix="₹"
                 required
-                {...paymentForm.getInputProps('amount_paid')}
+                {...paymentForm.getInputProps("amount_paid")}
               />
-              
+
               <Select
                 label="Payment Method"
                 placeholder="Select payment method"
                 required
                 data={[
-                  { value: 'cash', label: 'Cash' },
-                  { value: 'card', label: 'Card' },
-                  { value: 'bank_transfer', label: 'Bank Transfer' },
-                  { value: 'upi', label: 'UPI' },
-                  { value: 'cheque', label: 'Cheque' }
+                  { value: "cash", label: "Cash" },
+                  { value: "card", label: "Card" },
+                  { value: "bank_transfer", label: "Bank Transfer" },
+                  { value: "upi", label: "UPI" },
+                  { value: "cheque", label: "Cheque" },
                 ]}
-                {...paymentForm.getInputProps('payment_method')}
+                {...paymentForm.getInputProps("payment_method")}
               />
-              
+
               <TextInput
                 label="Transaction ID"
                 placeholder="Optional transaction reference"
-                {...paymentForm.getInputProps('transaction_id')}
+                {...paymentForm.getInputProps("transaction_id")}
               />
-              
+
               <Group grow>
                 <NumberInput
                   label="Discount"
                   placeholder="0"
                   min={0}
                   prefix="₹"
-                  {...paymentForm.getInputProps('discount')}
+                  {...paymentForm.getInputProps("discount")}
                 />
-                
+
                 <NumberInput
                   label="Fine"
                   placeholder="0"
                   min={0}
                   prefix="₹"
-                  {...paymentForm.getInputProps('fine')}
+                  {...paymentForm.getInputProps("fine")}
                 />
               </Group>
-              
+
               <Textarea
                 label="Remarks"
                 placeholder="Optional payment notes"
-                {...paymentForm.getInputProps('remarks')}
+                {...paymentForm.getInputProps("remarks")}
               />
-              
+
               <Group justify="flex-end">
                 <Button type="submit" color="green">
                   Collect Payment

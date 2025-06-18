@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -27,6 +27,7 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  LoadingTableRows,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -60,7 +61,7 @@ interface Teacher {
   name: string;
 }
 
-const SectionsPageUltra: React.FC = () => {
+const SectionsPageUltra = () => {
   const { theme } = useTheme();
   const [sections, setSections] = useState<Section[]>([]);
   const [classes, setClasses] = useState<Class[]>([]);
@@ -251,8 +252,9 @@ const SectionsPageUltra: React.FC = () => {
 
   return (
     <Container size="xl" className="ultra-container">
+      {" "}
       {/* Header */}
-      <UltraCard className="mb-6">
+      <UltraCard className="mb-4">
         <Group justify="space-between" align="flex-start">
           <div>
             <Title
@@ -275,10 +277,9 @@ const SectionsPageUltra: React.FC = () => {
             Add Section
           </UltraButton>
         </Group>
-      </UltraCard>
-
+      </UltraCard>{" "}
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <UltraCard className="text-center">
           <div className="ultra-stat-icon bg-blue-500/20 text-blue-400 mb-4">
             <IconSchool size={32} />
@@ -327,9 +328,8 @@ const SectionsPageUltra: React.FC = () => {
           </Text>
         </UltraCard>
       </div>
-
       {/* Filters */}
-      <UltraCard className="mb-6">
+      <UltraCard className="mb-4">
         <Group gap="md">
           <UltraInput
             placeholder="Search sections..."
@@ -366,7 +366,6 @@ const SectionsPageUltra: React.FC = () => {
           />
         </Group>
       </UltraCard>
-
       {/* Sections Table */}
       <UltraCard>
         {loading ? (
@@ -386,88 +385,95 @@ const SectionsPageUltra: React.FC = () => {
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredSections.map((section) => (
-                <tr key={section.id}>
-                  <td>
-                    <Group gap="sm">
-                      <Avatar
-                        radius="xl"
-                        size="md"
-                        style={{
-                          border: `2px solid ${theme.colors.primary}22`,
-                        }}
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredSections.length}
+                colspan={8}
+                loadingMessage="Loading sections..."
+                emptyMessage="No sections found"
+              >
+                {filteredSections.map((section) => (
+                  <tr key={section.id}>
+                    <td>
+                      <Group gap="sm">
+                        <Avatar
+                          radius="xl"
+                          size="md"
+                          style={{
+                            border: `2px solid ${theme.colors.primary}22`,
+                          }}
+                        >
+                          {section.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Stack gap={2}>
+                          <Text fw={500} c={theme.text.primary}>
+                            {section.name}
+                          </Text>
+                          <Text size="sm" c={theme.text.muted}>
+                            ID: {section.id}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </td>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {section.class_name || "N/A"}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {section.branch_name || "N/A"}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {section.teacher_name || "Not Assigned"}
+                      </Text>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="blue" size="sm">
+                        {section.capacity || 0}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="green" size="sm">
+                        {section.student_count || 0}
+                      </Badge>
+                    </td>
+                    <td>
+                      <UltraTableBadge
+                        variant={section.is_active ? "success" : "error"}
                       >
-                        {section.name?.charAt(0)?.toUpperCase()}
-                      </Avatar>
-                      <Stack gap={2}>
-                        <Text fw={500} c={theme.text.primary}>
-                          {section.name}
-                        </Text>
-                        <Text size="sm" c={theme.text.muted}>
-                          ID: {section.id}
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </td>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {section.class_name || "N/A"}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {section.branch_name || "N/A"}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {section.teacher_name || "Not Assigned"}
-                    </Text>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="blue" size="sm">
-                      {section.capacity || 0}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="green" size="sm">
-                      {section.student_count || 0}
-                    </Badge>
-                  </td>
-                  <td>
-                    <UltraTableBadge
-                      variant={section.is_active ? "success" : "error"}
-                    >
-                      {section.is_active ? "Active" : "Inactive"}
-                    </UltraTableBadge>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(section)}
-                      >
-                        <IconEdit size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(section.id)}
-                      >
-                        <IconSchool size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+                        {section.is_active ? "Active" : "Inactive"}
+                      </UltraTableBadge>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(section)}
+                        >
+                          <IconEdit size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(section.id)}
+                        >
+                          <IconSchool size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         )}
       </UltraCard>
-
       {/* Add/Edit Modal */}
       <UltraModal
         opened={modalOpen}

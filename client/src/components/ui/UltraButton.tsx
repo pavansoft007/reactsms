@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from 'react';
 import { Button, Loader } from "@mantine/core";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -15,16 +15,16 @@ interface UltraButtonProps {
   glass?: boolean;
   loading?: boolean;
   onClick?: (event: any) => void;
-  leftSection?: React.ReactNode;
-  rightSection?: React.ReactNode;
+  leftSection?: ReactNode;
+  rightSection?: ReactNode;
   disabled?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   style?: React.CSSProperties;
   type?: string;
 }
 
-const UltraButton: React.FC<UltraButtonProps> = ({
+const UltraButton = ({
   variant = "primary",
   size = "md",
   glow = false,

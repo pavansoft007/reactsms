@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import {
   Container,
   Paper,
@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import axios from "axios";
 
-const UserCreatePage: React.FC = () => {
+const UserCreatePage = () => {
   const [formData, setFormData] = useState({
     name: "",
     username: "",

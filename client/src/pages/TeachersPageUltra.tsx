@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -21,6 +21,7 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  UltraLoader,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -46,7 +47,7 @@ interface Branch {
   name: string;
 }
 
-const TeachersPageUltra: React.FC = () => {
+const TeachersPageUltra = () => {
   const { theme } = useTheme();
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -353,85 +354,108 @@ const TeachersPageUltra: React.FC = () => {
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredTeachers.map((teacher) => (
-                <tr key={teacher.id}>
-                  <td>
-                    <Text fw={500} size="sm" c={theme.text.primary}>
-                      {teacher.employee_id}
-                    </Text>
-                  </td>
-                  <td>
-                    <Group gap="sm">
-                      <Avatar
-                        radius="xl"
-                        size="md"
-                        style={{
-                          border: `2px solid ${theme.colors.primary}22`,
-                        }}
-                      >
-                        {teacher.name?.charAt(0)?.toUpperCase()}
-                      </Avatar>
-                      <Stack gap={2}>
-                        <Text fw={500} c={theme.text.primary}>
-                          {teacher.name}
-                        </Text>
-                        <Text size="sm" c={theme.text.muted}>
-                          {teacher.email}
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="blue" size="sm">
-                      {teacher.subject}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {teacher.qualification}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {teacher.experience} years
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {teacher.branch_name || "N/A"}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableBadge
-                      variant={
-                        teacher.status === "active" ? "success" : "error"
-                      }
-                    >
-                      {teacher.status}
-                    </UltraTableBadge>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(teacher)}
-                      >
-                        <IconEdit size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(teacher.id)}
-                      >
-                        <IconUsers size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
+              {loading ? (
+                <tr>
+                  <td colSpan={8} style={{ border: "none", padding: 0 }}>
+                    <UltraLoader
+                      size="lg"
+                      message="Loading teachers..."
+                      variant="detailed"
+                    />
                   </td>
                 </tr>
-              ))}
+              ) : filteredTeachers.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={8}
+                    style={{ textAlign: "center", padding: "40px" }}
+                  >
+                    <Text size="md" c={theme.text.muted}>
+                      No teachers found
+                    </Text>
+                  </td>
+                </tr>
+              ) : (
+                filteredTeachers.map((teacher) => (
+                  <tr key={teacher.id}>
+                    <td>
+                      <Text fw={500} size="sm" c={theme.text.primary}>
+                        {teacher.employee_id}
+                      </Text>
+                    </td>
+                    <td>
+                      <Group gap="sm">
+                        <Avatar
+                          radius="xl"
+                          size="md"
+                          style={{
+                            border: `2px solid ${theme.colors.primary}22`,
+                          }}
+                        >
+                          {teacher.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Stack gap={2}>
+                          <Text fw={500} c={theme.text.primary}>
+                            {teacher.name}
+                          </Text>
+                          <Text size="sm" c={theme.text.muted}>
+                            {teacher.email}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="blue" size="sm">
+                        {teacher.subject}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {teacher.qualification}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {teacher.experience} years
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {teacher.branch_name || "N/A"}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableBadge
+                        variant={
+                          teacher.status === "active" ? "success" : "error"
+                        }
+                      >
+                        {teacher.status}
+                      </UltraTableBadge>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(teacher)}
+                        >
+                          <IconEdit size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(teacher.id)}
+                        >
+                          <IconUsers size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </UltraTable>
         )}

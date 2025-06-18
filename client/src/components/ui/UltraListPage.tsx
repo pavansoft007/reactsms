@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import {   useState , Fragment , ReactNode } from 'react';
 import {
   Container,
   Paper,
@@ -39,7 +39,7 @@ interface Column {
   label: string;
   sortable?: boolean;
   filterable?: boolean;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: any, row: any) => ReactNode;
   width?: string;
   align?: "left" | "center" | "right";
 }
@@ -75,13 +75,13 @@ interface UltraListPageProps {
     };
     bulk?: Array<{
       label: string;
-      icon: React.ReactNode;
+      icon: ReactNode;
       onClick: (selectedIds: string[]) => void;
       color?: string;
     }>;
     row?: Array<{
       label: string;
-      icon: React.ReactNode;
+      icon: ReactNode;
       onClick: (row: any) => void;
       color?: string;
       show?: (row: any) => boolean;
@@ -94,11 +94,11 @@ interface UltraListPageProps {
   onExport?: (format: string) => void;
   onRefresh?: () => void;
   breadcrumbs?: Array<{ label: string; href?: string }>;
-  renderRowActions?: (row: any) => React.ReactNode;
+  renderRowActions?: (row: any) => ReactNode;
   emptyState?: {
     title: string;
     description: string;
-    icon?: React.ReactNode;
+    icon?: ReactNode;
     action?: {
       label: string;
       onClick: () => void;
@@ -106,7 +106,7 @@ interface UltraListPageProps {
   };
 }
 
-export const UltraListPage: React.FC<UltraListPageProps> = ({
+export const UltraListPage = ({
   title,
   data,
   columns,
@@ -180,7 +180,7 @@ export const UltraListPage: React.FC<UltraListPageProps> = ({
     return (
       <Group gap="xs" mb="md">
         {breadcrumbs.map((crumb, index) => (
-          <React.Fragment key={`breadcrumb-${crumb.label}-${index}`}>
+          <Fragment key={`breadcrumb-${crumb.label}-${index}`}>
             {" "}
             <Text
               size="sm"
@@ -201,7 +201,7 @@ export const UltraListPage: React.FC<UltraListPageProps> = ({
                 •
               </Text>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </Group>
     );

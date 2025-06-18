@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Paper,
   Button,
@@ -34,7 +34,7 @@ interface RoleGroup {
   updated_at?: string;
 }
 
-const RoleGroupsContent: React.FC = () => {
+const RoleGroupsContent = () => {
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(false);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Group,
@@ -29,6 +29,7 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  LoadingTableRows,
 } from "../components/ui";
 
 interface Book {
@@ -57,7 +58,7 @@ interface BookIssue {
   fine?: number;
 }
 
-const LibraryPageUltra: React.FC = () => {
+const LibraryPageUltra = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [issues, setIssues] = useState<BookIssue[]>([]);
   const [isBookModalOpen, setIsBookModalOpen] = useState(false);
@@ -399,80 +400,89 @@ const LibraryPageUltra: React.FC = () => {
                 <th>Copies</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredBooks.map((book) => (
-                <tr key={book.id}>
-                  <td>
-                    <Text fw={500}>{book.title}</Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c="dimmed">
-                      {book.author}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm">{book.isbn}</Text>
-                  </td>
-                  <td>
-                    <Text size="sm">{book.category}</Text>
-                  </td>
-                  <td>
-                    {(() => {
-                      let variant: "success" | "warning" | "info" | "error" =
-                        "success";
-                      if (book.status === "issued") variant = "warning";
-                      else if (book.status === "reserved") variant = "info";
-                      else if (book.status === "maintenance") variant = "error";
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredBooks.length}
+                colspan={7}
+                loadingMessage="Loading books..."
+                emptyMessage="No books found"
+              >
+                {filteredBooks.map((book) => (
+                  <tr key={book.id}>
+                    <td>
+                      <Text fw={500}>{book.title}</Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c="dimmed">
+                        {book.author}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm">{book.isbn}</Text>
+                    </td>
+                    <td>
+                      <Text size="sm">{book.category}</Text>
+                    </td>
+                    <td>
+                      {(() => {
+                        let variant: "success" | "warning" | "info" | "error" =
+                          "success";
+                        if (book.status === "issued") variant = "warning";
+                        else if (book.status === "reserved") variant = "info";
+                        else if (book.status === "maintenance")
+                          variant = "error";
 
-                      return (
-                        <UltraTableBadge variant={variant}>
-                          {book.status}
-                        </UltraTableBadge>
-                      );
-                    })()}
-                  </td>
-                  <td>
-                    <Text size="sm">
-                      {book.availableCopies}/{book.copies}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedBook(book);
-                          setIsBookModalOpen(true);
-                        }}
-                      >
-                        <IconEye size={16} />
-                      </ActionIcon>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedBook(book);
-                          setIsBookModalOpen(true);
-                        }}
-                      >
-                        <IconEdit size={16} />
-                      </ActionIcon>
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        color="red"
-                        onClick={() => {
-                          setBooks(books.filter((b) => b.id !== book.id));
-                        }}
-                      >
-                        <IconTrash size={16} />
-                      </ActionIcon>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+                        return (
+                          <UltraTableBadge variant={variant}>
+                            {book.status}
+                          </UltraTableBadge>
+                        );
+                      })()}
+                    </td>
+                    <td>
+                      <Text size="sm">
+                        {book.availableCopies}/{book.copies}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <ActionIcon
+                          variant="subtle"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedBook(book);
+                            setIsBookModalOpen(true);
+                          }}
+                        >
+                          <IconEye size={16} />
+                        </ActionIcon>
+                        <ActionIcon
+                          variant="subtle"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedBook(book);
+                            setIsBookModalOpen(true);
+                          }}
+                        >
+                          <IconEdit size={16} />
+                        </ActionIcon>
+                        <ActionIcon
+                          variant="subtle"
+                          size="sm"
+                          color="red"
+                          onClick={() => {
+                            setBooks(books.filter((b) => b.id !== book.id));
+                          }}
+                        >
+                          <IconTrash size={16} />
+                        </ActionIcon>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         ) : (
@@ -487,65 +497,76 @@ const LibraryPageUltra: React.FC = () => {
                 <th>Fine</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredIssues.map((issue) => (
-                <tr key={issue.id}>
-                  <td>
-                    <Text fw={500}>{issue.bookTitle}</Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c="dimmed">
-                      {issue.studentName}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm">{issue.issueDate}</Text>
-                  </td>
-                  <td>
-                    <Text size="sm">{issue.dueDate}</Text>
-                  </td>
-                  <td>
-                    {(() => {
-                      let variant: "success" | "warning" | "error" = "warning";
-                      if (issue.status === "returned") variant = "success";
-                      else if (issue.status === "overdue") variant = "error";
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredIssues.length}
+                colspan={7}
+                loadingMessage="Loading issued books..."
+                emptyMessage="No issued books found"
+              >
+                {filteredIssues.map((issue) => (
+                  <tr key={issue.id}>
+                    <td>
+                      <Text fw={500}>{issue.bookTitle}</Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c="dimmed">
+                        {issue.studentName}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm">{issue.issueDate}</Text>
+                    </td>
+                    <td>
+                      <Text size="sm">{issue.dueDate}</Text>
+                    </td>
+                    <td>
+                      {(() => {
+                        let variant: "success" | "warning" | "error" =
+                          "warning";
+                        if (issue.status === "returned") variant = "success";
+                        else if (issue.status === "overdue") variant = "error";
 
-                      return (
-                        <UltraTableBadge variant={variant}>
-                          {issue.status}
-                        </UltraTableBadge>
-                      );
-                    })()}
-                  </td>
-                  <td>
-                    <Text size="sm">{issue.fine ? `₹${issue.fine}` : "-"}</Text>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      {issue.status === "issued" && (
-                        <UltraButton
-                          variant="secondary"
+                        return (
+                          <UltraTableBadge variant={variant}>
+                            {issue.status}
+                          </UltraTableBadge>
+                        );
+                      })()}
+                    </td>
+                    <td>
+                      <Text size="sm">
+                        {issue.fine ? `₹${issue.fine}` : "-"}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        {issue.status === "issued" && (
+                          <UltraButton
+                            variant="secondary"
+                            size="sm"
+                            onClick={() => handleReturnBook(issue.id)}
+                          >
+                            Return
+                          </UltraButton>
+                        )}
+                        <ActionIcon
+                          variant="subtle"
                           size="sm"
-                          onClick={() => handleReturnBook(issue.id)}
+                          onClick={() => {
+                            setSelectedIssue(issue);
+                            setIsIssueModalOpen(true);
+                          }}
                         >
-                          Return
-                        </UltraButton>
-                      )}
-                      <ActionIcon
-                        variant="subtle"
-                        size="sm"
-                        onClick={() => {
-                          setSelectedIssue(issue);
-                          setIsIssueModalOpen(true);
-                        }}
-                      >
-                        <IconEye size={16} />
-                      </ActionIcon>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+                          <IconEye size={16} />
+                        </ActionIcon>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         )}

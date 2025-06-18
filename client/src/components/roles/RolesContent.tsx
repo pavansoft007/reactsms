@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Paper,
   Button,
@@ -40,7 +40,7 @@ interface RolesContentProps {
   onViewPermissions?: (roleId: number) => void;
 }
 
-const RolesContent: React.FC<RolesContentProps> = ({ onViewPermissions }) => {
+const RolesContent = ({ onViewPermissions }) => {
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(false);
   const [editingRole, setEditingRole] = useState<Role | null>(null);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 import { Badge, Avatar, Group, Text, ActionIcon, Menu } from "@mantine/core";
 import {
   IconEye,
@@ -29,7 +29,7 @@ interface Teacher {
   photo?: string;
 }
 
-const TeachersListPage: React.FC = () => {
+const TeachersListPage = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);

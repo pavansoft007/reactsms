@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Container,
   Table,
@@ -86,7 +86,7 @@ interface BranchType {
   name: string;
 }
 
-const SubjectPage: React.FC = () => {
+const SubjectPage = () => {
   const { theme } = useTheme();
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const [branches, setBranches] = useState<BranchType[]>([]);

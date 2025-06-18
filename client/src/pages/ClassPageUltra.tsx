@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Stack,
@@ -41,6 +41,15 @@ import {
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  MdSchool,
+  MdAdd,
+  MdEdit,
+  MdDelete,
+  MdPerson,
+  MdSave,
+  MdCancel,
+} from "react-icons/md";
 import { useTheme } from "../context/ThemeContext";
 import {
   UltraCard,
@@ -51,6 +60,8 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  LoadingTableRows,
+  LoadingContainer,
 } from "../components/ui";
 import api from "../api/config";
 
@@ -66,7 +77,7 @@ interface Class {
   grade_level?: string;
 }
 
-const ClassPageUltra: React.FC = () => {
+const ClassPageUltra = () => {
   const { theme } = useTheme();
   const [classes, setClasses] = useState<Class[]>([]);
   const [loading, setLoading] = useState(false);
@@ -87,7 +98,8 @@ const ClassPageUltra: React.FC = () => {
     },
     validate: {
       name: (value) => (!value ? "Class name is required" : null),
-      capacity: (value) => (!value || isNaN(Number(value)) ? "Valid capacity is required" : null),
+      capacity: (value) =>
+        !value || isNaN(Number(value)) ? "Valid capacity is required" : null,
     },
   });
   useEffect(() => {
@@ -95,14 +107,14 @@ const ClassPageUltra: React.FC = () => {
   }, [fetchClasses]);
 
   const getStatusColor = (isActive: boolean) => {
-    return isActive ? 'green' : 'gray';
+    return isActive ? "green" : "gray";
   };
 
   const handleViewClass = (classItem: Class) => {
     notifications.show({
-      title: 'View Class',
+      title: "View Class",
       message: `Viewing ${classItem.name} details...`,
-      color: 'blue',
+      color: "blue",
     });
   };
 
@@ -111,16 +123,22 @@ const ClassPageUltra: React.FC = () => {
     total: classes.length,
     active: classes.filter((c) => c.is_active).length,
     totalCapacity: classes.reduce((sum, c) => sum + c.capacity, 0),
-    avgCapacity: classes.length > 0 
-      ? Math.round(classes.reduce((sum, c) => sum + c.capacity, 0) / classes.length)
-      : 0,
+    avgCapacity:
+      classes.length > 0
+        ? Math.round(
+            classes.reduce((sum, c) => sum + c.capacity, 0) / classes.length
+          )
+        : 0,
   };
 
   // Filter and sort classes
   const filteredClasses = classes.filter((classItem) => {
-    const matchesSearch = classItem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         classItem.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         classItem.grade_level?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      classItem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      classItem.description
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      classItem.grade_level?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
 
@@ -147,15 +165,20 @@ const ClassPageUltra: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.get("/api/classes");
-      
+
       // Enhance classes data with demo-like properties
-      const enhancedClasses = (response.data.classes || []).map((classItem: Class) => ({
-        ...classItem,
-        students_count: classItem.students_count || Math.floor(Math.random() * 30) + 10,
-        teacher_assigned: classItem.teacher_assigned || 'Not Assigned',
-        grade_level: classItem.grade_level || ['Elementary', 'Middle', 'High'][Math.floor(Math.random() * 3)],
-      }));
-      
+      const enhancedClasses = (response.data.classes || []).map(
+        (classItem: Class) => ({
+          ...classItem,
+          students_count:
+            classItem.students_count || Math.floor(Math.random() * 30) + 10,
+          teacher_assigned: classItem.teacher_assigned || "Not Assigned",
+          grade_level:
+            classItem.grade_level ||
+            ["Elementary", "Middle", "High"][Math.floor(Math.random() * 3)],
+        })
+      );
+
       setClasses(enhancedClasses);
     } catch (error) {
       console.error("Failed to fetch classes:", error);
@@ -172,9 +195,11 @@ const ClassPageUltra: React.FC = () => {
   const handleSubmit = async (values: typeof form.values) => {
     setLoading(true);
     try {
-      const endpoint = editingClass ? `/api/classes/${editingClass.id}` : "/api/classes";
+      const endpoint = editingClass
+        ? `/api/classes/${editingClass.id}`
+        : "/api/classes";
       const method = editingClass ? "put" : "post";
-      
+
       await api[method](endpoint, {
         ...values,
         capacity: Number(values.capacity),
@@ -193,7 +218,9 @@ const ClassPageUltra: React.FC = () => {
     } catch (error: any) {
       notifications.show({
         title: "Error",
-        message: error.response?.data?.error || `Failed to ${editingClass ? "update" : "create"} class`,
+        message:
+          error.response?.data?.error ||
+          `Failed to ${editingClass ? "update" : "create"} class`,
         color: "red",
       });
     } finally {
@@ -213,7 +240,7 @@ const ClassPageUltra: React.FC = () => {
   const handleDelete = async (id: number) => {
     // Use modern browser confirm or implement a proper modal
     if (!window.confirm("Are you sure you want to delete this class?")) return;
-    
+
     setLoading(true);
     try {
       await api.delete(`/api/classes/${id}`);
@@ -282,7 +309,7 @@ const ClassPageUltra: React.FC = () => {
         </Group>
 
         {/* Stats Cards */}
-        <SimpleGrid cols={{ base: 2, md: 4 }} spacing="lg">
+        <SimpleGrid cols={{ base: 2, md: 4 }} spacing="md">
           <motion.div
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
@@ -390,16 +417,17 @@ const ClassPageUltra: React.FC = () => {
       </Paper>
     </motion.div>
   );
-
   return (
-    <Container size="xl" py="xl" style={{ background: theme.bg.surface, minHeight: "100vh" }}>
-      <Stack gap="xl">
+    <Container
+      size="xl"
+      py="md"
+      style={{ background: theme.bg.surface, minHeight: "100vh" }}
+    >
+      <Stack gap="md">
         {/* Header */}
-        {renderHeader()}
-
-        {/* Classes Table */}
-        <UltraCard variant="glassmorphic" style={{ padding: "24px" }}>
-          <Group justify="space-between" mb="lg">
+        {renderHeader()} {/* Classes Table */}{" "}
+        <UltraCard variant="glassmorphic" style={{ padding: "16px" }}>
+          <Group justify="space-between" mb="sm">
             <Text size="lg" fw={600} c={theme.text.primary}>
               All Classes
             </Text>
@@ -421,61 +449,68 @@ const ClassPageUltra: React.FC = () => {
                 <th>Created</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {classes.map((classItem) => (
-                <tr key={classItem.id}>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {classItem.name}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.muted}>
-                      {classItem.description || "No description"}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {classItem.capacity} students
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableBadge 
-                      variant={classItem.is_active ? "success" : "error"}
-                    >
-                      {classItem.is_active ? "Active" : "Inactive"}
-                    </UltraTableBadge>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.muted}>
-                      {new Date(classItem.created_at).toLocaleDateString()}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(classItem)}
+              <LoadingTableRows
+                loading={loading}
+                itemCount={classes.length}
+                colspan={6}
+                loadingMessage="Loading classes..."
+                emptyMessage="No classes found"
+              >
+                {classes.map((classItem) => (
+                  <tr key={classItem.id}>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {classItem.name}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.muted}>
+                        {classItem.description || "No description"}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {classItem.capacity} students
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableBadge
+                        variant={classItem.is_active ? "success" : "error"}
                       >
-                        <MdEdit size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(classItem.id)}
-                      >
-                        <MdDelete size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+                        {classItem.is_active ? "Active" : "Inactive"}
+                      </UltraTableBadge>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.muted}>
+                        {new Date(classItem.created_at).toLocaleDateString()}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(classItem)}
+                        >
+                          <MdEdit size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(classItem.id)}
+                        >
+                          <MdDelete size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         </UltraCard>
-
         {/* Create/Edit Modal */}
         <UltraModal
           opened={modalOpened}

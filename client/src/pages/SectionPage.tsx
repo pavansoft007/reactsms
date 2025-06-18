@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Container,
   Table,
@@ -8,7 +8,6 @@ import {
   Group,
   Paper,
   Title,
-  LoadingOverlay,
   Card,
   Text,
   Badge,
@@ -31,9 +30,9 @@ import {
   NumberInput,
   Switch,
   Skeleton,
-  Transition
+  Transition,
 } from "@mantine/core";
-import { 
+import {
   IconSearch,
   IconFilter,
   IconSortAscending,
@@ -55,7 +54,7 @@ import {
   IconX,
   IconRefresh,
   IconDownload,
-  IconUpload
+  IconUpload,
 } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -63,6 +62,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDebouncedValue } from "@mantine/hooks";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
+import { UltraLoader } from "../components/ui";
 
 interface SectionType {
   id: number;
@@ -99,22 +99,26 @@ interface ClassType {
   branch_id: number;
 }
 
-const SectionPage: React.FC = () => {
+const SectionPage = () => {
   const { theme } = useTheme();
   const [sections, setSections] = useState<SectionType[]>([]);
   const [branches, setBranches] = useState<BranchType[]>([]);
   const [classes, setClasses] = useState<ClassType[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
-  const [editingSection, setEditingSection] = useState<SectionType | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'table'>('grid');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [editingSection, setEditingSection] = useState<SectionType | null>(
+    null
+  );
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "table">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch] = useDebouncedValue(searchQuery, 300);
-  const [selectedBranch, setSelectedBranch] = useState<string>('');
-  const [selectedClass, setSelectedClass] = useState<string>('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
-  const [sortBy, setSortBy] = useState<'name' | 'capacity' | 'students' | 'created_at'>('name');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [selectedBranch, setSelectedBranch] = useState<string>("");
+  const [selectedClass, setSelectedClass] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [sortBy, setSortBy] = useState<
+    "name" | "capacity" | "students" | "created_at"
+  >("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(12);
 
@@ -127,9 +131,9 @@ const SectionPage: React.FC = () => {
       is_active: true,
     },
     validate: {
-      name: (value) => (value.length < 1 ? 'Section name is required' : null),
-      branch_id: (value) => (!value ? 'Branch is required' : null),
-      class_id: (value) => (!value ? 'Class is required' : null),
+      name: (value) => (value.length < 1 ? "Section name is required" : null),
+      branch_id: (value) => (!value ? "Branch is required" : null),
+      class_id: (value) => (!value ? "Class is required" : null),
     },
   });
 
@@ -174,43 +178,50 @@ const SectionPage: React.FC = () => {
   }, []);
 
   // Filter and sort sections
-  const filteredSections = sections.filter((section) => {
-    const matchesSearch = section.name.toLowerCase().includes(debouncedSearch.toLowerCase());
-    const matchesBranch = !selectedBranch || section.branch_id.toString() === selectedBranch;
-    const matchesClass = !selectedClass || section.class_id.toString() === selectedClass;
-    const matchesStatus = !selectedStatus || 
-      (selectedStatus === 'active' && section.is_active) ||
-      (selectedStatus === 'inactive' && !section.is_active);
-    
-    return matchesSearch && matchesBranch && matchesClass && matchesStatus;
-  }).sort((a, b) => {
-    let aValue: any, bValue: any;
-    
-    switch (sortBy) {
-      case 'name':
-        aValue = a.name.toLowerCase();
-        bValue = b.name.toLowerCase();
-        break;
-      case 'capacity':
-        aValue = a.capacity || 0;
-        bValue = b.capacity || 0;
-        break;
-      case 'students':
-        aValue = a.current_students || 0;
-        bValue = b.current_students || 0;
-        break;
-      case 'created_at':
-        aValue = new Date(a.created_at || '');
-        bValue = new Date(b.created_at || '');
-        break;
-      default:
-        return 0;
-    }
-    
-    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
-    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
+  const filteredSections = sections
+    .filter((section) => {
+      const matchesSearch = section.name
+        .toLowerCase()
+        .includes(debouncedSearch.toLowerCase());
+      const matchesBranch =
+        !selectedBranch || section.branch_id.toString() === selectedBranch;
+      const matchesClass =
+        !selectedClass || section.class_id.toString() === selectedClass;
+      const matchesStatus =
+        !selectedStatus ||
+        (selectedStatus === "active" && section.is_active) ||
+        (selectedStatus === "inactive" && !section.is_active);
+
+      return matchesSearch && matchesBranch && matchesClass && matchesStatus;
+    })
+    .sort((a, b) => {
+      let aValue: any, bValue: any;
+
+      switch (sortBy) {
+        case "name":
+          aValue = a.name.toLowerCase();
+          bValue = b.name.toLowerCase();
+          break;
+        case "capacity":
+          aValue = a.capacity || 0;
+          bValue = b.capacity || 0;
+          break;
+        case "students":
+          aValue = a.current_students || 0;
+          bValue = b.current_students || 0;
+          break;
+        case "created_at":
+          aValue = new Date(a.created_at || "");
+          bValue = new Date(b.created_at || "");
+          break;
+        default:
+          return 0;
+      }
+
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
 
   // Pagination
   const totalPages = Math.ceil(filteredSections.length / pageSize);
@@ -221,9 +232,12 @@ const SectionPage: React.FC = () => {
 
   // Stats calculations
   const totalSections = sections.length;
-  const activeSections = sections.filter(s => s.is_active).length;
+  const activeSections = sections.filter((s) => s.is_active).length;
   const totalCapacity = sections.reduce((sum, s) => sum + (s.capacity || 0), 0);
-  const totalStudents = sections.reduce((sum, s) => sum + (s.current_students || 0), 0);
+  const totalStudents = sections.reduce(
+    (sum, s) => sum + (s.current_students || 0),
+    0
+  );
 
   // CRUD operations
   const handleSubmit = async (values: typeof form.values) => {
@@ -276,7 +290,8 @@ const SectionPage: React.FC = () => {
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm("Are you sure you want to delete this section?")) return;
+    if (!window.confirm("Are you sure you want to delete this section?"))
+      return;
     try {
       await api.delete(`/api/sections/${id}`);
       notifications.show({
@@ -301,16 +316,16 @@ const SectionPage: React.FC = () => {
 
   // Helper functions
   const getStatusColor = (status: boolean | undefined) => {
-    return status ? 'green' : 'red';
+    return status ? "green" : "red";
   };
 
   const getBranchName = (branchId: number) => {
-    const branch = branches.find(b => b.id === branchId);
+    const branch = branches.find((b) => b.id === branchId);
     return branch?.name || `Branch ${branchId}`;
   };
 
   const getClassName = (classId: number) => {
-    const classItem = classes.find(c => c.id === classId);
+    const classItem = classes.find((c) => c.id === classId);
     return classItem?.name || `Class ${classId}`;
   };
 
@@ -318,10 +333,11 @@ const SectionPage: React.FC = () => {
     <Container size="xl" py="md">
       {/* Breadcrumbs */}
       <Breadcrumbs mb="md">
-        <Anchor href="/" size="sm">Dashboard</Anchor>
+        <Anchor href="/" size="sm">
+          Dashboard
+        </Anchor>
         <Text size="sm">Sections</Text>
       </Breadcrumbs>
-
       {/* Enhanced Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -332,9 +348,11 @@ const SectionPage: React.FC = () => {
           p="xl"
           radius="xl"
           style={{
-            background: `linear-gradient(135deg, ${theme.colors?.primary?.[6] || '#3b82f6'} 0%, ${theme.colors?.primary?.[8] || '#1e40af'} 100%)`,
-            color: 'white',
-            border: 'none',
+            background: `linear-gradient(135deg, ${
+              theme.colors?.primary?.[6] || "#3b82f6"
+            } 0%, ${theme.colors?.primary?.[8] || "#1e40af"} 100%)`,
+            color: "white",
+            border: "none",
           }}
           mb="xl"
         >
@@ -371,29 +389,29 @@ const SectionPage: React.FC = () => {
           {/* Stats Cards */}
           <SimpleGrid cols={{ base: 2, sm: 4 }} mt="xl" spacing="lg">
             {[
-              { 
-                label: 'Total Sections', 
-                value: totalSections, 
-                icon: IconSchool, 
-                color: 'blue' 
+              {
+                label: "Total Sections",
+                value: totalSections,
+                icon: IconSchool,
+                color: "blue",
               },
-              { 
-                label: 'Active Sections', 
-                value: activeSections, 
-                icon: IconTrendingUp, 
-                color: 'green' 
+              {
+                label: "Active Sections",
+                value: activeSections,
+                icon: IconTrendingUp,
+                color: "green",
               },
-              { 
-                label: 'Total Capacity', 
-                value: totalCapacity, 
-                icon: IconUsers, 
-                color: 'purple' 
+              {
+                label: "Total Capacity",
+                value: totalCapacity,
+                icon: IconUsers,
+                color: "purple",
               },
-              { 
-                label: 'Total Students', 
-                value: totalStudents, 
-                icon: IconFileText, 
-                color: 'orange' 
+              {
+                label: "Total Students",
+                value: totalStudents,
+                icon: IconFileText,
+                color: "orange",
               },
             ].map((stat, index) => (
               <motion.div
@@ -405,9 +423,9 @@ const SectionPage: React.FC = () => {
                 <Card
                   radius="xl"
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    background: "rgba(255, 255, 255, 0.1)",
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid rgba(255, 255, 255, 0.2)",
                   }}
                 >
                   <Group gap="sm">
@@ -420,7 +438,7 @@ const SectionPage: React.FC = () => {
                       <stat.icon size={20} />
                     </ThemeIcon>
                     <div>
-                      <Text size="xl" fw="bold" style={{ color: 'white' }}>
+                      <Text size="xl" fw="bold" style={{ color: "white" }}>
                         {stat.value}
                       </Text>
                       <Text size="sm" style={{ opacity: 0.8 }}>
@@ -434,7 +452,6 @@ const SectionPage: React.FC = () => {
           </SimpleGrid>
         </Paper>
       </motion.div>
-
       {/* Enhanced Controls */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -463,7 +480,7 @@ const SectionPage: React.FC = () => {
                   searchQuery && (
                     <ActionIcon
                       variant="subtle"
-                      onClick={() => setSearchQuery('')}
+                      onClick={() => setSearchQuery("")}
                     >
                       <IconX size={16} />
                     </ActionIcon>
@@ -476,11 +493,14 @@ const SectionPage: React.FC = () => {
                 <Select
                   placeholder="All Branches"
                   data={[
-                    { value: '', label: 'All Branches' },
-                    ...branches.map(b => ({ value: b.id.toString(), label: b.name }))
+                    { value: "", label: "All Branches" },
+                    ...branches.map((b) => ({
+                      value: b.id.toString(),
+                      label: b.name,
+                    })),
                   ]}
                   value={selectedBranch}
-                  onChange={(value) => setSelectedBranch(value || '')}
+                  onChange={(value) => setSelectedBranch(value || "")}
                   radius="xl"
                   leftSection={<IconFilter size={16} />}
                   clearable
@@ -488,11 +508,14 @@ const SectionPage: React.FC = () => {
                 <Select
                   placeholder="All Classes"
                   data={[
-                    { value: '', label: 'All Classes' },
-                    ...classes.map(c => ({ value: c.id.toString(), label: c.name }))
+                    { value: "", label: "All Classes" },
+                    ...classes.map((c) => ({
+                      value: c.id.toString(),
+                      label: c.name,
+                    })),
                   ]}
                   value={selectedClass}
-                  onChange={(value) => setSelectedClass(value || '')}
+                  onChange={(value) => setSelectedClass(value || "")}
                   radius="xl"
                   leftSection={<IconSchool size={16} />}
                   clearable
@@ -500,41 +523,53 @@ const SectionPage: React.FC = () => {
                 <Select
                   placeholder="All Status"
                   data={[
-                    { value: '', label: 'All Status' },
-                    { value: 'active', label: 'Active' },
-                    { value: 'inactive', label: 'Inactive' }
+                    { value: "", label: "All Status" },
+                    { value: "active", label: "Active" },
+                    { value: "inactive", label: "Inactive" },
                   ]}
                   value={selectedStatus}
-                  onChange={(value) => setSelectedStatus(value || '')}
+                  onChange={(value) => setSelectedStatus(value || "")}
                   radius="xl"
                   clearable
                 />
                 <Select
                   placeholder="Sort by"
                   data={[
-                    { value: 'name', label: 'Name' },
-                    { value: 'capacity', label: 'Capacity' },
-                    { value: 'students', label: 'Students' },
-                    { value: 'created_at', label: 'Date Created' }
+                    { value: "name", label: "Name" },
+                    { value: "capacity", label: "Capacity" },
+                    { value: "students", label: "Students" },
+                    { value: "created_at", label: "Date Created" },
                   ]}
                   value={sortBy}
                   onChange={(value: any) => setSortBy(value)}
                   radius="xl"
-                  leftSection={sortDirection === 'asc' ? <IconSortAscending size={16} /> : <IconSortDescending size={16} />}
+                  leftSection={
+                    sortDirection === "asc" ? (
+                      <IconSortAscending size={16} />
+                    ) : (
+                      <IconSortDescending size={16} />
+                    )
+                  }
                 />
                 <ActionIcon
                   variant="light"
                   size="lg"
                   radius="xl"
-                  onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                  onClick={() =>
+                    setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+                  }
                 >
-                  {sortDirection === 'asc' ? <IconSortAscending size={16} /> : <IconSortDescending size={16} />}
+                  {sortDirection === "asc" ? (
+                    <IconSortAscending size={16} />
+                  ) : (
+                    <IconSortDescending size={16} />
+                  )}
                 </ActionIcon>
                 <SegmentedControl
                   data={[
-                    { label: <IconGrid3x3 size={16} />, value: 'grid' },
-                    { label: <IconList size={16} />, value: 'list' },
-                    { label: <IconTableAlias size={16} />, value: 'table' },
+                    { label: <IconGrid3x3 size={16} />, value: "grid" },
+                    { label: <IconList size={16} />, value: "list" },
+                    { label: <IconTableAlias size={16} />, value: "table" },
                   ]}
                   value={viewMode}
                   onChange={(value: any) => setViewMode(value)}
@@ -544,18 +579,19 @@ const SectionPage: React.FC = () => {
             </Grid.Col>
           </Grid>
         </Paper>
-      </motion.div>
-
+      </motion.div>{" "}
       {/* Content Area */}
       {loading ? (
-        <Center h={200}>
-          <Loader size="xl" />
-        </Center>
+        <UltraLoader
+          size="lg"
+          message="Loading sections..."
+          variant="detailed"
+        />
       ) : (
         <>
           <AnimatePresence mode="wait">
             {/* Grid View */}
-            {viewMode === 'grid' && (
+            {viewMode === "grid" && (
               <motion.div
                 key="grid"
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -563,7 +599,11 @@ const SectionPage: React.FC = () => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
-                <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="lg" mb="xl">
+                <SimpleGrid
+                  cols={{ base: 1, sm: 2, md: 3, lg: 4 }}
+                  spacing="lg"
+                  mb="xl"
+                >
                   {paginatedSections.map((section, index) => (
                     <motion.div
                       key={section.id}
@@ -576,7 +616,7 @@ const SectionPage: React.FC = () => {
                         style={{
                           background: theme.bg?.elevated,
                           border: `1px solid ${theme.border}`,
-                          height: '100%',
+                          height: "100%",
                         }}
                         p="lg"
                       >
@@ -591,14 +631,24 @@ const SectionPage: React.FC = () => {
                               </ActionIcon>
                             </Menu.Target>
                             <Menu.Dropdown>
-                              <Menu.Item leftSection={<IconEye size={16} />} onClick={() => handleViewSection(section)}>
+                              <Menu.Item
+                                leftSection={<IconEye size={16} />}
+                                onClick={() => handleViewSection(section)}
+                              >
                                 View Details
                               </Menu.Item>
-                              <Menu.Item leftSection={<IconEdit size={16} />} onClick={() => handleEdit(section)}>
+                              <Menu.Item
+                                leftSection={<IconEdit size={16} />}
+                                onClick={() => handleEdit(section)}
+                              >
                                 Edit Section
                               </Menu.Item>
                               <Menu.Divider />
-                              <Menu.Item color="red" leftSection={<IconTrash size={16} />} onClick={() => handleDelete(section.id)}>
+                              <Menu.Item
+                                color="red"
+                                leftSection={<IconTrash size={16} />}
+                                onClick={() => handleDelete(section.id)}
+                              >
                                 Delete Section
                               </Menu.Item>
                             </Menu.Dropdown>
@@ -610,27 +660,38 @@ const SectionPage: React.FC = () => {
                             {section.name}
                           </Text>
                           <Text size="sm" c="dimmed" mb="md">
-                            {getClassName(section.class_id)} • {getBranchName(section.branch_id)}
+                            {getClassName(section.class_id)} •{" "}
+                            {getBranchName(section.branch_id)}
                           </Text>
 
                           <Group justify="space-between" mb="sm">
-                            <Text size="sm" c="dimmed">Capacity</Text>
-                            <Text size="sm" fw={500}>{section.capacity || 'N/A'}</Text>
+                            <Text size="sm" c="dimmed">
+                              Capacity
+                            </Text>
+                            <Text size="sm" fw={500}>
+                              {section.capacity || "N/A"}
+                            </Text>
                           </Group>
 
                           <Group justify="space-between" mb="sm">
-                            <Text size="sm" c="dimmed">Students</Text>
-                            <Text size="sm" fw={500}>{section.current_students || 0}</Text>
+                            <Text size="sm" c="dimmed">
+                              Students
+                            </Text>
+                            <Text size="sm" fw={500}>
+                              {section.current_students || 0}
+                            </Text>
                           </Group>
 
                           <Group justify="space-between" mb="md">
-                            <Text size="sm" c="dimmed">Status</Text>
+                            <Text size="sm" c="dimmed">
+                              Status
+                            </Text>
                             <Badge
                               color={getStatusColor(section.is_active)}
                               variant="light"
                               radius="xl"
                             >
-                              {section.is_active ? 'Active' : 'Inactive'}
+                              {section.is_active ? "Active" : "Inactive"}
                             </Badge>
                           </Group>
 
@@ -664,7 +725,7 @@ const SectionPage: React.FC = () => {
             )}
 
             {/* List View */}
-            {viewMode === 'list' && (
+            {viewMode === "list" && (
               <motion.div
                 key="list"
                 initial={{ opacity: 0, x: -20 }}
@@ -707,22 +768,35 @@ const SectionPage: React.FC = () => {
                                   {section.name}
                                 </Text>
                                 <Text size="xs" c="dimmed">
-                                  {getClassName(section.class_id)} • {getBranchName(section.branch_id)}
+                                  {getClassName(section.class_id)} •{" "}
+                                  {getBranchName(section.branch_id)}
                                 </Text>
                               </div>
                             </Group>
                             <Group gap="md">
-                              <Badge color={getStatusColor(section.is_active)} variant="light">
-                                {section.is_active ? 'Active' : 'Inactive'}
+                              <Badge
+                                color={getStatusColor(section.is_active)}
+                                variant="light"
+                              >
+                                {section.is_active ? "Active" : "Inactive"}
                               </Badge>
                               <Text size="sm" c="dimmed">
-                                {section.current_students || 0}/{section.capacity || 'N/A'}
+                                {section.current_students || 0}/
+                                {section.capacity || "N/A"}
                               </Text>
                               <Group gap="xs">
-                                <ActionIcon variant="light" size="sm" onClick={() => handleViewSection(section)}>
+                                <ActionIcon
+                                  variant="light"
+                                  size="sm"
+                                  onClick={() => handleViewSection(section)}
+                                >
                                   <IconEye size={16} />
                                 </ActionIcon>
-                                <ActionIcon variant="light" size="sm" onClick={() => handleEdit(section)}>
+                                <ActionIcon
+                                  variant="light"
+                                  size="sm"
+                                  onClick={() => handleEdit(section)}
+                                >
                                   <IconEdit size={16} />
                                 </ActionIcon>
                                 <Menu>
@@ -732,7 +806,11 @@ const SectionPage: React.FC = () => {
                                     </ActionIcon>
                                   </Menu.Target>
                                   <Menu.Dropdown>
-                                    <Menu.Item color="red" leftSection={<IconTrash size={16} />} onClick={() => handleDelete(section.id)}>
+                                    <Menu.Item
+                                      color="red"
+                                      leftSection={<IconTrash size={16} />}
+                                      onClick={() => handleDelete(section.id)}
+                                    >
                                       Delete
                                     </Menu.Item>
                                   </Menu.Dropdown>
@@ -749,7 +827,7 @@ const SectionPage: React.FC = () => {
             )}
 
             {/* Table View */}
-            {viewMode === 'table' && (
+            {viewMode === "table" && (
               <motion.div
                 key="table"
                 initial={{ opacity: 0, y: 20 }}
@@ -797,31 +875,47 @@ const SectionPage: React.FC = () => {
                             </Group>
                           </Table.Td>
                           <Table.Td>
-                            <Text size="sm">{getClassName(section.class_id)}</Text>
+                            <Text size="sm">
+                              {getClassName(section.class_id)}
+                            </Text>
                           </Table.Td>
                           <Table.Td>
-                            <Text size="sm">{getBranchName(section.branch_id)}</Text>
+                            <Text size="sm">
+                              {getBranchName(section.branch_id)}
+                            </Text>
                           </Table.Td>
                           <Table.Td>
-                            <Badge variant="light">{section.capacity || 'N/A'}</Badge>
+                            <Badge variant="light">
+                              {section.capacity || "N/A"}
+                            </Badge>
                           </Table.Td>
                           <Table.Td>
-                            <Text size="sm">{section.current_students || 0}</Text>
+                            <Text size="sm">
+                              {section.current_students || 0}
+                            </Text>
                           </Table.Td>
                           <Table.Td>
                             <Badge
                               color={getStatusColor(section.is_active)}
                               variant="light"
                             >
-                              {section.is_active ? 'Active' : 'Inactive'}
+                              {section.is_active ? "Active" : "Inactive"}
                             </Badge>
                           </Table.Td>
                           <Table.Td>
                             <Group gap="xs">
-                              <ActionIcon variant="light" size="sm" onClick={() => handleViewSection(section)}>
+                              <ActionIcon
+                                variant="light"
+                                size="sm"
+                                onClick={() => handleViewSection(section)}
+                              >
                                 <IconEye size={16} />
                               </ActionIcon>
-                              <ActionIcon variant="light" size="sm" onClick={() => handleEdit(section)}>
+                              <ActionIcon
+                                variant="light"
+                                size="sm"
+                                onClick={() => handleEdit(section)}
+                              >
                                 <IconEdit size={16} />
                               </ActionIcon>
                               <Menu>
@@ -831,7 +925,11 @@ const SectionPage: React.FC = () => {
                                   </ActionIcon>
                                 </Menu.Target>
                                 <Menu.Dropdown>
-                                  <Menu.Item color="red" leftSection={<IconTrash size={16} />} onClick={() => handleDelete(section.id)}>
+                                  <Menu.Item
+                                    color="red"
+                                    leftSection={<IconTrash size={16} />}
+                                    onClick={() => handleDelete(section.id)}
+                                  >
                                     Delete
                                   </Menu.Item>
                                 </Menu.Dropdown>
@@ -865,8 +963,8 @@ const SectionPage: React.FC = () => {
                 <Group justify="space-between">
                   <Text size="sm" c="dimmed">
                     Showing {(currentPage - 1) * pageSize + 1} to{" "}
-                    {Math.min(currentPage * pageSize, filteredSections.length)} of{" "}
-                    {filteredSections.length} sections
+                    {Math.min(currentPage * pageSize, filteredSections.length)}{" "}
+                    of {filteredSections.length} sections
                   </Text>
 
                   <Group gap="sm">
@@ -896,12 +994,11 @@ const SectionPage: React.FC = () => {
           )}
         </>
       )}
-
       {/* Add/Edit Section Modal */}
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title={editingSection ? 'Edit Section' : 'Add New Section'}
+        title={editingSection ? "Edit Section" : "Add New Section"}
         size="lg"
         radius="md"
       >
@@ -912,7 +1009,7 @@ const SectionPage: React.FC = () => {
                 <TextInput
                   label="Section Name"
                   placeholder="Enter section name"
-                  {...form.getInputProps('name')}
+                  {...form.getInputProps("name")}
                   required
                   radius="md"
                 />
@@ -921,8 +1018,11 @@ const SectionPage: React.FC = () => {
                 <Select
                   label="Branch"
                   placeholder="Select branch"
-                  data={branches.map(branch => ({ value: branch.id.toString(), label: branch.name }))}
-                  {...form.getInputProps('branch_id')}
+                  data={branches.map((branch) => ({
+                    value: branch.id.toString(),
+                    label: branch.name,
+                  }))}
+                  {...form.getInputProps("branch_id")}
                   required
                   radius="md"
                 />
@@ -932,9 +1032,16 @@ const SectionPage: React.FC = () => {
                   label="Class"
                   placeholder="Select class"
                   data={classes
-                    .filter(cls => !selectedBranch || cls.branch_id.toString() === form.values.branch_id)
-                    .map(cls => ({ value: cls.id.toString(), label: cls.name }))}
-                  {...form.getInputProps('class_id')}
+                    .filter(
+                      (cls) =>
+                        !selectedBranch ||
+                        cls.branch_id.toString() === form.values.branch_id
+                    )
+                    .map((cls) => ({
+                      value: cls.id.toString(),
+                      label: cls.name,
+                    }))}
+                  {...form.getInputProps("class_id")}
                   required
                   radius="md"
                 />
@@ -943,28 +1050,34 @@ const SectionPage: React.FC = () => {
                 <NumberInput
                   label="Capacity"
                   placeholder="Enter capacity"
-                  {...form.getInputProps('capacity')}
+                  {...form.getInputProps("capacity")}
                   min={0}
                   radius="md"
                 />
               </Grid.Col>
               <Grid.Col span={6}>
                 <div>
-                  <Text size="sm" fw={500} mb="xs">Status</Text>
+                  <Text size="sm" fw={500} mb="xs">
+                    Status
+                  </Text>
                   <Switch
                     label="Active"
-                    {...form.getInputProps('is_active', { type: 'checkbox' })}
+                    {...form.getInputProps("is_active", { type: "checkbox" })}
                   />
                 </div>
               </Grid.Col>
             </Grid>
 
             <Group justify="flex-end" mt="md">
-              <Button variant="light" onClick={() => setModalOpened(false)} radius="md">
+              <Button
+                variant="light"
+                onClick={() => setModalOpened(false)}
+                radius="md"
+              >
                 Cancel
               </Button>
               <Button type="submit" loading={loading} radius="md">
-                {editingSection ? 'Update' : 'Create'} Section
+                {editingSection ? "Update" : "Create"} Section
               </Button>
             </Group>
           </Stack>

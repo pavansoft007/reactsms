@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -57,7 +57,7 @@ interface Category {
   label: string;
 }
 
-const AttachmentsPageUltra: React.FC = () => {
+const AttachmentsPageUltra = () => {
   const { theme } = useTheme();
   const { academicYear } = useAcademicYear();
   const [attachments, setAttachments] = useState<Attachment[]>([]);

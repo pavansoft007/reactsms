@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -71,7 +71,7 @@ interface WhatsAppLog {
   };
 }
 
-const WhatsAppPage: React.FC = () => {
+const WhatsAppPage = () => {
   const [connectionStatus, setConnectionStatus] = useState<boolean>(false);
   const [students, setStudents] = useState<Student[]>([]);
   const [logs, setLogs] = useState<WhatsAppLog[]>([]);

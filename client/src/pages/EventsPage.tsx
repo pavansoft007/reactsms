@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -40,7 +40,7 @@ interface Branch {
   name: string;
 }
 
-const EventsPage: React.FC = () => {
+const EventsPage = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
   const [loading, setLoading] = useState(false);

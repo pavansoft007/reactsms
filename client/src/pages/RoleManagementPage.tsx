@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import { Container, Paper, Title, Tabs, Text, Group, Box } from "@mantine/core";
 import {
   IconShield,
@@ -12,7 +12,7 @@ import RolesContent from "../components/roles/RolesContent";
 import RolePermissionsContent from "../components/roles/RolePermissionsContent";
 import RoleGroupsContent from "../components/roles/RoleGroupsContent";
 
-const RoleManagementPage: React.FC = () => {
+const RoleManagementPage = () => {
   const [activeTab, setActiveTab] = useState<string>("roles");
   const [selectedRoleId, setSelectedRoleId] = useState<number | undefined>();
 

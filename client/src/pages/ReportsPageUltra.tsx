@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -30,6 +30,8 @@ import {
   UltraTable,
   UltraTableActions,
   UltraModal,
+  LoadingTableRows,
+  LoadingContainer,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -63,7 +65,7 @@ interface Report {
   parameters?: any;
 }
 
-const ReportsPageUltra: React.FC = () => {
+const ReportsPageUltra = () => {
   const { theme } = useTheme();
   const { academicYear } = useAcademicYear();
   const [reports, setReports] = useState<Report[]>([]);
@@ -433,59 +435,67 @@ const ReportsPageUltra: React.FC = () => {
                 <th>Date</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredReports.map((report) => (
-                <tr key={report.id}>
-                  <td>
-                    <Stack gap={2}>
-                      <Text fw={500} c={theme.text.primary}>
-                        {report.title}
-                      </Text>
-                      <Text size="sm" c={theme.text.muted}>
-                        {report.description}
-                      </Text>
-                    </Stack>
-                  </td>
-                  <td>
-                    <Badge
-                      variant="light"
-                      color={getTypeColor(report.type)}
-                      size="sm"
-                    >
-                      {report.type}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {report.generated_by}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {new Date(report.generated_at).toLocaleDateString()}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredReports.length}
+                colspan={5}
+                loadingMessage="Loading reports..."
+                emptyMessage="No reports found"
+              >
+                {filteredReports.map((report) => (
+                  <tr key={report.id}>
+                    <td>
+                      <Stack gap={2}>
+                        <Text fw={500} c={theme.text.primary}>
+                          {report.title}
+                        </Text>
+                        <Text size="sm" c={theme.text.muted}>
+                          {report.description}
+                        </Text>
+                      </Stack>
+                    </td>
+                    <td>
+                      <Badge
+                        variant="light"
+                        color={getTypeColor(report.type)}
                         size="sm"
-                        onClick={() => handleDownloadReport(report)}
                       >
-                        <IconDownload size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDeleteReport(report.id)}
-                      >
-                        <IconReportAnalytics size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+                        {report.type}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {report.generated_by}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {new Date(report.generated_at).toLocaleDateString()}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDownloadReport(report)}
+                        >
+                          <IconDownload size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDeleteReport(report.id)}
+                        >
+                          <IconReportAnalytics size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         )}

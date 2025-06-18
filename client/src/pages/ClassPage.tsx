@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Title,
@@ -25,7 +25,7 @@ import {
   Divider,
   SegmentedControl,
   Indicator,
-} from '@mantine/core';
+} from "@mantine/core";
 import {
   IconPlus,
   IconSearch,
@@ -42,12 +42,13 @@ import {
   IconLayoutList,
   IconRefresh,
   IconBook,
-} from '@tabler/icons-react';
-import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
-import { motion, AnimatePresence } from 'framer-motion';
-import api from '../api/config';
-import { useTheme } from '../context/ThemeContext';
+} from "@tabler/icons-react";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import { motion, AnimatePresence } from "framer-motion";
+import api from "../api/config";
+import { useTheme } from "../context/ThemeContext";
+import { UltraLoader } from "../components/ui";
 
 interface Class {
   id: number;
@@ -62,7 +63,7 @@ interface Class {
   students_count?: number;
   teacher_assigned?: string;
   grade_level?: string;
-  status?: 'active' | 'inactive';
+  status?: "active" | "inactive";
 }
 
 interface Section {
@@ -79,91 +80,104 @@ interface Branch {
   name: string;
 }
 
-const ClassPage: React.FC = () => {
+const ClassPage = () => {
   const { theme } = useTheme();
   const [classes, setClasses] = useState<Class[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [modalOpened, setModalOpened] = useState(false);
   const [editingClass, setEditingClass] = useState<Class | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'table'>('grid');
-  const [sortBy, setSortBy] = useState('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "table">("grid");
+  const [sortBy, setSortBy] = useState("name");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [pageSize, setPageSize] = useState(12);
   const form = useForm({
     initialValues: {
-      name: '',
-      description: '',
-      capacity: '',
-      branch_id: '',
-      numeric_name: '',
-      rank_order: '',
+      name: "",
+      description: "",
+      capacity: "",
+      branch_id: "",
+      numeric_name: "",
+      rank_order: "",
       is_active: true,
     },
     validate: {
-      name: (value) => (!value ? 'Class name is required' : null),
-      capacity: (value) => (!value || isNaN(Number(value)) ? 'Valid capacity is required' : null),
-      branch_id: (value) => (!value ? 'Branch is required' : null),
+      name: (value) => (!value ? "Class name is required" : null),
+      capacity: (value) =>
+        !value || isNaN(Number(value)) ? "Valid capacity is required" : null,
+      branch_id: (value) => (!value ? "Branch is required" : null),
     },
   });
 
-  const fetchClasses = useCallback(async (page = 1, search = '', branchId = '') => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        page: page.toString(),
-        limit: pageSize.toString(),
-        ...(search && { search }),
-        ...(branchId && { branch_id: branchId }),
-      }).toString();
-      const response = await api.get(`/api/classes?${params}`);
-      
-      // Enhance classes data with demo-like properties
-      const enhancedClasses = (response.data.classes || response.data.data || []).map((classItem: Class) => ({
-        ...classItem,
-        students_count: classItem.students_count || Math.floor(Math.random() * 30) + 10,
-        teacher_assigned: classItem.teacher_assigned || 'Not Assigned',
-        grade_level: classItem.grade_level || ['Elementary', 'Middle', 'High'][Math.floor(Math.random() * 3)],
-        capacity: classItem.capacity || Math.floor(Math.random() * 20) + 30,
-        status: classItem.is_active ? 'active' : 'inactive',
-      }));
-      
-      setClasses(enhancedClasses);
-      setTotalPages(response.data.totalPages || 1);
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to fetch classes',
-        color: 'red',
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [pageSize]);
+  const fetchClasses = useCallback(
+    async (page = 1, search = "", branchId = "") => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: pageSize.toString(),
+          ...(search && { search }),
+          ...(branchId && { branch_id: branchId }),
+        }).toString();
+        const response = await api.get(`/api/classes?${params}`);
+
+        // Enhance classes data with demo-like properties
+        const enhancedClasses = (
+          response.data.classes ||
+          response.data.data ||
+          []
+        ).map((classItem: Class) => ({
+          ...classItem,
+          students_count:
+            classItem.students_count || Math.floor(Math.random() * 30) + 10,
+          teacher_assigned: classItem.teacher_assigned || "Not Assigned",
+          grade_level:
+            classItem.grade_level ||
+            ["Elementary", "Middle", "High"][Math.floor(Math.random() * 3)],
+          capacity: classItem.capacity || Math.floor(Math.random() * 20) + 30,
+          status: classItem.is_active ? "active" : "inactive",
+        }));
+
+        setClasses(enhancedClasses);
+        setTotalPages(response.data.totalPages || 1);
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+        notifications.show({
+          title: "Error",
+          message: "Failed to fetch classes",
+          color: "red",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [pageSize]
+  );
 
   const fetchBranches = async () => {
     try {
-      const response = await api.get('/api/branches');
+      const response = await api.get("/api/branches");
       setBranches(response.data.branches || response.data.data || []);
     } catch (error) {
-      console.error('Error fetching branches:', error);
+      console.error("Error fetching branches:", error);
     }
   };
   useEffect(() => {
-    fetchClasses(1, '', selectedBranch || '');
+    fetchClasses(1, "", selectedBranch || "");
     fetchBranches();
   }, [fetchClasses, selectedBranch]);
 
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      const endpoint = editingClass ? `/api/classes/${editingClass.id}` : '/api/classes';
-      const method = editingClass ? 'put' : 'post';
+      const endpoint = editingClass
+        ? `/api/classes/${editingClass.id}`
+        : "/api/classes";
+      const method = editingClass ? "put" : "post";
       await api[method](endpoint, {
         ...values,
         capacity: Number(values.capacity),
@@ -171,19 +185,21 @@ const ClassPage: React.FC = () => {
         rank_order: values.rank_order ? Number(values.rank_order) : null,
       });
       notifications.show({
-        title: 'Success',
-        message: `Class ${editingClass ? 'updated' : 'created'} successfully`,
-        color: 'green',
+        title: "Success",
+        message: `Class ${editingClass ? "updated" : "created"} successfully`,
+        color: "green",
       });
       setModalOpened(false);
       setEditingClass(null);
       form.reset();
-      fetchClasses(1, '', selectedBranch || '');
+      fetchClasses(1, "", selectedBranch || "");
     } catch (error: any) {
       notifications.show({
-        title: 'Error',
-        message: error.response?.data?.error || `Failed to ${editingClass ? 'update' : 'create'} class`,
-        color: 'red',
+        title: "Error",
+        message:
+          error.response?.data?.error ||
+          `Failed to ${editingClass ? "update" : "create"} class`,
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -194,11 +210,11 @@ const ClassPage: React.FC = () => {
     setEditingClass(classItem);
     form.setValues({
       name: classItem.name,
-      description: classItem.description || '',
-      capacity: classItem.capacity?.toString() || '',
-      branch_id: classItem.branch_id?.toString() || '',
-      numeric_name: classItem.numeric_name?.toString() || '',
-      rank_order: classItem.rank_order?.toString() || '',
+      description: classItem.description || "",
+      capacity: classItem.capacity?.toString() || "",
+      branch_id: classItem.branch_id?.toString() || "",
+      numeric_name: classItem.numeric_name?.toString() || "",
+      rank_order: classItem.rank_order?.toString() || "",
       is_active: classItem.is_active ?? true,
     });
     setModalOpened(true);
@@ -209,16 +225,16 @@ const ClassPage: React.FC = () => {
     try {
       await api.delete(`/api/classes/${classId}`);
       notifications.show({
-        title: 'Success',
-        message: 'Class deleted successfully',
-        color: 'green',
+        title: "Success",
+        message: "Class deleted successfully",
+        color: "green",
       });
-      fetchClasses(currentPage, searchQuery, selectedBranch || '');
+      fetchClasses(currentPage, searchQuery, selectedBranch || "");
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to delete class',
-        color: 'red',
+        title: "Error",
+        message: "Failed to delete class",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -227,42 +243,49 @@ const ClassPage: React.FC = () => {
 
   const handleSearch = () => {
     setCurrentPage(1);
-    fetchClasses(1, searchQuery, selectedBranch || '');
+    fetchClasses(1, searchQuery, selectedBranch || "");
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active':
-        return 'green';
-      case 'inactive':
-        return 'gray';
+      case "active":
+        return "green";
+      case "inactive":
+        return "gray";
       default:
-        return 'blue';
+        return "blue";
     }
   };
   const handleViewClass = (classItem: Class) => {
     notifications.show({
-      title: 'View Class',
+      title: "View Class",
       message: `Viewing ${classItem.name} details...`,
-      color: 'blue',
+      color: "blue",
     });
   };
 
   // Calculate stats
   const stats = {
     total: classes.length,
-    active: classes.filter((c) => c.status === 'active').length,
+    active: classes.filter((c) => c.status === "active").length,
     totalCapacity: classes.reduce((sum, c) => sum + (c.capacity || 0), 0),
-    avgCapacity: classes.length > 0 
-      ? Math.round(classes.reduce((sum, c) => sum + (c.capacity || 0), 0) / classes.length)
-      : 0,
+    avgCapacity:
+      classes.length > 0
+        ? Math.round(
+            classes.reduce((sum, c) => sum + (c.capacity || 0), 0) /
+              classes.length
+          )
+        : 0,
   };
 
   // Filter and sort classes
   const filteredClasses = classes.filter((classItem) => {
-    const matchesSearch = classItem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         classItem.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         classItem.grade_level?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      classItem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      classItem.description
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      classItem.grade_level?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
 
@@ -436,7 +459,8 @@ const ClassPage: React.FC = () => {
             </Card>
           </motion.div>
         </SimpleGrid>
-      </Paper>    </motion.div>
+      </Paper>{" "}
+    </motion.div>
   );
 
   const renderControls = () => (
@@ -461,7 +485,7 @@ const ClassPage: React.FC = () => {
               leftSection={<IconSearch size={16} />}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
               style={{ minWidth: 300 }}
               radius="xl"
               size="md"
@@ -471,7 +495,10 @@ const ClassPage: React.FC = () => {
               placeholder="All Branches"
               data={[
                 { label: "All Branches", value: "" },
-                ...branches.map(branch => ({ label: branch.name, value: branch.id.toString() }))
+                ...branches.map((branch) => ({
+                  label: branch.name,
+                  value: branch.id.toString(),
+                })),
               ]}
               value={selectedBranch}
               onChange={setSelectedBranch}
@@ -493,7 +520,9 @@ const ClassPage: React.FC = () => {
                 { label: "Table", value: "table" },
               ]}
               value={viewMode}
-              onChange={(value) => setViewMode(value as "grid" | "list" | "table")}
+              onChange={(value) =>
+                setViewMode(value as "grid" | "list" | "table")
+              }
               radius="xl"
             />
 
@@ -531,12 +560,15 @@ const ClassPage: React.FC = () => {
               variant="light"
               size="xl"
               radius="xl"
-              onClick={() => fetchClasses(currentPage, searchQuery, selectedBranch || '')}
+              onClick={() =>
+                fetchClasses(currentPage, searchQuery, selectedBranch || "")
+              }
             >
               <IconRefresh size={18} />
             </ActionIcon>
           </Group>
-        </Group>      </Paper>
+        </Group>{" "}
+      </Paper>
     </motion.div>
   );
 
@@ -574,7 +606,7 @@ const ClassPage: React.FC = () => {
           <Group gap="sm">
             <Indicator
               size={12}
-              color={getStatusColor(classItem.status || 'active')}
+              color={getStatusColor(classItem.status || "active")}
               position="bottom-end"
               withBorder
             >
@@ -647,11 +679,11 @@ const ClassPage: React.FC = () => {
               Status
             </Text>
             <Badge
-              color={getStatusColor(classItem.status || 'active')}
+              color={getStatusColor(classItem.status || "active")}
               variant="light"
               radius="xl"
             >
-              {(classItem.status || 'active').toUpperCase()}
+              {(classItem.status || "active").toUpperCase()}
             </Badge>
           </Group>
 
@@ -676,15 +708,23 @@ const ClassPage: React.FC = () => {
               Enrollment
             </Text>
             <Text size="sm" fw={500}>
-              {Math.round(((classItem.students_count || 0) / (classItem.capacity || 1)) * 100)}%
+              {Math.round(
+                ((classItem.students_count || 0) / (classItem.capacity || 1)) *
+                  100
+              )}
+              %
             </Text>
           </Group>
           <Progress
-            value={((classItem.students_count || 0) / (classItem.capacity || 1)) * 100}
+            value={
+              ((classItem.students_count || 0) / (classItem.capacity || 1)) *
+              100
+            }
             color={
-              ((classItem.students_count || 0) / (classItem.capacity || 1)) > 0.9
+              (classItem.students_count || 0) / (classItem.capacity || 1) > 0.9
                 ? "red"
-                : ((classItem.students_count || 0) / (classItem.capacity || 1)) > 0.7
+                : (classItem.students_count || 0) / (classItem.capacity || 1) >
+                  0.7
                 ? "yellow"
                 : "green"
             }
@@ -708,12 +748,13 @@ const ClassPage: React.FC = () => {
   return (
     <Container size="xl" py="xl">
       {renderHeader()}
-      {renderControls()}
-
+      {renderControls()}{" "}
       {loading ? (
-        <Stack align="center" py={60}>
-          <Text>Loading classes...</Text>
-        </Stack>
+        <UltraLoader
+          size="lg"
+          message="Loading classes..."
+          variant="detailed"
+        />
       ) : paginatedClasses.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -823,18 +864,28 @@ const ClassPage: React.FC = () => {
                           </Table.Td>
                           <Table.Td>
                             <Badge
-                              color={getStatusColor(classItem.status || 'active')}
+                              color={getStatusColor(
+                                classItem.status || "active"
+                              )}
                               variant="light"
                             >
-                              {(classItem.status || 'active').toUpperCase()}
+                              {(classItem.status || "active").toUpperCase()}
                             </Badge>
                           </Table.Td>
                           <Table.Td>
                             <Group gap="xs">
-                              <ActionIcon variant="light" size="sm" onClick={() => handleViewClass(classItem)}>
+                              <ActionIcon
+                                variant="light"
+                                size="sm"
+                                onClick={() => handleViewClass(classItem)}
+                              >
                                 <IconEye size={16} />
                               </ActionIcon>
-                              <ActionIcon variant="light" size="sm" onClick={() => handleEdit(classItem)}>
+                              <ActionIcon
+                                variant="light"
+                                size="sm"
+                                onClick={() => handleEdit(classItem)}
+                              >
                                 <IconEdit size={16} />
                               </ActionIcon>
                               <Menu>
@@ -844,7 +895,11 @@ const ClassPage: React.FC = () => {
                                   </ActionIcon>
                                 </Menu.Target>
                                 <Menu.Dropdown>
-                                  <Menu.Item color="red" leftSection={<IconTrash size={16} />} onClick={() => handleDelete(classItem.id)}>
+                                  <Menu.Item
+                                    color="red"
+                                    leftSection={<IconTrash size={16} />}
+                                    onClick={() => handleDelete(classItem.id)}
+                                  >
                                     Delete
                                   </Menu.Item>
                                 </Menu.Dropdown>
@@ -878,8 +933,8 @@ const ClassPage: React.FC = () => {
                 <Group justify="space-between">
                   <Text size="sm" c="dimmed">
                     Showing {(currentPage - 1) * pageSize + 1} to{" "}
-                    {Math.min(currentPage * pageSize, filteredClasses.length)} of{" "}
-                    {filteredClasses.length} classes
+                    {Math.min(currentPage * pageSize, filteredClasses.length)}{" "}
+                    of {filteredClasses.length} classes
                   </Text>
 
                   <Group gap="sm">
@@ -899,7 +954,7 @@ const ClassPage: React.FC = () => {
                       value={currentPage}
                       onChange={(page) => {
                         setCurrentPage(page);
-                        fetchClasses(page, searchQuery, selectedBranch || '');
+                        fetchClasses(page, searchQuery, selectedBranch || "");
                       }}
                       total={totalPages}
                       size="sm"
@@ -912,12 +967,11 @@ const ClassPage: React.FC = () => {
           )}
         </>
       )}
-
       {/* Add/Edit Class Modal */}
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title={editingClass ? 'Edit Class' : 'Add New Class'}
+        title={editingClass ? "Edit Class" : "Add New Class"}
         size="lg"
       >
         <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -927,7 +981,7 @@ const ClassPage: React.FC = () => {
                 <TextInput
                   label="Class Name"
                   placeholder="Enter class name"
-                  {...form.getInputProps('name')}
+                  {...form.getInputProps("name")}
                   required
                 />
               </Grid.Col>
@@ -935,8 +989,11 @@ const ClassPage: React.FC = () => {
                 <Select
                   label="Branch"
                   placeholder="Select branch"
-                  data={branches.map(branch => ({ value: branch.id.toString(), label: branch.name }))}
-                  {...form.getInputProps('branch_id')}
+                  data={branches.map((branch) => ({
+                    value: branch.id.toString(),
+                    label: branch.name,
+                  }))}
+                  {...form.getInputProps("branch_id")}
                   required
                 />
               </Grid.Col>
@@ -945,7 +1002,7 @@ const ClassPage: React.FC = () => {
                   label="Capacity"
                   placeholder="Enter capacity"
                   type="number"
-                  {...form.getInputProps('capacity')}
+                  {...form.getInputProps("capacity")}
                   required
                 />
               </Grid.Col>
@@ -954,14 +1011,14 @@ const ClassPage: React.FC = () => {
                   label="Numeric Name"
                   placeholder="Enter numeric name (optional)"
                   type="number"
-                  {...form.getInputProps('numeric_name')}
+                  {...form.getInputProps("numeric_name")}
                 />
               </Grid.Col>
               <Grid.Col span={12}>
                 <Textarea
                   label="Description"
                   placeholder="Enter class description (optional)"
-                  {...form.getInputProps('description')}
+                  {...form.getInputProps("description")}
                 />
               </Grid.Col>
             </Grid>
@@ -971,11 +1028,12 @@ const ClassPage: React.FC = () => {
                 Cancel
               </Button>
               <Button type="submit" loading={loading}>
-                {editingClass ? 'Update' : 'Create'} Class
+                {editingClass ? "Update" : "Create"} Class
               </Button>
             </Group>
           </Stack>
-        </form>      </Modal>
+        </form>{" "}
+      </Modal>
     </Container>
   );
 };

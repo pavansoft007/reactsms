@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Paper,
@@ -75,7 +75,7 @@ interface Student {
   };
 }
 
-const StudentsListPage: React.FC = () => {
+const StudentsListPage = () => {
   const { theme } = useTheme();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(false);

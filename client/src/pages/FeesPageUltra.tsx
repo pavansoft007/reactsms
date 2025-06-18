@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -29,6 +29,7 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  LoadingTableRows,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -63,7 +64,7 @@ interface FeeType {
   amount: number;
 }
 
-const FeesPageUltra: React.FC = () => {
+const FeesPageUltra = () => {
   const { theme } = useTheme();
   const { academicYear } = useAcademicYear();
   const [fees, setFees] = useState<Fee[]>([]);
@@ -420,89 +421,97 @@ const FeesPageUltra: React.FC = () => {
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredFees.map((fee) => (
-                <tr key={fee.id}>
-                  <td>
-                    <Group gap="sm">
-                      <Avatar
-                        radius="xl"
-                        size="md"
-                        style={{
-                          border: `2px solid ${theme.colors.primary}22`,
-                        }}
-                      >
-                        {fee.student_name?.charAt(0)?.toUpperCase()}
-                      </Avatar>
-                      <Stack gap={2}>
-                        <Text fw={500} c={theme.text.primary}>
-                          {fee.student_name}
-                        </Text>
-                        <Text size="sm" c={theme.text.muted}>
-                          ID: {fee.student_id}
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </td>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {fee.class_name}
-                    </Text>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="blue" size="sm">
-                      {fee.fee_type}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {formatCurrency(fee.amount)}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text fw={500} c="green" size="sm">
-                      {formatCurrency(fee.paid_amount)}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text fw={500} c="orange" size="sm">
-                      {formatCurrency(fee.pending_amount)}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {new Date(fee.due_date).toLocaleDateString()}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableBadge variant={getStatusVariant(fee.status)}>
-                      {fee.status}
-                    </UltraTableBadge>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(fee)}
-                      >
-                        <IconEdit size={16} />
-                      </UltraButton>
-                      <UltraButton variant="ghost" size="sm">
-                        <IconReceipt size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(fee.id)}
-                      >
-                        <IconCurrencyRupee size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredFees.length}
+                colspan={8}
+                loadingMessage="Loading fees..."
+                emptyMessage="No fees found"
+              >
+                {filteredFees.map((fee) => (
+                  <tr key={fee.id}>
+                    <td>
+                      <Group gap="sm">
+                        <Avatar
+                          radius="xl"
+                          size="md"
+                          style={{
+                            border: `2px solid ${theme.colors.primary}22`,
+                          }}
+                        >
+                          {fee.student_name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Stack gap={2}>
+                          <Text fw={500} c={theme.text.primary}>
+                            {fee.student_name}
+                          </Text>
+                          <Text size="sm" c={theme.text.muted}>
+                            ID: {fee.student_id}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </td>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {fee.class_name}
+                      </Text>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="blue" size="sm">
+                        {fee.fee_type}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {formatCurrency(fee.amount)}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text fw={500} c="green" size="sm">
+                        {formatCurrency(fee.paid_amount)}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text fw={500} c="orange" size="sm">
+                        {formatCurrency(fee.pending_amount)}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {new Date(fee.due_date).toLocaleDateString()}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableBadge variant={getStatusVariant(fee.status)}>
+                        {fee.status}
+                      </UltraTableBadge>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(fee)}
+                        >
+                          <IconEdit size={16} />
+                        </UltraButton>
+                        <UltraButton variant="ghost" size="sm">
+                          <IconReceipt size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(fee.id)}
+                        >
+                          <IconCurrencyRupee size={16} />
+                        </UltraButton>
+                      </UltraTableActions>{" "}
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         )}

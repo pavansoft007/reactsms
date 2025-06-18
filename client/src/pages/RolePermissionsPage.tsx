@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import {  useState, useEffect, useCallback , Fragment } from 'react';
 import {
   Container,
   Paper,
@@ -9,7 +9,6 @@ import {
   Group,
   Button,
   Select,
-  LoadingOverlay,
   Badge,
   Box,
   Collapse,
@@ -26,6 +25,7 @@ import {
 } from "@tabler/icons-react";
 import { useSearchParams } from "react-router-dom";
 import api from "../api/config";
+import { UltraLoader } from "../components/ui";
 
 // Define all features that can have permissions grouped by category
 const PERMISSION_CATEGORIES = {
@@ -99,7 +99,7 @@ interface Role {
   permissions?: Permission[];
 }
 
-const RolePermissionsPage: React.FC = () => {
+const RolePermissionsPage = () => {
   const [searchParams] = useSearchParams();
   const roleIdFromUrl = searchParams.get("roleId");
 
@@ -347,8 +347,16 @@ const RolePermissionsPage: React.FC = () => {
           border: "1px solid rgba(255,255,255,0.1)",
         }}
       >
+        {" "}
         <div style={{ position: "relative" }}>
-          <LoadingOverlay visible={loading} />
+          {loading && (
+            <UltraLoader
+              fullscreen
+              size="lg"
+              message="Loading role permissions..."
+              variant="detailed"
+            />
+          )}
 
           <Group justify="space-between" mb="lg">
             <Group gap="sm">
@@ -513,7 +521,7 @@ const RolePermissionsPage: React.FC = () => {
                     </Table.Tr>
                     {Object.entries(PERMISSION_CATEGORIES).map(
                       ([category, features]) => (
-                        <React.Fragment key={category}>
+                        <Fragment key={category}>
                           <Table.Tr
                             style={{ background: "rgba(102, 126, 234, 0.05)" }}
                           >
@@ -747,7 +755,7 @@ const RolePermissionsPage: React.FC = () => {
                               </Collapse>
                             </Table.Td>
                           </Table.Tr>
-                        </React.Fragment>
+                        </Fragment>
                       )
                     )}
                   </Table.Tbody>

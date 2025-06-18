@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Title,
@@ -67,7 +67,7 @@ interface ReportData {
   }>;
 }
 
-const FinancialReports: React.FC = () => {
+const FinancialReports = () => {
   const [loading, setLoading] = useState(false);
   const [reportData, setReportData] = useState<ReportData>({});
   const [reportType, setReportType] = useState<string>('collection_summary');

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import {  useState, useEffect , createElement } from 'react';
 import {
   Grid,
   Text,
@@ -55,7 +55,7 @@ interface RecentActivity {
   upcomingEvents: any[];
 }
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentActivity, setRecentActivity] = useState<RecentActivity | null>(
     null
@@ -122,7 +122,7 @@ const Dashboard: React.FC = () => {
             border: `1px solid ${color}30`,
           }}
         >
-          {React.createElement(icon, { size: 24, color })}
+          {createElement(icon, { size: 24, color })}
         </Box>
         {change && (
           <Badge

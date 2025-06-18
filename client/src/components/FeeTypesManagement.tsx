@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Title,
@@ -44,7 +44,7 @@ interface FeeType {
   created_at: string;
 }
 
-const FeeTypesManagement: React.FC = () => {
+const FeeTypesManagement = () => {
   const [feeTypes, setFeeTypes] = useState<FeeType[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

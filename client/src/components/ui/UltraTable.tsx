@@ -1,4 +1,3 @@
-import React from "react";
 import { Table, TableProps, ScrollArea, Group, Badge } from "@mantine/core";
 import { useTheme } from "../../context/ThemeContext";
 
@@ -10,7 +9,7 @@ interface UltraTableProps extends Omit<TableProps, "variant"> {
   maxHeight?: number;
 }
 
-const UltraTable: React.FC<UltraTableProps> = ({
+const UltraTable = ({
   variant = "default",
   striped = true,
   hoverable = true,
@@ -124,7 +123,7 @@ const UltraTable: React.FC<UltraTableProps> = ({
 };
 
 // Action icons for table rows
-export const UltraTableActions: React.FC<{ children: React.ReactNode }> = ({
+export const UltraTableActions = ({
   children,
 }) => {
   return (
@@ -135,10 +134,7 @@ export const UltraTableActions: React.FC<{ children: React.ReactNode }> = ({
 };
 
 // Status badge for table cells
-export const UltraTableBadge: React.FC<{
-  variant?: "success" | "warning" | "error" | "info" | "default";
-  children: React.ReactNode;
-}> = ({ variant = "default", children }) => {
+export const UltraTableBadge = ({ variant = "default", children }) => {
   const { theme } = useTheme();
 
   const colors = {

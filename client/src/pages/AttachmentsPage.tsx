@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAcademicYear } from '../context/AcademicYearContext';
 
-const AttachmentsPage: React.FC = () => {
+const AttachmentsPage = () => {
   const { academicYear } = useAcademicYear();
   const [attachments, setAttachments] = useState([]);
 

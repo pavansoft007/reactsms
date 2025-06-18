@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Title,
@@ -69,7 +69,7 @@ interface PaymentData {
   fine?: number;
 }
 
-const FeeCollectionInterface: React.FC = () => {
+const FeeCollectionInterface = () => {
   const [fees, setFees] = useState<Fee[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Container,
   Table,
@@ -21,7 +21,7 @@ interface RoleGroupType {
   is_active?: boolean;
 }
 
-const RoleGroupPage: React.FC = () => {
+const RoleGroupPage = () => {
   const [roleGroups, setRoleGroups] = useState<RoleGroupType[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);

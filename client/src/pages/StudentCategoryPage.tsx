@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Container,
   Paper,
@@ -43,7 +43,7 @@ interface Branch {
   name: string;
 }
 
-const StudentCategoryPage: React.FC = () => {
+const StudentCategoryPage = () => {
   // State
   const [categories, setCategories] = useState<StudentCategoryType[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);

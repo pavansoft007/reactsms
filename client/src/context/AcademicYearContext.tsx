@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
-
+import { createContext, useContext, useState } from 'react';
 export type AcademicYear = { id: number; school_year: string };
 
 interface AcademicYearContextType {
@@ -11,7 +10,7 @@ interface AcademicYearContextType {
 
 const AcademicYearContext = createContext<AcademicYearContextType | undefined>(undefined);
 
-export const AcademicYearProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AcademicYearProvider = ({ children }) => {
   const [academicYear, setAcademicYear] = useState<AcademicYear | null>(null);
   const [years, setYears] = useState<AcademicYear[]>([]);
   return (

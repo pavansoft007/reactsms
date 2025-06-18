@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container, Title, Button, Stack, Grid, TextInput, Select, Textarea, Group, FileInput, PasswordInput, Divider, LoadingOverlay, Checkbox
 } from '@mantine/core';
@@ -7,7 +7,7 @@ import { useAcademicYear } from '../context/AcademicYearContext';
 import api from '../api/config';
 import { notifications } from '@mantine/notifications';
 
-const AdmissionCreate: React.FC = () => {
+const AdmissionCreate = () => {
   const { academicYear } = useAcademicYear();
   
   // State for dropdown data

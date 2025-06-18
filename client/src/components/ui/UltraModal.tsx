@@ -1,14 +1,14 @@
-import React from "react";
+import { ReactNode } from 'react';
 import { Modal, ModalProps } from "@mantine/core";
 import { useTheme } from "../../context/ThemeContext";
 
 interface UltraModalProps extends Omit<ModalProps, "title"> {
-  title?: React.ReactNode;
+  title?: ReactNode;
   variant?: "default" | "glass" | "minimal" | "fullscreen";
   blur?: boolean;
 }
 
-const UltraModal: React.FC<UltraModalProps> = ({
+const UltraModal = ({
   title,
   variant = "default",
   blur = true,

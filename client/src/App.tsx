@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -53,11 +53,7 @@ import ListingPagesDemo from "./pages/ListingPagesDemo";
 import { AcademicYearProvider } from "./context/AcademicYearContext";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
-function MantineThemeWrapper({
-  children,
-}: {
-  readonly children: React.ReactNode;
-}) {
+function MantineThemeWrapper({ children }: { readonly children: ReactNode }) {
   const { colorScheme } = useTheme();
 
   const mantineTheme = {
@@ -71,16 +67,14 @@ function MantineThemeWrapper({
 function App() {
   return (
     <ThemeProvider>
-      <AcademicYearProvider>
-        <MantineThemeWrapper>
-          <ModalsProvider>
-            <Notifications position="top-right" />
-            <Router>
-              <AppContent />
-            </Router>
-          </ModalsProvider>
-        </MantineThemeWrapper>
-      </AcademicYearProvider>
+      <MantineThemeWrapper>
+        <ModalsProvider>
+          <Notifications position="top-right" />
+          <Router>
+            <AppContent />
+          </Router>
+        </ModalsProvider>
+      </MantineThemeWrapper>
     </ThemeProvider>
   );
 }
@@ -95,8 +89,8 @@ function AppContent() {
 
   const content = (
     <div className="App">
+      {" "}
       <Routes>
-        {" "}
         <Route path="/login" element={<LoginPage />} />
         {isAuthenticated ? (
           <>
@@ -136,7 +130,7 @@ function AppContent() {
             <Route
               path="frontend/*"
               element={<div>Frontend Management - Coming Soon</div>}
-            />{" "}
+            />
             <Route path="admission/create" element={<AdmissionCreate />} />
             <Route
               path="admission/*"
@@ -209,12 +203,17 @@ function AppContent() {
       </Routes>
     </div>
   );
-  // Conditionally wrap with DoubleNavbar
-  return showLayout ? (
-    <DoubleNavbarUltra>{content}</DoubleNavbarUltra>
-  ) : (
-    content
-  );
+
+  // Conditionally wrap with DoubleNavbar and AcademicYearProvider
+  if (showLayout && isAuthenticated) {
+    return (
+      <AcademicYearProvider>
+        <DoubleNavbarUltra>{content}</DoubleNavbarUltra>
+      </AcademicYearProvider>
+    );
+  }
+
+  return content;
 }
 
 export default App;

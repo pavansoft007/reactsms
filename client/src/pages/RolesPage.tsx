@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -9,7 +9,6 @@ import {
   ActionIcon,
   Stack,
   Text,
-  LoadingOverlay,
   Tabs,
   Badge,
   Switch,
@@ -29,6 +28,7 @@ import {
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/config";
+import { UltraLoader } from "../components/ui";
 
 interface Role {
   id: number;
@@ -40,7 +40,7 @@ interface Role {
   updated_at?: string;
 }
 
-const RolesPage: React.FC = () => {
+const RolesPage = () => {
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(false);
@@ -171,9 +171,17 @@ const RolesPage: React.FC = () => {
 
   return (
     <Container size="xl" py="md">
+      {" "}
       <Paper shadow="sm" p="md" radius="md">
         <div style={{ position: "relative" }}>
-          <LoadingOverlay visible={loading} />
+          {loading && (
+            <UltraLoader
+              fullscreen
+              size="lg"
+              message="Managing roles..."
+              variant="detailed"
+            />
+          )}
           <Tabs
             value={activeTab}
             onChange={(value) => setActiveTab(value || "list")}
@@ -322,7 +330,6 @@ const RolesPage: React.FC = () => {
           </Tabs>
         </div>
       </Paper>
-
       {/* View Role Modal */}
       <Modal
         opened={viewModalOpen}

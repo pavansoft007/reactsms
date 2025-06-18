@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Group,
@@ -63,7 +63,7 @@ interface Branch {
   name: string;
 }
 
-const EmployeePageUltra: React.FC = () => {
+const EmployeePageUltra = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [departments] = useState<Department[]>([
     { id: 1, name: "Administration" },

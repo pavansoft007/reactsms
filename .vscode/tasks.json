@@ -4,7 +4,23 @@
 		{
 			"label": "Start Dev Server",
 			"type": "shell",
-			"command": "npm run dev",
+			"command": "yarn dev",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Dev Server (Fast)",
+			"type": "shell",
+			"command": "yarn dev:fast",
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start Client Only (Fast)",
+			"type": "shell",
+			"command": "yarn client:fast",
 			"group": "build",
 			"isBackground": true,
 			"problemMatcher": []

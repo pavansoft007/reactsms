@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Group,
@@ -51,7 +51,7 @@ interface TopBarUltraProps {
   schoolLogo?: string;
 }
 
-const TopBarUltra: React.FC<TopBarUltraProps> = ({
+const TopBarUltra = ({
   schoolName: propSchoolName,
   schoolLogo: propSchoolLogo,
 }) => {
@@ -129,7 +129,8 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
 
             console.log("Setting school info:", schoolData);
             setSchoolInfo(schoolData);
-          }        } else {
+          }
+        } else {
           console.warn("No branches found in response");
         }
       } catch (error) {
@@ -143,25 +144,32 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
       } finally {
         setIsLoadingSchoolInfo(false);
       }
-    };    fetchSchoolInfo();
+    };
+    fetchSchoolInfo();
   }, [propSchoolName, propSchoolLogo]);
-
   // Load academic years using the same logic as TopBar.tsx
   useEffect(() => {
+    // Only fetch academic years if user is authenticated
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.log("No token found, skipping academic years fetch");
+      return;
+    }
+
     const loadAcademicYears = async () => {
       try {
         setIsLoadingAcademicYears(true);
-        console.log('Fetching academic years...');
+        console.log("Fetching academic years...");
         const academicYears = await fetchAcademicYears();
-        console.log('Academic years fetched:', academicYears);
+        console.log("Academic years fetched:", academicYears);
         setYears(academicYears);
-        
+
         // Set the first year as default if no year is selected
         if (academicYears.length > 0 && !academicYear) {
           setAcademicYear(academicYears[0]);
         }
       } catch (error) {
-        console.error('Failed to fetch academic years:', error);
+        console.error("Failed to fetch academic years:", error);
         // Set fallback academic years if API fails
         const currentYear = new Date().getFullYear();
         const fallbackYears = [
@@ -313,7 +321,8 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
 
       {/* Right Section - Controls */}
       <Group gap="md">
-        {" "}        {/* Academic Year Selector */}
+        {" "}
+        {/* Academic Year Selector */}
         <Menu position="bottom-end" withArrow>
           <Menu.Target>
             <Tooltip label="Academic Year" withArrow>
@@ -352,15 +361,21 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
             }}
           >
             <Menu.Label>
-              {academicYear ? `Academic Year: ${academicYear.school_year}` : 'Select Academic Year'}
+              {academicYear
+                ? `Academic Year: ${academicYear.school_year}`
+                : "Select Academic Year"}
             </Menu.Label>
             {isLoadingAcademicYears ? (
               <Menu.Item disabled>
-                <Text size="sm" color="dimmed">Loading...</Text>
+                <Text size="sm" color="dimmed">
+                  Loading...
+                </Text>
               </Menu.Item>
             ) : years.length === 0 ? (
               <Menu.Item disabled>
-                <Text size="sm" color="dimmed">No academic years available</Text>
+                <Text size="sm" color="dimmed">
+                  No academic years available
+                </Text>
               </Menu.Item>
             ) : (
               years.map((year) => (
@@ -369,13 +384,13 @@ const TopBarUltra: React.FC<TopBarUltraProps> = ({
                   onClick={() => setAcademicYear(year)}
                   style={{
                     background:
-                      academicYear?.id === year.id
-                        ? "#0ea5e9"
-                        : "transparent",
+                      academicYear?.id === year.id ? "#0ea5e9" : "transparent",
                     color:
                       academicYear?.id === year.id
                         ? "#ffffff"
-                        : isDark ? "#e5e7eb" : "#374151",
+                        : isDark
+                        ? "#e5e7eb"
+                        : "#374151",
                   }}
                 >
                   <Group justify="space-between">

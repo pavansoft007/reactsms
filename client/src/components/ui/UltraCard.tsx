@@ -1,16 +1,16 @@
-import React from "react";
+import { ReactNode } from 'react';
 import { Paper, PaperProps } from "@mantine/core";
 import { useTheme } from "../../context/ThemeContext";
 
 interface UltraCardProps extends Omit<PaperProps, "children"> {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: "default" | "elevated" | "glassmorphic" | "gradient";
   blur?: boolean;
   glow?: boolean;
   hover?: boolean;
 }
 
-const UltraCard: React.FC<UltraCardProps> = ({
+const UltraCard = ({
   children,
   variant = "default",
   blur = false,

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState , ReactNode } from 'react';
 import {
   Box,
   Title,
@@ -182,10 +182,10 @@ const mainCategories = [
 ];
 
 interface DoubleNavbarUltraProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-const DoubleNavbarUltra: React.FC<DoubleNavbarUltraProps> = ({ children }) => {
+const DoubleNavbarUltra = ({ children }) => {
   const { theme, isDark } = useTheme();
   const location = useLocation();
   const isMobile = useMediaQuery("(max-width: 768px)");

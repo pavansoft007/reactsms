@@ -1,7 +1,6 @@
-import React from 'react';
-import { Container, Title } from '@mantine/core';
+import { Container, Title } from "@mantine/core";
 
-const EnrollPage: React.FC = () => (
+const EnrollPage = () => (
   <Container>
     <Title>Enrollment Management</Title>
     {/* Add enroll CRUD UI here */}

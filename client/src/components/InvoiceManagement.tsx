@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Title,
@@ -68,7 +68,7 @@ interface FeeInvoice {
   };
 }
 
-const InvoiceManagement: React.FC = () => {
+const InvoiceManagement = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<string>('');
   const [invoice, setInvoice] = useState<FeeInvoice | null>(null);

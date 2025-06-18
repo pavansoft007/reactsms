@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -28,6 +28,7 @@ import {
   UltraTableActions,
   UltraTableBadge,
   UltraModal,
+  UltraLoader,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -52,7 +53,7 @@ interface Student {
   class_name: string;
 }
 
-const ParentsPageUltra: React.FC = () => {
+const ParentsPageUltra = () => {
   const { theme } = useTheme();
   const [parents, setParents] = useState<Parent[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
@@ -380,94 +381,117 @@ const ParentsPageUltra: React.FC = () => {
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredParents.map((parent) => (
-                <tr key={parent.id}>
-                  <td>
-                    <Group gap="sm">
-                      <Avatar
-                        radius="xl"
-                        size="md"
-                        style={{
-                          border: `2px solid ${theme.colors.primary}22`,
-                        }}
-                      >
-                        {parent.name?.charAt(0)?.toUpperCase()}
-                      </Avatar>
-                      <Stack gap={2}>
-                        <Text fw={500} c={theme.text.primary}>
-                          {parent.name}
-                        </Text>
-                        <Text size="sm" c={theme.text.muted}>
-                          {parent.email}
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </td>
-                  <td>
-                    <Badge
-                      variant="light"
-                      color={getGuardianColor(parent.guardian_type)}
-                      size="sm"
-                      leftSection={getGuardianIcon(parent.guardian_type)}
-                    >
-                      {parent.guardian_type}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Stack gap={2}>
-                      <Group gap="xs">
-                        <IconPhone size={14} />
-                        <Text size="sm" c={theme.text.primary}>
-                          {parent.phone || "N/A"}
-                        </Text>
-                      </Group>
-                      <Group gap="xs">
-                        <IconMail size={14} />
-                        <Text size="xs" c={theme.text.muted}>
-                          {parent.email}
-                        </Text>
-                      </Group>
-                    </Stack>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {parent.occupation || "Not specified"}
-                    </Text>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="blue" size="sm">
-                      {parent.children_count || 0}
-                    </Badge>
-                  </td>
-                  <td>
-                    <UltraTableBadge
-                      variant={parent.is_active ? "success" : "error"}
-                    >
-                      {parent.is_active ? "Active" : "Inactive"}
-                    </UltraTableBadge>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(parent)}
-                      >
-                        <IconEdit size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(parent.id)}
-                      >
-                        <IconUsers size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} style={{ border: "none", padding: 0 }}>
+                    <UltraLoader
+                      size="lg"
+                      message="Loading parents..."
+                      variant="detailed"
+                    />
                   </td>
                 </tr>
-              ))}
+              ) : filteredParents.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    style={{ textAlign: "center", padding: "40px" }}
+                  >
+                    <Text size="md" c={theme.text.muted}>
+                      No parents found
+                    </Text>
+                  </td>
+                </tr>
+              ) : (
+                filteredParents.map((parent) => (
+                  <tr key={parent.id}>
+                    <td>
+                      <Group gap="sm">
+                        <Avatar
+                          radius="xl"
+                          size="md"
+                          style={{
+                            border: `2px solid ${theme.colors.primary}22`,
+                          }}
+                        >
+                          {parent.name?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Stack gap={2}>
+                          <Text fw={500} c={theme.text.primary}>
+                            {parent.name}
+                          </Text>
+                          <Text size="sm" c={theme.text.muted}>
+                            {parent.email}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </td>
+                    <td>
+                      <Badge
+                        variant="light"
+                        color={getGuardianColor(parent.guardian_type)}
+                        size="sm"
+                        leftSection={getGuardianIcon(parent.guardian_type)}
+                      >
+                        {parent.guardian_type}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Stack gap={2}>
+                        <Group gap="xs">
+                          <IconPhone size={14} />
+                          <Text size="sm" c={theme.text.primary}>
+                            {parent.phone || "N/A"}
+                          </Text>
+                        </Group>
+                        <Group gap="xs">
+                          <IconMail size={14} />
+                          <Text size="xs" c={theme.text.muted}>
+                            {parent.email}
+                          </Text>
+                        </Group>
+                      </Stack>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {parent.occupation || "Not specified"}
+                      </Text>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="blue" size="sm">
+                        {parent.children_count || 0}
+                      </Badge>
+                    </td>
+                    <td>
+                      <UltraTableBadge
+                        variant={parent.is_active ? "success" : "error"}
+                      >
+                        {parent.is_active ? "Active" : "Inactive"}
+                      </UltraTableBadge>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(parent)}
+                        >
+                          <IconEdit size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(parent.id)}
+                        >
+                          <IconUsers size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </UltraTable>
         )}

@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Stack,
   Group,
   Text,
   SimpleGrid,
-  Divider,
   FileButton,
   Tabs,
   LoadingOverlay,
+  SegmentedControl,
+  Avatar,
+  Badge,
+  ActionIcon,
+  Tooltip,
 } from "@mantine/core";
 import {
   MdBusiness,
@@ -27,6 +31,8 @@ import {
   MdList,
   MdUpload,
   MdImage,
+  MdViewModule,
+  MdTableChart,
 } from "react-icons/md";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
@@ -41,6 +47,7 @@ import {
   UltraTable,
   UltraTableActions,
   UltraTableBadge,
+  LoadingTableRows,
 } from "../components/ui";
 import api from "../api/config";
 
@@ -70,7 +77,7 @@ interface RoleGroup {
   name: string;
 }
 
-const BranchesPageUltra: React.FC = () => {
+const BranchesPageUltra = () => {
   const { theme } = useTheme();
   const [branches, setBranches] = useState<Branch[]>([]);
   const [roleGroups, setRoleGroups] = useState<RoleGroup[]>([]);
@@ -78,6 +85,7 @@ const BranchesPageUltra: React.FC = () => {
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
   const [activeTab, setActiveTab] = useState<string>("list");
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<"table" | "grid">("grid");
 
   // File states
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -290,44 +298,42 @@ const BranchesPageUltra: React.FC = () => {
       setLoading(false);
     }
   };
-
   return (
     <Container
       size="xl"
-      py="xl"
+      py="md"
       style={{ background: theme.bg.surface, minHeight: "100vh" }}
     >
-      <Stack gap="xl">
+      <Stack gap="md">
         {/* Header */}
-        <UltraCard variant="gradient" style={{ padding: "32px" }}>
+        <UltraCard variant="gradient" style={{ padding: "24px" }}>
           <Group justify="space-between" align="center">
             <Group>
-              <MdBusiness size={32} color="white" />
+              <MdBusiness size={28} color="white" />
               <Stack gap="xs">
-                <Text size="xl" fw={700} c="white">
+                <Text size="lg" fw={700} c="white">
                   Branch Management
                 </Text>
-                <Text size="md" c="rgba(255,255,255,0.9)">
+                <Text size="sm" c="rgba(255,255,255,0.9)">
                   Manage school branches and configurations
                 </Text>
               </Stack>
             </Group>
             <UltraButton
               variant="secondary"
-              size="lg"
+              size="md"
               onClick={() => setActiveTab("create")}
               glass
             >
               <Group gap="xs">
-                <MdAdd size={20} />
+                <MdAdd size={18} />
                 Add New Branch
               </Group>
             </UltraButton>
           </Group>
-        </UltraCard>
-
+        </UltraCard>{" "}
         {/* Stats Cards */}
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg">
+        <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="md">
           <UltraCard variant="glassmorphic" hover>
             <Group justify="space-between">
               <Stack gap="xs">
@@ -338,7 +344,7 @@ const BranchesPageUltra: React.FC = () => {
                   {branches.length}
                 </Text>
               </Stack>
-              <MdBusiness size={24} color={theme.colors.primary} />
+              <MdBusiness size={22} color={theme.colors.primary} />
             </Group>
           </UltraCard>
 
@@ -352,7 +358,7 @@ const BranchesPageUltra: React.FC = () => {
                   {branches.filter((b) => b.is_active).length}
                 </Text>
               </Stack>
-              <MdSchool size={24} color={theme.colors.success} />
+              <MdSchool size={22} color={theme.colors.success} />
             </Group>
           </UltraCard>
 
@@ -366,7 +372,7 @@ const BranchesPageUltra: React.FC = () => {
                   {new Set(branches.map((b) => b.city).filter(Boolean)).size}
                 </Text>
               </Stack>
-              <MdLocationCity size={24} color={theme.colors.warning} />
+              <MdLocationCity size={22} color={theme.colors.warning} />
             </Group>
           </UltraCard>
 
@@ -383,13 +389,12 @@ const BranchesPageUltra: React.FC = () => {
                   }
                 </Text>
               </Stack>
-              <MdAttachMoney size={24} color={theme.colors.accent} />
+              <MdAttachMoney size={22} color={theme.colors.accent} />
             </Group>
           </UltraCard>
-        </SimpleGrid>
-
+        </SimpleGrid>{" "}
         {/* Tabs for List and Create */}
-        <UltraCard variant="glassmorphic" style={{ padding: "24px" }}>
+        <UltraCard variant="glassmorphic" style={{ padding: "20px" }}>
           <div style={{ position: "relative" }}>
             <LoadingOverlay visible={loading} />
             <Tabs
@@ -428,103 +433,273 @@ const BranchesPageUltra: React.FC = () => {
                   {editingBranch ? "Edit Branch" : "Create Branch"}
                 </Tabs.Tab>
               </Tabs.List>
-
-              <Tabs.Panel value="list" pt="lg">
-                <UltraTable variant="glass" hoverable>
-                  <thead>
-                    <tr>
-                      <th>Branch</th>
-                      <th>School Name</th>
-                      <th>Contact</th>
-                      <th>Location</th>
-                      <th>Currency</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {branches.map((branch) => (
-                      <tr key={branch.id}>
-                        <td>
-                          <Stack gap={2}>
-                            <Text fw={500} c={theme.text.primary}>
-                              {branch.name}
-                            </Text>
-                            <Text size="sm" c={theme.text.muted}>
-                              ID: {branch.id}
-                            </Text>
-                          </Stack>
-                        </td>
-                        <td>
-                          <Text fw={500} c={theme.text.primary}>
-                            {branch.school_name}
-                          </Text>
-                        </td>
-                        <td>
-                          <Stack gap={2}>
-                            <Text size="sm" c={theme.text.primary}>
-                              {branch.email}
-                            </Text>
-                            <Text size="sm" c={theme.text.muted}>
-                              {branch.mobileno}
-                            </Text>
-                          </Stack>
-                        </td>
-                        <td>
-                          <Stack gap={2}>
-                            <Text size="sm" c={theme.text.primary}>
-                              {branch.city || "N/A"}
-                            </Text>
-                            <Text size="sm" c={theme.text.muted}>
-                              {branch.state || "N/A"}
-                            </Text>
-                          </Stack>
-                        </td>
-                        <td>
+              <Tabs.Panel value="list" pt="md">
+                {/* View Mode Switcher */}
+                <Group justify="flex-end" mb="md">
+                  <SegmentedControl
+                    value={viewMode}
+                    onChange={(value) => setViewMode(value as "table" | "grid")}
+                    data={[
+                      {
+                        label: (
                           <Group gap="xs">
-                            <Text fw={500} c={theme.text.primary}>
-                              {branch.currency}
-                            </Text>
-                            <Text c={theme.text.muted}>({branch.symbol})</Text>
+                            <MdViewModule size={16} />
+                            <Text size="sm">Grid</Text>
                           </Group>
-                        </td>
-                        <td>
-                          <UltraTableBadge
-                            variant={branch.is_active ? "success" : "error"}
-                          >
-                            {branch.is_active ? "Active" : "Inactive"}
-                          </UltraTableBadge>
-                        </td>
-                        <td>
-                          <UltraTableActions>
-                            <UltraButton
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEdit(branch)}
-                            >
-                              <MdEdit size={16} />
-                            </UltraButton>
-                            <UltraButton
-                              variant="danger"
-                              size="sm"
-                              onClick={() => handleDelete(branch.id)}
-                            >
-                              <MdDelete size={16} />
-                            </UltraButton>
-                          </UltraTableActions>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </UltraTable>
-              </Tabs.Panel>
+                        ),
+                        value: "grid",
+                      },
+                      {
+                        label: (
+                          <Group gap="xs">
+                            <MdTableChart size={16} />
+                            <Text size="sm">Table</Text>
+                          </Group>
+                        ),
+                        value: "table",
+                      },
+                    ]}
+                    size="sm"
+                    styles={{
+                      root: {
+                        backgroundColor: theme.glassmorphism.card,
+                        borderRadius: "12px",
+                      },
+                      control: {
+                        border: "none",
+                        "&[data-active]": {
+                          backgroundColor: theme.colors.primary,
+                          color: "white",
+                        },
+                      },
+                    }}
+                  />
+                </Group>
 
-              <Tabs.Panel value="create" pt="lg">
+                {viewMode === "grid" ? (
+                  /* Grid View */
+                  <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+                    {branches.map((branch) => (
+                      <UltraCard
+                        key={branch.id}
+                        variant="glassmorphic"
+                        hover
+                        style={{ position: "relative" }}
+                      >
+                        <Stack gap="md">
+                          {/* Header */}
+                          <Group justify="space-between" align="flex-start">
+                            <Group>
+                              <Avatar
+                                size="md"
+                                radius="md"
+                                color={theme.colors.primary}
+                                styles={{
+                                  root: {
+                                    background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.accent})`,
+                                  },
+                                }}
+                              >
+                                <MdBusiness size={20} />
+                              </Avatar>
+                              <Stack gap={2}>
+                                <Text fw={600} c={theme.text.primary} size="sm">
+                                  {branch.name}
+                                </Text>
+                                <Text size="xs" c={theme.text.muted}>
+                                  ID: {branch.id}
+                                </Text>
+                              </Stack>
+                            </Group>
+                            <Badge
+                              variant="light"
+                              color={branch.is_active ? "green" : "red"}
+                              size="sm"
+                            >
+                              {branch.is_active ? "Active" : "Inactive"}
+                            </Badge>
+                          </Group>
+
+                          {/* School Name */}
+                          <Group gap="xs">
+                            <MdSchool size={16} color={theme.colors.accent} />
+                            <Text size="sm" fw={500} c={theme.text.primary}>
+                              {branch.school_name}
+                            </Text>
+                          </Group>
+
+                          {/* Contact Info */}
+                          <Stack gap="xs">
+                            <Group gap="xs">
+                              <MdEmail size={14} color={theme.text.muted} />
+                              <Text size="xs" c={theme.text.primary}>
+                                {branch.email}
+                              </Text>
+                            </Group>
+                            <Group gap="xs">
+                              <MdPhone size={14} color={theme.text.muted} />
+                              <Text size="xs" c={theme.text.primary}>
+                                {branch.mobileno}
+                              </Text>
+                            </Group>
+                          </Stack>
+
+                          {/* Location & Currency */}
+                          <Stack gap="xs">
+                            <Group gap="xs">
+                              <MdLocationCity
+                                size={14}
+                                color={theme.text.muted}
+                              />
+                              <Text size="xs" c={theme.text.primary}>
+                                {branch.city || "N/A"}, {branch.state || "N/A"}
+                              </Text>
+                            </Group>
+                            <Group gap="xs">
+                              <MdAttachMoney
+                                size={14}
+                                color={theme.text.muted}
+                              />
+                              <Text size="xs" c={theme.text.primary}>
+                                {branch.currency} ({branch.symbol})
+                              </Text>
+                            </Group>
+                          </Stack>
+
+                          {/* Actions */}
+                          <Group justify="flex-end" gap="xs">
+                            <Tooltip label="Edit Branch">
+                              <ActionIcon
+                                variant="subtle"
+                                color={theme.colors.primary}
+                                size="sm"
+                                onClick={() => handleEdit(branch)}
+                              >
+                                <MdEdit size={16} />
+                              </ActionIcon>
+                            </Tooltip>
+                            <Tooltip label="Delete Branch">
+                              <ActionIcon
+                                variant="subtle"
+                                color="red"
+                                size="sm"
+                                onClick={() => handleDelete(branch.id)}
+                              >
+                                <MdDelete size={16} />
+                              </ActionIcon>
+                            </Tooltip>
+                          </Group>
+                        </Stack>
+                      </UltraCard>
+                    ))}
+                  </SimpleGrid>
+                ) : (
+                  /* Table View */
+                  <UltraTable variant="glass" hoverable>
+                    <thead>
+                      <tr>
+                        <th>Branch</th>
+                        <th>School Name</th>
+                        <th>Contact</th>
+                        <th>Location</th>
+                        <th>Currency</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <LoadingTableRows
+                        loading={loading}
+                        itemCount={branches.length}
+                        colspan={7}
+                        loadingMessage="Loading branches..."
+                        emptyMessage="No branches found"
+                      >
+                        {branches.map((branch) => (
+                          <tr key={branch.id}>
+                            <td>
+                              <Stack gap={2}>
+                                <Text fw={500} c={theme.text.primary}>
+                                  {branch.name}
+                                </Text>
+                                <Text size="sm" c={theme.text.muted}>
+                                  ID: {branch.id}
+                                </Text>
+                              </Stack>
+                            </td>
+                            <td>
+                              <Text fw={500} c={theme.text.primary}>
+                                {branch.school_name}
+                              </Text>
+                            </td>
+                            <td>
+                              <Stack gap={2}>
+                                <Text size="sm" c={theme.text.primary}>
+                                  {branch.email}
+                                </Text>
+                                <Text size="sm" c={theme.text.muted}>
+                                  {branch.mobileno}
+                                </Text>
+                              </Stack>
+                            </td>
+                            <td>
+                              <Stack gap={2}>
+                                <Text size="sm" c={theme.text.primary}>
+                                  {branch.city || "N/A"}
+                                </Text>
+                                <Text size="sm" c={theme.text.muted}>
+                                  {branch.state || "N/A"}
+                                </Text>
+                              </Stack>
+                            </td>
+                            <td>
+                              <Group gap="xs">
+                                <Text fw={500} c={theme.text.primary}>
+                                  {branch.currency}
+                                </Text>
+                                <Text c={theme.text.muted}>
+                                  ({branch.symbol})
+                                </Text>
+                              </Group>
+                            </td>
+                            <td>
+                              <UltraTableBadge
+                                variant={branch.is_active ? "success" : "error"}
+                              >
+                                {branch.is_active ? "Active" : "Inactive"}
+                              </UltraTableBadge>
+                            </td>
+                            <td>
+                              <UltraTableActions>
+                                <UltraButton
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleEdit(branch)}
+                                >
+                                  <MdEdit size={16} />
+                                </UltraButton>
+                                <UltraButton
+                                  variant="danger"
+                                  size="sm"
+                                  onClick={() => handleDelete(branch.id)}
+                                >
+                                  <MdDelete size={16} />
+                                </UltraButton>
+                              </UltraTableActions>
+                            </td>
+                          </tr>
+                        ))}
+                      </LoadingTableRows>
+                    </tbody>
+                  </UltraTable>
+                )}
+              </Tabs.Panel>{" "}
+              <Tabs.Panel value="create" pt="md">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
-                  <Stack gap="xl">
+                  <Stack gap="md">
                     {/* Branch Information */}
-                    <UltraCard variant="elevated" style={{ padding: "24px" }}>
-                      <Text size="lg" fw={600} mb="lg" c={theme.text.primary}>
+                    <UltraCard variant="elevated" style={{ padding: "20px" }}>
+                      <Text size="lg" fw={600} mb="md" c={theme.text.primary}>
                         Branch Information
                       </Text>
 
@@ -619,11 +794,10 @@ const BranchesPageUltra: React.FC = () => {
                         minRows={3}
                         {...form.getInputProps("address")}
                       />
-                    </UltraCard>
-
+                    </UltraCard>{" "}
                     {/* File Uploads */}
-                    <UltraCard variant="elevated" style={{ padding: "24px" }}>
-                      <Text size="lg" fw={600} mb="lg" c={theme.text.primary}>
+                    <UltraCard variant="elevated" style={{ padding: "20px" }}>
+                      <Text size="lg" fw={600} mb="md" c={theme.text.primary}>
                         File Uploads
                       </Text>
 
@@ -720,12 +894,11 @@ const BranchesPageUltra: React.FC = () => {
                           </FileButton>
                         </Stack>
                       </SimpleGrid>
-                    </UltraCard>
-
+                    </UltraCard>{" "}
                     {/* Admin Credentials - Only for new branches */}
                     {!editingBranch && (
-                      <UltraCard variant="elevated" style={{ padding: "24px" }}>
-                        <Text size="lg" fw={600} mb="lg" c={theme.text.primary}>
+                      <UltraCard variant="elevated" style={{ padding: "20px" }}>
+                        <Text size="lg" fw={600} mb="md" c={theme.text.primary}>
                           Admin Credentials
                         </Text>
 
@@ -789,7 +962,6 @@ const BranchesPageUltra: React.FC = () => {
                         </SimpleGrid>
                       </UltraCard>
                     )}
-
                     {/* Validation Errors */}
                     {validationErrors.length > 0 && (
                       <UltraCard
@@ -811,7 +983,6 @@ const BranchesPageUltra: React.FC = () => {
                         </Stack>
                       </UltraCard>
                     )}
-
                     {/* Action Buttons */}
                     <Group justify="flex-end" gap="md">
                       <UltraButton

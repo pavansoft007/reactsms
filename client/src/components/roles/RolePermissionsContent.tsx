@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import {  useState, useEffect, useCallback , Fragment } from 'react';
 import {
   Paper,
   Table,
@@ -100,7 +100,7 @@ interface RolePermissionsContentProps {
   preSelectedRoleId?: number;
 }
 
-const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
+const RolePermissionsContent = ({
   preSelectedRoleId,
 }) => {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -490,7 +490,7 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
 
                   {Object.entries(PERMISSION_CATEGORIES).map(
                     ([category, features]) => (
-                      <React.Fragment key={category}>
+                      <Fragment key={category}>
                         <Table.Tr
                           style={{ background: "rgba(102, 126, 234, 0.05)" }}
                         >
@@ -720,7 +720,7 @@ const RolePermissionsContent: React.FC<RolePermissionsContentProps> = ({
                             </Collapse>
                           </Table.Td>
                         </Table.Tr>
-                      </React.Fragment>
+                      </Fragment>
                     )
                   )}
                 </Table.Tbody>

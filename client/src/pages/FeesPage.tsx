@@ -1,7 +1,6 @@
-import React from 'react';
-import FinancePageComprehensive from './FinancePageComprehensive';
+import FinancePageComprehensive from "./FinancePageComprehensive";
 
-const FeesPage: React.FC = () => {
+const FeesPage = () => {
   return <FinancePageComprehensive />;
 };
 

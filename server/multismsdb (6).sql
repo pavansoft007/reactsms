@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2025 at 11:28 AM
+-- Generation Time: Jun 16, 2025 at 04:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,6 +37,13 @@ CREATE TABLE `accounts` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `name`, `number`, `description`, `balance`, `branch_id`, `created_at`, `updated_at`) VALUES
+(1, 'CORRESPONDET VIGNANA BHARATHI VIDYALAYAM', '123456789', '', 387966.00, 1, '2025-06-02 18:18:41', '2025-06-02 23:48:41');
 
 -- --------------------------------------------------------
 
@@ -184,7 +191,6 @@ CREATE TABLE `book_issues` (
 
 CREATE TABLE `branch` (
   `id` int(11) NOT NULL,
-  `master_admin_id` int(11) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `school_name` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -205,8 +211,71 @@ CREATE TABLE `branch` (
   `due_with_fine` tinyint(4) NOT NULL DEFAULT 1,
   `unique_roll` tinyint(4) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` datetime DEFAULT NULL,
+  `role_group_id` int(11) DEFAULT NULL,
+  `branch_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `branch`
+--
+
+INSERT INTO `branch` (`id`, `name`, `school_name`, `email`, `mobileno`, `currency`, `symbol`, `city`, `state`, `address`, `stu_generate`, `stu_username_prefix`, `stu_default_password`, `grd_generate`, `grd_username_prefix`, `grd_default_password`, `teacher_restricted`, `due_days`, `due_with_fine`, `unique_roll`, `created_at`, `updated_at`, `role_group_id`, `branch_name`) VALUES
+(1, 'VIGNANA BHARATHI VIDYALAYAM ENGLISH MEDIUM SCHOOL', 'VIGNANA BHARATHI VIDYALAYAM ENGLISH MEDIUM SCHOOL', 'vbvschool@gmail.com', 'Ph: 9848030332, 8309209488.   Land: 08031-230332', 'INR', '₹', 'Visakhapatnam', 'Andhrapradesh', 'Near Pedha Rama Swami  Temple, Dimili Road, Yellamanchili', 0, '', '', 0, '', '', 1, 30, 1, 1, '2025-05-28 03:05:38', NULL, NULL, ''),
+(5, 'VY Tech Info Pvt Ltd', 'VY Tech Info Pvt Ltd', 'venki1992kv@gmail.com', '9491976849', 'INR', '₹', 'VSKP', 'AP', 'AKP', 0, '', '', 0, '', '', 1, 30, 1, 1, '2025-06-10 12:52:04', NULL, NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `branches`
+--
+
+CREATE TABLE `branches` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `address` text DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `master_admin_id` int(11) DEFAULT NULL COMMENT 'Assigned Super Admin (Master Admin)',
+  `school_name` varchar(255) DEFAULT NULL,
+  `mobileno` varchar(255) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `symbol` varchar(255) DEFAULT NULL,
+  `stu_generate` tinyint(1) DEFAULT 0,
+  `stu_username_prefix` varchar(255) DEFAULT NULL,
+  `stu_default_password` varchar(255) DEFAULT NULL,
+  `grd_generate` tinyint(1) DEFAULT 0,
+  `grd_username_prefix` varchar(255) DEFAULT NULL,
+  `grd_default_password` varchar(255) DEFAULT NULL,
+  `teacher_restricted` tinyint(1) DEFAULT 0,
+  `due_days` int(11) DEFAULT NULL,
+  `due_with_fine` tinyint(1) DEFAULT 0,
+  `unique_roll` tinyint(1) DEFAULT 0,
+  `role_group_id` int(11) DEFAULT NULL,
+  `branch_name` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `deletedAt` datetime DEFAULT NULL,
+  `logo_file` varchar(255) DEFAULT NULL COMMENT 'Logo file name',
+  `text_logo` varchar(255) DEFAULT NULL COMMENT 'Text logo file name',
+  `print_file` varchar(255) DEFAULT NULL COMMENT 'Print header file name',
+  `report_card` varchar(255) DEFAULT NULL COMMENT 'Report card template file name'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `branches`
+--
+
+INSERT INTO `branches` (`id`, `name`, `code`, `address`, `city`, `state`, `country`, `phone`, `email`, `is_active`, `master_admin_id`, `school_name`, `mobileno`, `currency`, `symbol`, `stu_generate`, `stu_username_prefix`, `stu_default_password`, `grd_generate`, `grd_username_prefix`, `grd_default_password`, `teacher_restricted`, `due_days`, `due_with_fine`, `unique_roll`, `role_group_id`, `branch_name`, `created_at`, `updated_at`, `createdAt`, `updatedAt`, `deletedAt`, `logo_file`, `text_logo`, `print_file`, `report_card`) VALUES
+(2, 'venkatesh', '45678', NULL, 'VSKP', 'AP', NULL, NULL, 'venki@gmail.com', 1, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 0, NULL, NULL, '2025-06-14 17:42:01', '2025-06-14 17:42:01', '2025-06-14 17:42:01', '2025-06-14 17:42:01', '2025-06-15 14:15:52', NULL, NULL, NULL, NULL),
+(3, 'AMAA High school', 'AMAA-AKP', 'CHINNA Rama Swami Temple Street\r\nGavarapallem', 'Anakapalle', 'Andhra Pradesh', NULL, NULL, 'amaa@gmail.com', 1, NULL, 'AMAA High School', '98989898998', 'INR', '?', 0, NULL, NULL, 0, NULL, NULL, 0, NULL, 0, 0, 1, NULL, '2025-06-15 14:17:35', '2025-06-15 14:17:35', '2025-06-15 14:17:35', '2025-06-16 10:43:16', NULL, '1750070596632-954344123-10677825.png', '1750070596641-342850980-10677825.png', '1750070596646-728511786-10677825.png', '1750070596656-909602525-10677825.png');
 
 -- --------------------------------------------------------
 
@@ -233,6 +302,7 @@ CREATE TABLE `bulk_sms_email` (
   `campaign_name` varchar(255) DEFAULT NULL,
   `sms_gateway` varchar(55) DEFAULT '0',
   `message` text DEFAULT NULL,
+  `whatsapp_template_name` varchar(255) DEFAULT NULL,
   `email_subject` varchar(255) DEFAULT NULL,
   `message_type` tinyint(3) DEFAULT 0 COMMENT 'sms=1, email=2',
   `recipient_type` tinyint(3) NOT NULL COMMENT 'group=1, individual=2, class=3',
@@ -273,6 +343,13 @@ CREATE TABLE `card_templete` (
   `branch_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `card_templete`
+--
+
+INSERT INTO `card_templete` (`id`, `card_type`, `name`, `user_type`, `background`, `logo`, `signature`, `content`, `layout_width`, `layout_height`, `photo_style`, `photo_size`, `top_space`, `bottom_space`, `right_space`, `left_space`, `qr_code`, `branch_id`, `created_at`) VALUES
+(1, 1, 'student', 1, '', '', '', '<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name {name}.</p><p>AFTHE</p>', '20', '20', 1, '100', '240', '240', '300', '300', 'birthday', 1, '2025-06-02 18:16:13');
 
 -- --------------------------------------------------------
 
@@ -315,6 +392,51 @@ CREATE TABLE `class` (
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `class`
+--
+
+INSERT INTO `class` (`id`, `name`, `name_numeric`, `created_at`, `updated_at`, `branch_id`) VALUES
+(1, 'First Class', '1', '2025-05-28 03:36:25', NULL, 1),
+(2, 'Second calss', '2', '2025-06-02 05:16:02', NULL, 1),
+(3, 'Third class', '3', '2025-06-02 05:17:14', NULL, 1),
+(4, 'Fourth class', '4', '2025-06-02 05:31:27', NULL, 1),
+(5, 'Fifth class', '5', '2025-06-02 05:31:48', NULL, 1),
+(6, 'Sixth class', '6', '2025-06-02 05:32:07', NULL, 1),
+(7, 'Seventh class', '7', '2025-06-02 05:32:30', NULL, 1),
+(8, 'Eighth class', '8', '2025-06-02 05:33:03', NULL, 1),
+(9, 'Ninth class', '9', '2025-06-02 05:33:22', NULL, 1),
+(10, 'Tenth class', '10', '2025-06-02 05:33:40', NULL, 1),
+(11, 'NURSERY', '-3', '2025-06-02 05:34:14', NULL, 1),
+(12, 'L.K.G', '-2', '2025-06-02 05:34:31', NULL, 1),
+(13, 'U.K.G', '-1', '2025-06-02 05:34:43', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `classes`
+--
+
+CREATE TABLE `classes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `numeric_name` int(11) DEFAULT NULL COMMENT 'Numeric representation of class (e.g. 1, 2, 3, etc.)',
+  `branch_id` int(11) NOT NULL,
+  `description` text DEFAULT NULL,
+  `rank_order` int(11) DEFAULT NULL COMMENT 'Used for sorting classes in a specific order',
+  `is_active` tinyint(1) DEFAULT 1,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `classes`
+--
+
+INSERT INTO `classes` (`id`, `name`, `numeric_name`, `branch_id`, `description`, `rank_order`, `is_active`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
+(1, 'FirstClass', 1, 2, NULL, 100, 1, '2025-06-14 18:09:27', '2025-06-14 18:09:27', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -335,6 +457,13 @@ CREATE TABLE `custom_field` (
   `branch_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `custom_field`
+--
+
+INSERT INTO `custom_field` (`id`, `form_to`, `field_label`, `default_value`, `field_type`, `required`, `status`, `show_on_table`, `field_order`, `bs_column`, `branch_id`, `created_at`) VALUES
+(1, 'student', 'Student PEN', '', 'text', '0', 1, '0', 1, 2, 1, '2025-06-06 19:49:52');
 
 -- --------------------------------------------------------
 
@@ -361,6 +490,357 @@ CREATE TABLE `custom_fields_values` (
   `field_id` int(11) NOT NULL,
   `value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `custom_fields_values`
+--
+
+INSERT INTO `custom_fields_values` (`id`, `relid`, `field_id`, `value`) VALUES
+(19, 19, 1, '20498895221'),
+(20, 20, 1, '20572958147'),
+(21, 21, 1, '20243603976'),
+(22, 22, 1, '20578687714'),
+(23, 23, 1, '20608678192'),
+(24, 24, 1, '20342193707'),
+(25, 25, 1, '20205974684'),
+(26, 26, 1, '20253928562'),
+(27, 27, 1, '20446850280'),
+(28, 28, 1, '20275365445'),
+(29, 29, 1, '20435841239'),
+(30, 30, 1, '20341153912'),
+(31, 31, 1, '20734306472'),
+(32, 32, 1, '20403824598'),
+(33, 33, 1, '20295097448'),
+(34, 34, 1, '20355655770'),
+(35, 35, 1, '20244564033'),
+(36, 36, 1, '20888641517'),
+(37, 37, 1, '20664064086'),
+(38, 38, 1, '20944285252'),
+(39, 39, 1, '20914315982'),
+(40, 40, 1, '20854670168'),
+(41, 41, 1, '20434264215'),
+(42, 42, 1, '20348696352'),
+(43, 43, 1, '20401136303'),
+(44, 44, 1, '20837909605'),
+(45, 45, 1, '20225606277'),
+(46, 46, 1, '20242676642'),
+(47, 47, 1, '20528552652'),
+(48, 48, 1, '20409520539'),
+(49, 49, 1, '20716114112'),
+(50, 50, 1, '20282916546'),
+(51, 51, 1, '20850390064'),
+(52, 52, 1, '20521979421'),
+(53, 53, 1, '20605554174'),
+(54, 54, 1, '20861152050'),
+(55, 55, 1, '20202719048'),
+(56, 56, 1, '20487631523'),
+(57, 57, 1, '20926531856'),
+(58, 58, 1, '20187828844'),
+(59, 59, 1, '20869285759'),
+(60, 60, 1, '20210814292'),
+(61, 61, 1, '20784708754'),
+(62, 62, 1, '20859027509'),
+(63, 63, 1, '20457640775'),
+(64, 64, 1, '20255632940'),
+(65, 65, 1, '20730733407'),
+(66, 66, 1, '20265712221'),
+(67, 67, 1, '20206578676'),
+(68, 68, 1, '20536863562'),
+(69, 69, 1, '20666799242'),
+(70, 70, 1, '20372660087'),
+(71, 71, 1, '20221685802'),
+(72, 72, 1, '20703367555'),
+(73, 73, 1, '20265480559'),
+(74, 74, 1, '20434553497'),
+(75, 75, 1, '20777468223'),
+(76, 76, 1, '20942409289'),
+(77, 77, 1, '20901620976'),
+(78, 78, 1, '20875149892'),
+(79, 79, 1, '20565473359'),
+(80, 80, 1, '20359457975'),
+(81, 81, 1, '20262831613'),
+(82, 82, 1, '20774329714'),
+(83, 83, 1, '20980349122'),
+(84, 84, 1, '20927755829'),
+(85, 85, 1, '20579619593'),
+(86, 86, 1, '20343395050'),
+(87, 87, 1, '20671461189'),
+(88, 88, 1, '20607086769'),
+(89, 89, 1, '20201052941'),
+(90, 90, 1, '20957330072'),
+(91, 91, 1, '20220952199'),
+(92, 92, 1, '20293583927'),
+(93, 93, 1, '20186159661'),
+(94, 94, 1, '20256803493'),
+(95, 95, 1, '20987379558'),
+(96, 96, 1, '20277815928'),
+(97, 97, 1, '20373738516'),
+(98, 98, 1, '20432744436'),
+(99, 99, 1, '20358739344'),
+(100, 100, 1, '20702620417'),
+(101, 101, 1, '20553492744'),
+(102, 102, 1, '20186432783'),
+(103, 103, 1, '20380289598'),
+(104, 104, 1, '20419917289'),
+(105, 105, 1, '20353161480'),
+(106, 106, 1, '20586034998'),
+(107, 107, 1, '20272268673'),
+(108, 108, 1, '20907448724'),
+(109, 109, 1, '20792813132'),
+(110, 110, 1, '20861703205'),
+(111, 111, 1, '20866623081'),
+(112, 112, 1, '20292635198'),
+(113, 113, 1, '20376601590'),
+(114, 114, 1, '20320004516'),
+(115, 115, 1, '20184747197'),
+(116, 116, 1, '20341332865'),
+(117, 117, 1, '20953257518'),
+(118, 118, 1, '20944647736'),
+(119, 119, 1, '20674927287'),
+(120, 120, 1, '20360337068'),
+(121, 121, 1, '20269056561'),
+(122, 122, 1, '20838482390'),
+(123, 123, 1, '20299164280'),
+(124, 124, 1, '20659384166'),
+(125, 125, 1, '20191398895'),
+(126, 126, 1, '20674459359'),
+(127, 127, 1, '20259458286'),
+(128, 128, 1, '20960811447'),
+(129, 129, 1, '20418027719'),
+(130, 130, 1, '20203276309'),
+(131, 131, 1, '20233328876'),
+(132, 132, 1, '20240160713'),
+(133, 133, 1, '20361882181'),
+(134, 134, 1, '20424004634'),
+(135, 135, 1, '20481474790'),
+(136, 136, 1, '20269517705'),
+(137, 137, 1, '20208203607'),
+(138, 138, 1, '20588948120'),
+(139, 139, 1, '20215260671'),
+(140, 140, 1, '20433863312'),
+(141, 141, 1, '20905481798'),
+(142, 142, 1, '20978756825'),
+(143, 143, 1, '20718341976'),
+(144, 144, 1, '20666513825'),
+(145, 145, 1, '20854932695'),
+(146, 146, 1, '20457420459'),
+(147, 147, 1, '20807601874'),
+(148, 148, 1, '20691682578'),
+(149, 149, 1, '20955651454'),
+(150, 150, 1, '20213611173'),
+(151, 151, 1, '20541408376'),
+(152, 152, 1, '20211634473'),
+(153, 153, 1, '20446208902'),
+(154, 154, 1, '20697444768'),
+(155, 155, 1, '20764166369'),
+(156, 156, 1, '20540353580'),
+(157, 157, 1, '20194356527'),
+(158, 158, 1, '20245990203'),
+(159, 159, 1, '20408433305'),
+(160, 160, 1, '20217922503'),
+(161, 161, 1, '20193027798'),
+(162, 162, 1, '20529594657'),
+(163, 163, 1, '20996854557'),
+(164, 164, 1, '20336071715'),
+(165, 165, 1, '20300343694'),
+(166, 166, 1, '20364460545'),
+(167, 167, 1, '20943177894'),
+(168, 168, 1, '20821857055'),
+(169, 169, 1, '20481727017'),
+(170, 170, 1, '20890623755'),
+(171, 171, 1, '20403479387'),
+(172, 172, 1, '20482441304'),
+(173, 173, 1, '20612324031'),
+(174, 174, 1, '20185733283'),
+(175, 175, 1, '20769389814'),
+(176, 176, 1, '20531377650'),
+(177, 177, 1, '20474352530'),
+(178, 178, 1, '20195382324'),
+(179, 179, 1, '20338278350'),
+(180, 180, 1, '20529552400'),
+(181, 181, 1, '20635913234'),
+(182, 182, 1, '20912712655'),
+(183, 183, 1, '20307315803'),
+(184, 184, 1, '20220752115'),
+(185, 185, 1, '20566319448'),
+(186, 186, 1, '20539954555'),
+(187, 187, 1, '22788882874'),
+(188, 188, 1, '20746199959'),
+(189, 189, 1, '20404088061'),
+(190, 190, 1, '20580294674'),
+(191, 191, 1, '20241432039'),
+(192, 192, 1, '20372449768'),
+(193, 193, 1, '20839322442'),
+(194, 194, 1, '20190904178'),
+(195, 195, 1, '20778160910'),
+(196, 196, 1, '20448245609'),
+(197, 197, 1, '20311873346'),
+(198, 198, 1, '20876685224'),
+(199, 199, 1, '20394785836'),
+(200, 200, 1, '20449584940'),
+(201, 201, 1, '22922573512'),
+(202, 202, 1, '22922876049'),
+(203, 203, 1, '20624835371'),
+(204, 204, 1, '20254571599'),
+(205, 205, 1, '22607925328'),
+(206, 206, 1, '22857138728'),
+(207, 207, 1, '20517397415'),
+(208, 208, 1, '22840420841'),
+(209, 209, 1, '20666485413'),
+(210, 210, 1, '20273196860'),
+(211, 211, 1, '20362193447'),
+(212, 212, 1, '20231923675'),
+(213, 213, 1, '22792179755'),
+(214, 214, 1, '20696260124'),
+(215, 215, 1, '20896260197'),
+(216, 216, 1, '20353933543'),
+(217, 217, 1, '22938934383'),
+(218, 218, 1, '22859397161'),
+(219, 219, 1, '22740972614'),
+(220, 220, 1, '22992124210'),
+(221, 221, 1, '20904488492'),
+(222, 222, 1, '20289119459'),
+(223, 223, 1, '20345771258'),
+(224, 224, 1, '20185981000'),
+(225, 225, 1, '22660931712'),
+(226, 226, 1, '20207890243'),
+(227, 227, 1, '20248192441'),
+(228, 228, 1, '20401443355'),
+(229, 229, 1, '20264790997'),
+(230, 230, 1, '20186157311'),
+(231, 231, 1, '20719310097'),
+(232, 232, 1, '20634491322'),
+(233, 233, 1, '22612528782'),
+(234, 234, 1, '22685343949'),
+(235, 235, 1, '20402670449'),
+(236, 236, 1, '22925731666'),
+(237, 237, 1, '22657734492'),
+(238, 238, 1, '20286476960'),
+(239, 239, 1, '22658816507'),
+(240, 240, 1, '20326839392'),
+(241, 241, 1, '20768005919'),
+(242, 242, 1, '20662833135'),
+(243, 243, 1, '20981023996'),
+(244, 244, 1, '22814499799'),
+(245, 245, 1, '20529902556'),
+(246, 246, 1, '22960023959'),
+(247, 247, 1, '20264471575'),
+(248, 248, 1, '20559931563'),
+(249, 249, 1, '22671124239'),
+(250, 250, 1, '20220617331'),
+(251, 251, 1, '20964652894'),
+(252, 252, 1, '20518156628'),
+(253, 253, 1, '20484085536'),
+(254, 254, 1, '22600327794'),
+(255, 255, 1, '22760203559'),
+(256, 256, 1, '20715440877'),
+(257, 257, 1, '20565846071'),
+(258, 258, 1, '20323600240'),
+(259, 259, 1, '22864362920'),
+(260, 260, 1, '22834098497'),
+(261, 261, 1, '22733456149'),
+(262, 262, 1, '20346995699'),
+(263, 263, 1, '20474647386'),
+(264, 264, 1, '20336578066'),
+(265, 265, 1, '20334237010'),
+(266, 266, 1, '20434362645'),
+(267, 267, 1, '20321899012'),
+(268, 268, 1, '22769366776'),
+(269, 269, 1, '20480986583'),
+(270, 270, 1, '20855198766'),
+(271, 271, 1, '22702548115'),
+(272, 272, 1, '22985547172'),
+(273, 273, 1, '22960728885'),
+(274, 274, 1, '20540612580'),
+(275, 275, 1, '22863603520'),
+(276, 276, 1, '22853449098'),
+(277, 277, 1, '20805128977'),
+(278, 278, 1, '22659846591'),
+(279, 279, 1, '20827708502'),
+(280, 280, 1, '20657944135'),
+(281, 281, 1, '20385580928'),
+(282, 282, 1, '22777251113'),
+(283, 283, 1, '22789309455'),
+(284, 284, 1, '20495161060'),
+(285, 285, 1, '22713170317'),
+(286, 286, 1, '22679149580'),
+(287, 287, 1, '22943144136'),
+(288, 288, 1, '22874341458'),
+(289, 289, 1, '22746492911'),
+(290, 290, 1, '22717764482'),
+(291, 291, 1, '22913301932'),
+(292, 292, 1, '22609442460'),
+(293, 293, 1, '22690420389'),
+(294, 294, 1, '22858228182'),
+(295, 295, 1, '22647926446'),
+(296, 296, 1, '22681491023'),
+(297, 297, 1, '22853162441'),
+(298, 298, 1, '22982999172'),
+(299, 299, 1, '22646808977'),
+(300, 300, 1, '22771564878'),
+(301, 301, 1, '22619334632'),
+(302, 302, 1, '23029065572'),
+(303, 303, 1, '22733276249'),
+(304, 304, 1, '22861416547'),
+(305, 305, 1, '22862493071'),
+(306, 306, 1, '22798740713'),
+(307, 307, 1, '22890983251'),
+(308, 308, 1, '22644662777'),
+(309, 309, 1, ''),
+(310, 310, 1, ''),
+(311, 311, 1, ''),
+(312, 312, 1, ''),
+(313, 313, 1, ''),
+(314, 314, 1, ''),
+(315, 315, 1, ''),
+(316, 316, 1, ''),
+(317, 317, 1, ''),
+(318, 318, 1, ''),
+(319, 319, 1, ''),
+(320, 320, 1, ''),
+(321, 321, 1, ''),
+(322, 322, 1, ''),
+(323, 323, 1, ''),
+(324, 324, 1, ''),
+(325, 325, 1, ''),
+(326, 326, 1, ''),
+(327, 327, 1, ''),
+(328, 328, 1, ''),
+(329, 329, 1, ''),
+(330, 330, 1, ''),
+(331, 331, 1, ''),
+(332, 332, 1, ''),
+(333, 333, 1, ''),
+(334, 334, 1, ''),
+(335, 335, 1, ''),
+(336, 336, 1, '20840948927'),
+(337, 337, 1, '20280566125'),
+(338, 338, 1, '20970662729'),
+(339, 339, 1, '20258414267'),
+(340, 340, 1, '20417627148'),
+(341, 341, 1, '20836038333'),
+(342, 342, 1, '20218006417'),
+(343, 343, 1, '20826766408'),
+(344, 344, 1, '20565232676'),
+(345, 345, 1, '20390158573'),
+(346, 346, 1, '20701694308'),
+(347, 347, 1, '20802988523'),
+(348, 348, 1, '20863918674'),
+(349, 349, 1, '20549482590'),
+(350, 350, 1, '20456755477'),
+(351, 351, 1, '20295782383'),
+(352, 352, 1, '20308026790'),
+(353, 353, 1, '20187527270'),
+(355, 355, 1, ''),
+(356, 356, 1, ''),
+(358, 358, 1, ''),
+(359, 359, 1, ''),
+(360, 360, 1, ''),
+(361, 361, 1, ''),
+(362, 362, 1, ''),
+(363, 363, 1, ''),
+(364, 364, 1, ''),
+(365, 365, 1, '');
 
 -- --------------------------------------------------------
 
@@ -442,6 +922,694 @@ CREATE TABLE `enroll` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `enroll`
+--
+
+INSERT INTO `enroll` (`id`, `student_id`, `class_id`, `section_id`, `roll`, `session_id`, `branch_id`, `created_at`, `updated_at`) VALUES
+(19, 19, 8, 1, 287, 7, 1, '2025-06-06 20:04:36', NULL),
+(20, 20, 8, 1, 609, 7, 1, '2025-06-06 20:04:36', NULL),
+(21, 21, 8, 1, 604, 7, 1, '2025-06-06 20:04:36', NULL),
+(22, 22, 8, 1, 602, 7, 1, '2025-06-06 20:04:37', NULL),
+(23, 23, 8, 1, 293, 7, 1, '2025-06-06 20:04:37', NULL),
+(24, 24, 8, 1, 630, 7, 1, '2025-06-06 20:04:37', NULL),
+(25, 25, 8, 1, 611, 7, 1, '2025-06-06 20:04:37', NULL),
+(26, 26, 8, 1, 318, 7, 1, '2025-06-06 20:04:37', NULL),
+(27, 27, 8, 1, 770, 7, 1, '2025-06-06 20:04:37', NULL),
+(28, 28, 8, 1, 288, 7, 1, '2025-06-06 20:04:37', NULL),
+(29, 29, 8, 1, 307, 7, 1, '2025-06-06 20:04:37', NULL),
+(30, 30, 8, 1, 302, 7, 1, '2025-06-06 20:04:37', NULL),
+(31, 31, 8, 1, 286, 7, 1, '2025-06-06 20:04:37', NULL),
+(32, 32, 8, 1, 315, 7, 1, '2025-06-06 20:04:38', NULL),
+(33, 33, 8, 1, 296, 7, 1, '2025-06-06 20:04:38', NULL),
+(34, 34, 8, 1, 695, 7, 1, '2025-06-06 20:04:38', NULL),
+(35, 35, 8, 1, 635, 7, 1, '2025-06-06 20:04:38', NULL),
+(36, 36, 8, 1, 386, 7, 1, '2025-06-06 20:04:38', NULL),
+(37, 37, 8, 1, 615, 7, 1, '2025-06-06 20:04:38', NULL),
+(38, 38, 8, 1, 756, 7, 1, '2025-06-06 20:04:38', NULL),
+(39, 39, 8, 1, 640, 7, 1, '2025-06-06 20:04:38', NULL),
+(40, 40, 7, 1, 689, 7, 1, '2025-06-06 20:05:43', NULL),
+(41, 41, 7, 1, 684, 7, 1, '2025-06-06 20:05:43', NULL),
+(42, 42, 7, 1, 382, 7, 1, '2025-06-06 20:05:44', NULL),
+(43, 43, 7, 1, 853, 7, 1, '2025-06-06 20:05:44', NULL),
+(44, 44, 7, 1, 676, 7, 1, '2025-06-06 20:05:44', NULL),
+(45, 45, 7, 1, 308, 7, 1, '2025-06-06 20:05:44', NULL),
+(46, 46, 7, 1, 822, 7, 1, '2025-06-06 20:05:44', NULL),
+(47, 47, 7, 1, 384, 7, 1, '2025-06-06 20:05:44', NULL),
+(48, 48, 7, 1, 669, 7, 1, '2025-06-06 20:05:44', NULL),
+(49, 49, 7, 1, 767, 7, 1, '2025-06-06 20:05:44', NULL),
+(50, 50, 7, 1, 679, 7, 1, '2025-06-06 20:05:44', NULL),
+(51, 51, 7, 1, 816, 7, 1, '2025-06-06 20:05:44', NULL),
+(52, 52, 7, 1, 694, 7, 1, '2025-06-06 20:05:45', NULL),
+(53, 53, 7, 1, 304, 7, 1, '2025-06-06 20:05:45', NULL),
+(54, 54, 7, 1, 311, 7, 1, '2025-06-06 20:05:45', NULL),
+(55, 55, 7, 1, 847, 7, 1, '2025-06-06 20:05:45', NULL),
+(56, 56, 7, 1, 627, 7, 1, '2025-06-06 20:05:45', NULL),
+(57, 57, 7, 1, 656, 7, 1, '2025-06-06 20:05:45', NULL),
+(58, 58, 7, 1, 306, 7, 1, '2025-06-06 20:05:45', NULL),
+(59, 59, 7, 1, 312, 7, 1, '2025-06-06 20:05:45', NULL),
+(60, 60, 7, 1, 845, 7, 1, '2025-06-06 20:05:45', NULL),
+(61, 61, 7, 1, 696, 7, 1, '2025-06-06 20:05:46', NULL),
+(62, 62, 7, 1, 685, 7, 1, '2025-06-06 20:05:46', NULL),
+(63, 63, 7, 1, 385, 7, 1, '2025-06-06 20:05:46', NULL),
+(64, 64, 7, 1, 713, 7, 1, '2025-06-06 20:05:46', NULL),
+(65, 65, 6, 1, 833, 7, 1, '2025-06-06 20:07:07', NULL),
+(66, 66, 6, 1, 720, 7, 1, '2025-06-06 20:07:07', NULL),
+(67, 67, 6, 1, 702, 7, 1, '2025-06-06 20:07:07', NULL),
+(68, 68, 6, 1, 381, 7, 1, '2025-06-06 20:07:07', NULL),
+(69, 69, 6, 1, 308, 7, 1, '2025-06-06 20:07:07', NULL),
+(70, 70, 6, 1, 780, 7, 1, '2025-06-06 20:07:07', NULL),
+(71, 71, 6, 1, 699, 7, 1, '2025-06-06 20:07:07', NULL),
+(72, 72, 6, 1, 724, 7, 1, '2025-06-06 20:07:07', NULL),
+(73, 73, 6, 1, 387, 7, 1, '2025-06-06 20:07:08', NULL),
+(74, 74, 6, 1, 376, 7, 1, '2025-06-06 20:07:08', NULL),
+(75, 75, 6, 1, 716, 7, 1, '2025-06-06 20:07:08', NULL),
+(76, 76, 6, 1, 799, 7, 1, '2025-06-06 20:07:08', NULL),
+(77, 77, 6, 1, 855, 7, 1, '2025-06-06 20:07:08', NULL),
+(78, 78, 6, 1, 760, 7, 1, '2025-06-06 20:07:08', NULL),
+(79, 79, 6, 1, 722, 7, 1, '2025-06-06 20:07:08', NULL),
+(80, 80, 6, 1, 725, 7, 1, '2025-06-06 20:07:08', NULL),
+(81, 81, 6, 1, 832, 7, 1, '2025-06-06 20:07:08', NULL),
+(82, 82, 6, 1, 826, 7, 1, '2025-06-06 20:07:08', NULL),
+(83, 83, 6, 1, 377, 7, 1, '2025-06-06 20:07:09', NULL),
+(84, 84, 6, 1, 907, 7, 1, '2025-06-06 20:07:09', NULL),
+(85, 85, 6, 1, 849, 7, 1, '2025-06-06 20:07:09', NULL),
+(86, 86, 6, 1, 383, 7, 1, '2025-06-06 20:07:09', NULL),
+(87, 87, 6, 1, 729, 7, 1, '2025-06-06 20:07:09', NULL),
+(88, 88, 6, 1, 711, 7, 1, '2025-06-06 20:07:09', NULL),
+(89, 89, 6, 1, 863, 7, 1, '2025-06-06 20:07:09', NULL),
+(90, 90, 6, 1, 878, 7, 1, '2025-06-06 20:07:09', NULL),
+(91, 91, 6, 1, 379, 7, 1, '2025-06-06 20:07:09', NULL),
+(92, 92, 6, 1, 747, 7, 1, '2025-06-06 20:07:09', NULL),
+(93, 93, 6, 1, 859, 7, 1, '2025-06-06 20:07:10', NULL),
+(94, 94, 6, 1, 714, 7, 1, '2025-06-06 20:07:10', NULL),
+(95, 95, 6, 1, 844, 7, 1, '2025-06-06 20:07:10', NULL),
+(96, 96, 6, 1, 781, 7, 1, '2025-06-06 20:07:10', NULL),
+(97, 97, 6, 1, 917, 7, 1, '2025-06-06 20:07:10', NULL),
+(98, 98, 6, 1, 706, 7, 1, '2025-06-06 20:07:10', NULL),
+(99, 99, 6, 1, 896, 7, 1, '2025-06-06 20:07:10', NULL),
+(100, 100, 6, 1, 858, 7, 1, '2025-06-06 20:07:10', NULL),
+(101, 101, 6, 1, 830, 7, 1, '2025-06-06 20:07:10', NULL),
+(102, 102, 6, 1, 710, 7, 1, '2025-06-06 20:07:10', NULL),
+(103, 103, 6, 1, 831, 7, 1, '2025-06-06 20:07:11', NULL),
+(104, 104, 6, 1, 733, 7, 1, '2025-06-06 20:07:11', NULL),
+(105, 105, 6, 1, 375, 7, 1, '2025-06-06 20:07:11', NULL),
+(106, 106, 6, 1, 374, 7, 1, '2025-06-06 20:07:11', NULL),
+(107, 107, 6, 1, 378, 7, 1, '2025-06-06 20:07:11', NULL),
+(108, 108, 5, 1, 762, 7, 1, '2025-06-06 20:07:43', NULL),
+(109, 109, 5, 1, 898, 7, 1, '2025-06-06 20:07:43', NULL),
+(110, 110, 5, 1, 902, 7, 1, '2025-06-06 20:07:43', NULL),
+(111, 111, 5, 1, 869, 7, 1, '2025-06-06 20:07:44', NULL),
+(112, 112, 5, 1, 797, 7, 1, '2025-06-06 20:07:44', NULL),
+(113, 113, 5, 1, 745, 7, 1, '2025-06-06 20:07:44', NULL),
+(114, 114, 5, 1, 754, 7, 1, '2025-06-06 20:07:44', NULL),
+(115, 115, 5, 1, 742, 7, 1, '2025-06-06 20:07:44', NULL),
+(116, 116, 5, 1, 860, 7, 1, '2025-06-06 20:07:44', NULL),
+(117, 117, 5, 1, 737, 7, 1, '2025-06-06 20:07:44', NULL),
+(118, 118, 5, 1, 739, 7, 1, '2025-06-06 20:07:44', NULL),
+(119, 119, 5, 1, 744, 7, 1, '2025-06-06 20:07:44', NULL),
+(120, 120, 5, 1, 850, 7, 1, '2025-06-06 20:07:44', NULL),
+(121, 121, 5, 1, 735, 7, 1, '2025-06-06 20:07:45', NULL),
+(122, 122, 5, 1, 785, 7, 1, '2025-06-06 20:07:45', NULL),
+(123, 123, 5, 1, 740, 7, 1, '2025-06-06 20:07:45', NULL),
+(124, 124, 5, 1, 925, 7, 1, '2025-06-06 20:07:45', NULL),
+(125, 125, 5, 1, 838, 7, 1, '2025-06-06 20:07:45', NULL),
+(126, 126, 5, 1, 755, 7, 1, '2025-06-06 20:07:45', NULL),
+(127, 127, 5, 1, 759, 7, 1, '2025-06-06 20:07:45', NULL),
+(128, 128, 5, 1, 827, 7, 1, '2025-06-06 20:07:45', NULL),
+(129, 129, 5, 1, 871, 7, 1, '2025-06-06 20:07:45', NULL),
+(130, 130, 4, 1, 773, 7, 1, '2025-06-06 20:08:15', NULL),
+(131, 131, 4, 1, 854, 7, 1, '2025-06-06 20:08:15', NULL),
+(132, 132, 4, 1, 839, 7, 1, '2025-06-06 20:08:15', NULL),
+(133, 133, 4, 1, 792, 7, 1, '2025-06-06 20:08:15', NULL),
+(134, 134, 4, 1, 778, 7, 1, '2025-06-06 20:08:15', NULL),
+(135, 135, 4, 1, 765, 7, 1, '2025-06-06 20:08:16', NULL),
+(136, 136, 4, 1, 842, 7, 1, '2025-06-06 20:08:16', NULL),
+(137, 137, 4, 1, 870, 7, 1, '2025-06-06 20:08:16', NULL),
+(138, 138, 4, 1, 812, 7, 1, '2025-06-06 20:08:16', NULL),
+(139, 139, 4, 1, 783, 7, 1, '2025-06-06 20:08:16', NULL),
+(140, 140, 4, 1, 784, 7, 1, '2025-06-06 20:08:16', NULL),
+(141, 141, 4, 1, 779, 7, 1, '2025-06-06 20:08:16', NULL),
+(142, 142, 4, 1, 931, 7, 1, '2025-06-06 20:08:16', NULL),
+(143, 143, 4, 1, 852, 7, 1, '2025-06-06 20:08:16', NULL),
+(144, 144, 4, 1, 798, 7, 1, '2025-06-06 20:08:17', NULL),
+(145, 145, 4, 1, 829, 7, 1, '2025-06-06 20:08:17', NULL),
+(146, 146, 4, 1, 774, 7, 1, '2025-06-06 20:08:17', NULL),
+(147, 147, 4, 1, 922, 7, 1, '2025-06-06 20:08:17', NULL),
+(148, 148, 4, 1, 793, 7, 1, '2025-06-06 20:08:17', NULL),
+(149, 149, 4, 1, 771, 7, 1, '2025-06-06 20:08:17', NULL),
+(150, 150, 4, 1, 776, 7, 1, '2025-06-06 20:08:17', NULL),
+(151, 151, 4, 1, 912, 7, 1, '2025-06-06 20:08:17', NULL),
+(152, 152, 4, 1, 942, 7, 1, '2025-06-06 20:08:17', NULL),
+(153, 153, 4, 1, 950, 7, 1, '2025-06-06 20:08:17', NULL),
+(154, 154, 4, 1, 868, 7, 1, '2025-06-06 20:08:18', NULL),
+(155, 155, 4, 1, 846, 7, 1, '2025-06-06 20:08:18', NULL),
+(156, 156, 4, 1, 840, 7, 1, '2025-06-06 20:08:18', NULL),
+(157, 157, 4, 1, 789, 7, 1, '2025-06-06 20:08:18', NULL),
+(158, 158, 4, 1, 791, 7, 1, '2025-06-06 20:08:18', NULL),
+(159, 159, 4, 1, 861, 7, 1, '2025-06-06 20:08:18', NULL),
+(160, 160, 4, 1, 975, 7, 1, '2025-06-06 20:08:18', NULL),
+(161, 161, 4, 1, 787, 7, 1, '2025-06-06 20:08:18', NULL),
+(162, 162, 4, 1, 777, 7, 1, '2025-06-06 20:08:18', NULL),
+(163, 163, 4, 1, 864, 7, 1, '2025-06-06 20:08:19', NULL),
+(164, 164, 4, 1, 786, 7, 1, '2025-06-06 20:08:19', NULL),
+(165, 165, 4, 1, 788, 7, 1, '2025-06-06 20:08:19', NULL),
+(166, 166, 4, 1, 796, 7, 1, '2025-06-06 20:08:19', NULL),
+(167, 167, 4, 1, 772, 7, 1, '2025-06-06 20:08:19', NULL),
+(168, 168, 3, 1, 897, 7, 1, '2025-06-06 20:08:50', NULL),
+(169, 169, 3, 1, 908, 7, 1, '2025-06-06 20:08:50', NULL),
+(170, 170, 3, 1, 890, 7, 1, '2025-06-06 20:08:50', NULL),
+(171, 171, 3, 1, 819, 7, 1, '2025-06-06 20:08:50', NULL),
+(172, 172, 3, 1, 934, 7, 1, '2025-06-06 20:08:51', NULL),
+(173, 173, 3, 1, 821, 7, 1, '2025-06-06 20:08:51', NULL),
+(174, 174, 3, 1, 811, 7, 1, '2025-06-06 20:08:51', NULL),
+(175, 175, 3, 1, 836, 7, 1, '2025-06-06 20:08:51', NULL),
+(176, 176, 3, 1, 803, 7, 1, '2025-06-06 20:08:51', NULL),
+(177, 177, 3, 1, 909, 7, 1, '2025-06-06 20:08:51', NULL),
+(178, 178, 3, 1, 807, 7, 1, '2025-06-06 20:08:51', NULL),
+(179, 179, 3, 1, 820, 7, 1, '2025-06-06 20:08:51', NULL),
+(180, 180, 3, 1, 879, 7, 1, '2025-06-06 20:08:51', NULL),
+(181, 181, 3, 1, 851, 7, 1, '2025-06-06 20:08:51', NULL),
+(182, 182, 3, 1, 814, 7, 1, '2025-06-06 20:08:52', NULL),
+(183, 183, 3, 1, 808, 7, 1, '2025-06-06 20:08:52', NULL),
+(184, 184, 3, 1, 889, 7, 1, '2025-06-06 20:08:52', NULL),
+(185, 185, 3, 1, 914, 7, 1, '2025-06-06 20:08:52', NULL),
+(186, 186, 3, 1, 866, 7, 1, '2025-06-06 20:08:52', NULL),
+(187, 187, 3, 1, 900, 7, 1, '2025-06-06 20:08:52', NULL),
+(188, 188, 3, 1, 806, 7, 1, '2025-06-06 20:08:52', NULL),
+(189, 189, 3, 1, 903, 7, 1, '2025-06-06 20:08:52', NULL),
+(190, 190, 3, 1, 834, 7, 1, '2025-06-06 20:08:52', NULL),
+(191, 191, 3, 1, 862, 7, 1, '2025-06-06 20:08:52', NULL),
+(192, 192, 3, 1, 916, 7, 1, '2025-06-06 20:08:53', NULL),
+(193, 193, 3, 1, 805, 7, 1, '2025-06-06 20:08:53', NULL),
+(194, 194, 3, 1, 867, 7, 1, '2025-06-06 20:08:53', NULL),
+(195, 195, 3, 1, 809, 7, 1, '2025-06-06 20:08:53', NULL),
+(196, 196, 3, 1, 817, 7, 1, '2025-06-06 20:08:53', NULL),
+(197, 197, 3, 1, 804, 7, 1, '2025-06-06 20:08:53', NULL),
+(198, 198, 3, 1, 913, 7, 1, '2025-06-06 20:08:53', NULL),
+(199, 199, 3, 1, 818, 7, 1, '2025-06-06 20:08:53', NULL),
+(200, 200, 2, 1, 947, 7, 1, '2025-06-06 20:09:22', NULL),
+(201, 201, 2, 1, 905, 7, 1, '2025-06-06 20:09:22', NULL),
+(202, 202, 2, 1, 891, 7, 1, '2025-06-06 20:09:22', NULL),
+(203, 203, 2, 1, 941, 7, 1, '2025-06-06 20:09:22', NULL),
+(204, 204, 2, 1, 973, 7, 1, '2025-06-06 20:09:23', NULL),
+(205, 205, 2, 1, 883, 7, 1, '2025-06-06 20:09:23', NULL),
+(206, 206, 2, 1, 950, 7, 1, '2025-06-06 20:09:23', NULL),
+(207, 207, 2, 1, 936, 7, 1, '2025-06-06 20:09:23', NULL),
+(208, 208, 2, 1, 873, 7, 1, '2025-06-06 20:09:23', NULL),
+(209, 209, 2, 1, 921, 7, 1, '2025-06-06 20:09:23', NULL),
+(210, 210, 2, 1, 904, 7, 1, '2025-06-06 20:09:23', NULL),
+(211, 211, 2, 1, 952, 7, 1, '2025-06-06 20:09:23', NULL),
+(212, 212, 2, 1, 893, 7, 1, '2025-06-06 20:09:23', NULL),
+(213, 213, 2, 1, 886, 7, 1, '2025-06-06 20:09:23', NULL),
+(214, 214, 2, 1, 911, 7, 1, '2025-06-06 20:09:24', NULL),
+(215, 215, 2, 1, 927, 7, 1, '2025-06-06 20:09:24', NULL),
+(216, 216, 2, 1, 971, 7, 1, '2025-06-06 20:09:24', NULL),
+(217, 217, 2, 1, 948, 7, 1, '2025-06-06 20:09:24', NULL),
+(218, 218, 2, 1, 951, 7, 1, '2025-06-06 20:09:24', NULL),
+(219, 219, 2, 1, 884, 7, 1, '2025-06-06 20:09:24', NULL),
+(220, 220, 2, 1, 885, 7, 1, '2025-06-06 20:09:24', NULL),
+(221, 221, 2, 1, 906, 7, 1, '2025-06-06 20:09:24', NULL),
+(222, 222, 2, 1, 939, 7, 1, '2025-06-06 20:09:24', NULL),
+(223, 223, 2, 1, 929, 7, 1, '2025-06-06 20:09:25', NULL),
+(224, 224, 2, 1, 953, 7, 1, '2025-06-06 20:09:25', NULL),
+(225, 225, 2, 1, 899, 7, 1, '2025-06-06 20:09:25', NULL),
+(226, 226, 2, 1, 935, 7, 1, '2025-06-06 20:09:25', NULL),
+(227, 227, 2, 1, 919, 7, 1, '2025-06-06 20:09:25', NULL),
+(228, 228, 2, 1, 932, 7, 1, '2025-06-06 20:09:25', NULL),
+(229, 229, 2, 1, 877, 7, 1, '2025-06-06 20:09:25', NULL),
+(230, 230, 2, 1, 9290, 7, 1, '2025-06-06 20:09:25', NULL),
+(231, 231, 1, 1, 968, 7, 1, '2025-06-06 20:09:53', NULL),
+(232, 232, 1, 1, 946, 7, 1, '2025-06-06 20:09:53', NULL),
+(233, 233, 1, 1, 102, 7, 1, '2025-06-06 20:09:53', NULL),
+(234, 234, 1, 1, 970, 7, 1, '2025-06-06 20:09:53', NULL),
+(235, 235, 1, 1, 940, 7, 1, '2025-06-06 20:09:53', NULL),
+(236, 236, 1, 1, 958, 7, 1, '2025-06-06 20:09:53', NULL),
+(237, 237, 1, 1, 99, 7, 1, '2025-06-06 20:09:53', NULL),
+(238, 238, 1, 1, 961, 7, 1, '2025-06-06 20:09:53', NULL),
+(239, 239, 1, 1, 105, 7, 1, '2025-06-06 20:09:53', NULL),
+(240, 240, 1, 1, 88, 7, 1, '2025-06-06 20:09:54', NULL),
+(241, 241, 1, 1, 972, 7, 1, '2025-06-06 20:09:54', NULL),
+(242, 242, 1, 1, 933, 7, 1, '2025-06-06 20:09:54', NULL),
+(243, 243, 1, 1, 928, 7, 1, '2025-06-06 20:09:54', NULL),
+(244, 244, 1, 1, 112, 7, 1, '2025-06-06 20:09:54', NULL),
+(245, 245, 1, 1, 964, 7, 1, '2025-06-06 20:09:54', NULL),
+(246, 246, 1, 1, 91, 7, 1, '2025-06-06 20:09:54', NULL),
+(247, 247, 1, 1, 969, 7, 1, '2025-06-06 20:09:54', NULL),
+(248, 248, 1, 1, 938, 7, 1, '2025-06-06 20:09:54', NULL),
+(249, 249, 1, 1, 943, 7, 1, '2025-06-06 20:09:54', NULL),
+(250, 250, 1, 1, 103, 7, 1, '2025-06-06 20:09:55', NULL),
+(251, 251, 1, 1, 67, 7, 1, '2025-06-06 20:09:55', NULL),
+(252, 252, 1, 1, 962, 7, 1, '2025-06-06 20:09:55', NULL),
+(253, 253, 1, 1, 956, 7, 1, '2025-06-06 20:09:55', NULL),
+(254, 254, 1, 1, 966, 7, 1, '2025-06-06 20:09:55', NULL),
+(255, 255, 1, 1, 930, 7, 1, '2025-06-06 20:09:55', NULL),
+(256, 256, 1, 1, 926, 7, 1, '2025-06-06 20:09:55', NULL),
+(257, 257, 1, 1, 963, 7, 1, '2025-06-06 20:09:55', NULL),
+(258, 258, 1, 1, 86, 7, 1, '2025-06-06 20:09:55', NULL),
+(259, 259, 1, 1, 45, 7, 1, '2025-06-06 20:09:56', NULL),
+(260, 260, 1, 1, 923, 7, 1, '2025-06-06 20:09:56', NULL),
+(261, 261, 1, 1, 924, 7, 1, '2025-06-06 20:09:56', NULL),
+(262, 262, 1, 1, 61, 7, 1, '2025-06-06 20:09:56', NULL),
+(263, 263, 1, 1, 937, 7, 1, '2025-06-06 20:09:56', NULL),
+(264, 264, 1, 1, 944, 7, 1, '2025-06-06 20:09:56', NULL),
+(265, 265, 1, 1, 79, 7, 1, '2025-06-06 20:09:56', NULL),
+(266, 266, 1, 1, 965, 7, 1, '2025-06-06 20:09:56', NULL),
+(267, 267, 1, 1, 967, 7, 1, '2025-06-06 20:09:56', NULL),
+(268, 268, 1, 1, 29, 7, 1, '2025-06-06 20:09:56', NULL),
+(269, 269, 1, 1, 945, 7, 1, '2025-06-06 20:09:57', NULL),
+(270, 270, 1, 1, 89, 7, 1, '2025-06-06 20:09:57', NULL),
+(271, 271, 1, 1, 959, 7, 1, '2025-06-06 20:09:57', NULL),
+(272, 272, 1, 1, 64, 7, 1, '2025-06-06 20:09:57', NULL),
+(273, 273, 13, 1, 105, 7, 1, '2025-06-06 20:10:38', NULL),
+(274, 274, 13, 1, 8, 7, 1, '2025-06-06 20:10:38', NULL),
+(275, 275, 13, 1, 99, 7, 1, '2025-06-06 20:10:38', NULL),
+(276, 276, 13, 1, 87, 7, 1, '2025-06-06 20:10:39', NULL),
+(277, 277, 13, 1, 31, 7, 1, '2025-06-06 20:10:39', NULL),
+(278, 278, 13, 1, 67, 7, 1, '2025-06-06 20:10:39', NULL),
+(279, 279, 13, 1, 45, 7, 1, '2025-06-06 20:10:39', NULL),
+(280, 280, 13, 1, 5, 7, 1, '2025-06-06 20:10:39', NULL),
+(281, 281, 13, 1, 30, 7, 1, '2025-06-06 20:10:39', NULL),
+(282, 282, 13, 1, 89, 7, 1, '2025-06-06 20:10:39', NULL),
+(283, 283, 13, 1, 103, 7, 1, '2025-06-06 20:10:39', NULL),
+(284, 284, 13, 1, 29, 7, 1, '2025-06-06 20:10:39', NULL),
+(285, 285, 13, 1, 61, 7, 1, '2025-06-06 20:10:39', NULL),
+(286, 286, 13, 1, 69, 7, 1, '2025-06-06 20:10:40', NULL),
+(287, 287, 13, 1, 64, 7, 1, '2025-06-06 20:10:40', NULL),
+(288, 288, 13, 1, 91, 7, 1, '2025-06-06 20:10:40', NULL),
+(289, 289, 13, 1, 86, 7, 1, '2025-06-06 20:10:40', NULL),
+(290, 290, 13, 1, 85, 7, 1, '2025-06-06 20:10:40', NULL),
+(291, 291, 13, 1, 88, 7, 1, '2025-06-06 20:10:40', NULL),
+(292, 292, 13, 1, 79, 7, 1, '2025-06-06 20:10:40', NULL),
+(293, 293, 13, 1, 102, 7, 1, '2025-06-06 20:10:40', NULL),
+(294, 294, 13, 1, 68, 7, 1, '2025-06-06 20:10:40', NULL),
+(295, 295, 13, 1, 112, 7, 1, '2025-06-06 20:10:41', NULL),
+(296, 296, 12, 1, 124, 7, 1, '2025-06-06 20:11:21', NULL),
+(297, 297, 12, 1, 120, 7, 1, '2025-06-06 20:11:21', NULL),
+(298, 298, 12, 1, 126, 7, 1, '2025-06-06 20:11:21', NULL),
+(299, 299, 12, 1, 132, 7, 1, '2025-06-06 20:11:21', NULL),
+(300, 300, 12, 1, 129, 7, 1, '2025-06-06 20:11:21', NULL),
+(301, 301, 12, 1, 123, 7, 1, '2025-06-06 20:11:21', NULL),
+(302, 302, 12, 1, 0, 7, 1, '2025-06-06 20:11:21', NULL),
+(303, 303, 12, 1, 122, 7, 1, '2025-06-06 20:11:21', NULL),
+(304, 304, 12, 1, 128, 7, 1, '2025-06-06 20:11:22', NULL),
+(305, 305, 12, 1, 130, 7, 1, '2025-06-06 20:11:22', NULL),
+(306, 306, 12, 1, 127, 7, 1, '2025-06-06 20:11:22', NULL),
+(307, 307, 12, 1, 125, 7, 1, '2025-06-06 20:11:22', NULL),
+(308, 308, 12, 1, 131, 7, 1, '2025-06-06 20:11:22', NULL),
+(309, 309, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(310, 310, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(311, 311, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(312, 312, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(313, 313, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(314, 314, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(315, 315, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(316, 316, 11, 1, 0, 7, 1, '2025-06-06 20:12:07', NULL),
+(317, 317, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(318, 318, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(319, 319, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(320, 320, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(321, 321, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(322, 322, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(323, 323, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(324, 324, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(325, 325, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(326, 326, 11, 1, 0, 7, 1, '2025-06-06 20:12:08', NULL),
+(327, 327, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(328, 328, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(329, 329, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(330, 330, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(331, 331, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(332, 332, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(333, 333, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(334, 334, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(335, 335, 11, 1, 0, 7, 1, '2025-06-06 20:12:09', NULL),
+(354, 35, 9, 1, 635, 9, 1, '2025-06-08 17:31:10', NULL),
+(355, 39, 9, 1, 640, 9, 1, '2025-06-08 17:31:10', NULL),
+(356, 25, 9, 1, 611, 9, 1, '2025-06-08 17:31:10', NULL),
+(357, 19, 9, 1, 287, 9, 1, '2025-06-08 17:31:10', NULL),
+(358, 37, 9, 1, 615, 9, 1, '2025-06-08 17:31:10', NULL),
+(359, 30, 9, 1, 302, 9, 1, '2025-06-08 17:31:10', NULL),
+(360, 33, 9, 1, 296, 9, 1, '2025-06-08 17:31:10', NULL),
+(361, 34, 9, 1, 695, 9, 1, '2025-06-08 17:31:10', NULL),
+(362, 31, 9, 1, 286, 9, 1, '2025-06-08 17:31:10', NULL),
+(363, 23, 9, 1, 293, 9, 1, '2025-06-08 17:31:10', NULL),
+(364, 27, 9, 1, 770, 9, 1, '2025-06-08 17:31:10', NULL),
+(365, 21, 9, 1, 604, 9, 1, '2025-06-08 17:31:10', NULL),
+(366, 24, 9, 1, 630, 9, 1, '2025-06-08 17:31:10', NULL),
+(367, 26, 9, 1, 318, 9, 1, '2025-06-08 17:31:10', NULL),
+(368, 28, 9, 1, 288, 9, 1, '2025-06-08 17:31:10', NULL),
+(369, 22, 9, 1, 602, 9, 1, '2025-06-08 17:31:10', NULL),
+(370, 32, 9, 1, 315, 9, 1, '2025-06-08 17:31:10', NULL),
+(371, 36, 9, 1, 386, 9, 1, '2025-06-08 17:31:10', NULL),
+(372, 20, 9, 1, 609, 9, 1, '2025-06-08 17:31:10', NULL),
+(373, 29, 9, 1, 307, 9, 1, '2025-06-08 17:31:10', NULL),
+(374, 38, 9, 1, 756, 9, 1, '2025-06-08 17:31:10', NULL),
+(375, 47, 8, 1, 384, 9, 1, '2025-06-08 17:35:16', NULL),
+(376, 48, 8, 1, 669, 9, 1, '2025-06-08 17:35:16', NULL),
+(377, 54, 8, 1, 311, 9, 1, '2025-06-08 17:35:16', NULL),
+(378, 53, 8, 1, 304, 9, 1, '2025-06-08 17:35:16', NULL),
+(379, 44, 8, 1, 676, 9, 1, '2025-06-08 17:35:16', NULL),
+(380, 40, 8, 1, 689, 9, 1, '2025-06-08 17:35:16', NULL),
+(381, 46, 8, 1, 822, 9, 1, '2025-06-08 17:35:16', NULL),
+(382, 52, 8, 1, 694, 9, 1, '2025-06-08 17:35:16', NULL),
+(383, 51, 8, 1, 816, 9, 1, '2025-06-08 17:35:16', NULL),
+(384, 49, 8, 1, 767, 9, 1, '2025-06-08 17:35:16', NULL),
+(385, 42, 8, 1, 382, 9, 1, '2025-06-08 17:35:16', NULL),
+(386, 61, 8, 1, 696, 9, 1, '2025-06-08 17:35:16', NULL),
+(387, 64, 8, 1, 713, 9, 1, '2025-06-08 17:35:16', NULL),
+(388, 63, 8, 1, 385, 9, 1, '2025-06-08 17:35:16', NULL),
+(389, 50, 8, 1, 679, 9, 1, '2025-06-08 17:35:16', NULL),
+(390, 56, 8, 1, 627, 9, 1, '2025-06-08 17:35:16', NULL),
+(391, 57, 8, 1, 656, 9, 1, '2025-06-08 17:35:16', NULL),
+(392, 45, 8, 1, 308, 9, 1, '2025-06-08 17:35:16', NULL),
+(393, 60, 8, 1, 845, 9, 1, '2025-06-08 17:35:16', NULL),
+(394, 59, 8, 1, 312, 9, 1, '2025-06-08 17:35:16', NULL),
+(395, 43, 8, 1, 853, 9, 1, '2025-06-08 17:35:16', NULL),
+(396, 55, 8, 1, 847, 9, 1, '2025-06-08 17:35:16', NULL),
+(397, 41, 8, 1, 684, 9, 1, '2025-06-08 17:35:16', NULL),
+(398, 62, 8, 1, 685, 9, 1, '2025-06-08 17:35:16', NULL),
+(399, 58, 8, 1, 306, 9, 1, '2025-06-08 17:35:16', NULL),
+(400, 97, 7, 1, 917, 9, 1, '2025-06-08 17:41:38', NULL),
+(401, 90, 7, 1, 878, 9, 1, '2025-06-08 17:41:38', NULL),
+(402, 72, 7, 1, 724, 9, 1, '2025-06-08 17:41:38', NULL),
+(403, 70, 7, 1, 780, 9, 1, '2025-06-08 17:41:38', NULL),
+(404, 69, 7, 1, 308, 9, 1, '2025-06-08 17:41:38', NULL),
+(405, 101, 7, 1, 830, 9, 1, '2025-06-08 17:41:38', NULL),
+(406, 103, 7, 1, 831, 9, 1, '2025-06-08 17:41:38', NULL),
+(407, 83, 7, 1, 377, 9, 1, '2025-06-08 17:41:38', NULL),
+(408, 65, 7, 1, 833, 9, 1, '2025-06-08 17:41:38', NULL),
+(409, 99, 7, 1, 896, 9, 1, '2025-06-08 17:41:38', NULL),
+(410, 82, 7, 1, 826, 9, 1, '2025-06-08 17:41:38', NULL),
+(411, 66, 7, 1, 720, 9, 1, '2025-06-08 17:41:38', NULL),
+(412, 87, 7, 1, 729, 9, 1, '2025-06-08 17:41:38', NULL),
+(413, 100, 7, 1, 858, 9, 1, '2025-06-08 17:41:38', NULL),
+(414, 104, 7, 1, 733, 9, 1, '2025-06-08 17:41:38', NULL),
+(415, 107, 7, 1, 378, 9, 1, '2025-06-08 17:41:38', NULL),
+(416, 78, 7, 1, 760, 9, 1, '2025-06-08 17:41:38', NULL),
+(417, 91, 7, 1, 379, 9, 1, '2025-06-08 17:41:38', NULL),
+(418, 88, 7, 1, 711, 9, 1, '2025-06-08 17:41:38', NULL),
+(419, 105, 7, 1, 375, 9, 1, '2025-06-08 17:41:38', NULL),
+(420, 74, 7, 1, 376, 9, 1, '2025-06-08 17:41:38', NULL),
+(421, 73, 7, 1, 387, 9, 1, '2025-06-08 17:41:38', NULL),
+(422, 68, 7, 1, 381, 9, 1, '2025-06-08 17:41:38', NULL),
+(423, 98, 7, 1, 706, 9, 1, '2025-06-08 17:41:38', NULL),
+(424, 71, 7, 1, 699, 9, 1, '2025-06-08 17:41:38', NULL),
+(425, 102, 7, 1, 710, 9, 1, '2025-06-08 17:41:38', NULL),
+(426, 79, 7, 1, 722, 9, 1, '2025-06-08 17:41:38', NULL),
+(427, 96, 7, 1, 781, 9, 1, '2025-06-08 17:41:38', NULL),
+(428, 80, 7, 1, 725, 9, 1, '2025-06-08 17:41:38', NULL),
+(429, 81, 7, 1, 832, 9, 1, '2025-06-08 17:41:38', NULL),
+(430, 84, 7, 1, 907, 9, 1, '2025-06-08 17:41:38', NULL),
+(431, 93, 7, 1, 859, 9, 1, '2025-06-08 17:41:38', NULL),
+(432, 94, 7, 1, 714, 9, 1, '2025-06-08 17:41:38', NULL),
+(433, 89, 7, 1, 863, 9, 1, '2025-06-08 17:41:38', NULL),
+(434, 95, 7, 1, 844, 9, 1, '2025-06-08 17:41:38', NULL),
+(435, 86, 7, 1, 383, 9, 1, '2025-06-08 17:41:38', NULL),
+(436, 75, 7, 1, 716, 9, 1, '2025-06-08 17:41:38', NULL),
+(437, 92, 7, 1, 747, 9, 1, '2025-06-08 17:41:38', NULL),
+(438, 106, 7, 1, 374, 9, 1, '2025-06-08 17:41:38', NULL),
+(439, 76, 7, 1, 799, 9, 1, '2025-06-08 17:41:38', NULL),
+(440, 77, 7, 1, 855, 9, 1, '2025-06-08 17:41:38', NULL),
+(441, 85, 7, 1, 849, 9, 1, '2025-06-08 17:41:38', NULL),
+(442, 67, 7, 1, 702, 9, 1, '2025-06-08 17:41:38', NULL),
+(443, 123, 6, 1, 740, 9, 1, '2025-06-08 17:46:34', NULL),
+(444, 110, 6, 1, 902, 9, 1, '2025-06-08 17:46:34', NULL),
+(445, 113, 6, 1, 745, 9, 1, '2025-06-08 17:46:34', NULL),
+(446, 128, 6, 1, 827, 9, 1, '2025-06-08 17:46:34', NULL),
+(447, 119, 6, 1, 744, 9, 1, '2025-06-08 17:46:34', NULL),
+(448, 127, 6, 1, 759, 9, 1, '2025-06-08 17:46:34', NULL),
+(449, 124, 6, 1, 925, 9, 1, '2025-06-08 17:46:34', NULL),
+(450, 122, 6, 1, 785, 9, 1, '2025-06-08 17:46:34', NULL),
+(451, 114, 6, 1, 754, 9, 1, '2025-06-08 17:46:34', NULL),
+(452, 112, 6, 1, 797, 9, 1, '2025-06-08 17:46:34', NULL),
+(453, 118, 6, 1, 739, 9, 1, '2025-06-08 17:46:34', NULL),
+(454, 111, 4, 1, 869, 7, 1, '2025-06-08 17:46:34', NULL),
+(455, 117, 6, 1, 737, 9, 1, '2025-06-08 17:46:34', NULL),
+(456, 109, 6, 1, 898, 9, 1, '2025-06-08 17:46:34', NULL),
+(457, 108, 6, 1, 762, 9, 1, '2025-06-08 17:46:34', NULL),
+(458, 125, 6, 1, 838, 9, 1, '2025-06-08 17:46:34', NULL),
+(459, 116, 6, 1, 860, 9, 1, '2025-06-08 17:46:34', NULL),
+(460, 129, 6, 1, 871, 9, 1, '2025-06-08 17:46:34', NULL),
+(461, 121, 6, 1, 735, 9, 1, '2025-06-08 17:46:34', NULL),
+(462, 120, 6, 1, 850, 9, 1, '2025-06-08 17:46:34', NULL),
+(463, 115, 6, 1, 742, 9, 1, '2025-06-08 17:46:34', NULL),
+(464, 126, 6, 1, 755, 9, 1, '2025-06-08 17:46:34', NULL),
+(465, 336, 9, 1, 314, 7, 1, '2025-06-08 17:56:59', NULL),
+(466, 337, 9, 1, 260, 7, 1, '2025-06-08 17:56:59', NULL),
+(467, 338, 9, 1, 262, 7, 1, '2025-06-08 17:56:59', NULL),
+(468, 339, 9, 1, 300, 7, 1, '2025-06-08 17:56:59', NULL),
+(469, 340, 9, 1, 261, 7, 1, '2025-06-08 17:57:00', NULL),
+(470, 341, 9, 1, 264, 7, 1, '2025-06-08 17:57:00', NULL),
+(471, 342, 9, 1, 297, 7, 1, '2025-06-08 17:57:00', NULL),
+(472, 343, 9, 1, 255, 7, 1, '2025-06-08 17:57:00', NULL),
+(473, 344, 9, 1, 259, 7, 1, '2025-06-08 17:57:00', NULL),
+(474, 345, 9, 1, 258, 7, 1, '2025-06-08 17:57:00', NULL),
+(475, 346, 9, 1, 252, 7, 1, '2025-06-08 17:57:00', NULL),
+(476, 347, 9, 1, 256, 7, 1, '2025-06-08 17:57:00', NULL),
+(477, 348, 9, 1, 336, 7, 1, '2025-06-08 17:57:00', NULL),
+(478, 349, 9, 1, 253, 7, 1, '2025-06-08 17:57:00', NULL),
+(479, 350, 9, 1, 267, 7, 1, '2025-06-08 17:57:01', NULL),
+(480, 351, 9, 1, 266, 7, 1, '2025-06-08 17:57:01', NULL),
+(481, 352, 9, 1, 303, 7, 1, '2025-06-08 17:57:01', NULL),
+(482, 353, 9, 1, 251, 7, 1, '2025-06-08 17:57:01', NULL),
+(483, 148, 5, 1, 793, 9, 1, '2025-06-09 04:09:03', NULL),
+(484, 152, 5, 1, 942, 9, 1, '2025-06-09 04:09:03', NULL),
+(485, 138, 5, 1, 812, 9, 1, '2025-06-09 04:09:03', NULL),
+(486, 136, 5, 1, 842, 9, 1, '2025-06-09 04:09:03', NULL),
+(487, 147, 5, 1, 922, 9, 1, '2025-06-09 04:09:03', NULL),
+(488, 156, 5, 1, 840, 9, 1, '2025-06-09 04:09:03', NULL),
+(489, 130, 5, 1, 773, 9, 1, '2025-06-09 04:09:03', NULL),
+(490, 131, 5, 1, 854, 9, 1, '2025-06-09 04:09:03', NULL),
+(491, 132, 5, 1, 839, 9, 1, '2025-06-09 04:09:03', NULL),
+(492, 149, 5, 1, 771, 9, 1, '2025-06-09 04:09:03', NULL),
+(493, 165, 5, 1, 788, 9, 1, '2025-06-09 04:09:03', NULL),
+(494, 144, 5, 1, 798, 9, 1, '2025-06-09 04:09:03', NULL),
+(495, 153, 5, 1, 950, 9, 1, '2025-06-09 04:09:03', NULL),
+(496, 151, 5, 1, 912, 9, 1, '2025-06-09 04:09:03', NULL),
+(497, 159, 5, 1, 861, 9, 1, '2025-06-09 04:09:03', NULL),
+(498, 141, 5, 1, 779, 9, 1, '2025-06-09 04:09:03', NULL),
+(499, 164, 5, 1, 786, 9, 1, '2025-06-09 04:09:03', NULL),
+(500, 142, 5, 1, 931, 9, 1, '2025-06-09 04:09:03', NULL),
+(501, 154, 5, 1, 868, 9, 1, '2025-06-09 04:09:03', NULL),
+(502, 145, 5, 1, 829, 9, 1, '2025-06-09 04:09:03', NULL),
+(503, 167, 5, 1, 772, 9, 1, '2025-06-09 04:09:03', NULL),
+(504, 163, 5, 1, 864, 9, 1, '2025-06-09 04:09:03', NULL),
+(505, 155, 5, 1, 846, 9, 1, '2025-06-09 04:09:03', NULL),
+(506, 157, 5, 1, 789, 9, 1, '2025-06-09 04:09:03', NULL),
+(507, 143, 5, 1, 852, 9, 1, '2025-06-09 04:09:03', NULL),
+(508, 150, 5, 1, 776, 9, 1, '2025-06-09 04:09:03', NULL),
+(509, 160, 5, 1, 975, 9, 1, '2025-06-09 04:09:03', NULL),
+(510, 166, 5, 1, 796, 9, 1, '2025-06-09 04:09:03', NULL),
+(511, 133, 5, 1, 792, 9, 1, '2025-06-09 04:09:03', NULL),
+(512, 158, 5, 1, 791, 9, 1, '2025-06-09 04:09:03', NULL),
+(513, 137, 5, 1, 870, 9, 1, '2025-06-09 04:09:03', NULL),
+(514, 162, 5, 1, 777, 9, 1, '2025-06-09 04:09:03', NULL),
+(515, 161, 5, 1, 787, 9, 1, '2025-06-09 04:09:03', NULL),
+(516, 146, 5, 1, 774, 9, 1, '2025-06-09 04:09:03', NULL),
+(517, 135, 5, 1, 765, 9, 1, '2025-06-09 04:09:03', NULL),
+(518, 134, 5, 1, 778, 9, 1, '2025-06-09 04:09:03', NULL),
+(519, 140, 5, 1, 784, 9, 1, '2025-06-09 04:09:03', NULL),
+(520, 139, 5, 1, 783, 9, 1, '2025-06-09 04:09:03', NULL),
+(521, 181, 4, 1, 851, 9, 1, '2025-06-09 04:18:06', NULL),
+(522, 191, 4, 1, 862, 9, 1, '2025-06-09 04:18:06', NULL),
+(523, 169, 4, 1, 908, 9, 1, '2025-06-09 04:18:06', NULL),
+(524, 172, 4, 1, 934, 9, 1, '2025-06-09 04:18:06', NULL),
+(525, 184, 4, 1, 889, 9, 1, '2025-06-09 04:18:06', NULL),
+(526, 193, 4, 1, 805, 9, 1, '2025-06-09 04:18:06', NULL),
+(527, 171, 4, 1, 819, 9, 1, '2025-06-09 04:18:06', NULL),
+(528, 196, 3, 1, 817, 7, 1, '2025-06-09 04:18:06', NULL),
+(529, 185, 4, 1, 914, 9, 1, '2025-06-09 04:18:06', NULL),
+(530, 195, 4, 1, 809, 9, 1, '2025-06-09 04:18:06', NULL),
+(531, 176, 4, 1, 803, 9, 1, '2025-06-09 04:18:06', NULL),
+(532, 194, 4, 1, 867, 9, 1, '2025-06-09 04:18:06', NULL),
+(533, 186, 4, 1, 866, 9, 1, '2025-06-09 04:18:06', NULL),
+(534, 174, 4, 1, 811, 9, 1, '2025-06-09 04:18:06', NULL),
+(535, 178, 4, 1, 807, 9, 1, '2025-06-09 04:18:06', NULL),
+(536, 197, 4, 1, 804, 9, 1, '2025-06-09 04:18:06', NULL),
+(537, 198, 4, 1, 913, 9, 1, '2025-06-09 04:18:06', NULL),
+(538, 199, 4, 1, 818, 9, 1, '2025-06-09 04:18:06', NULL),
+(539, 182, 4, 1, 814, 9, 1, '2025-06-09 04:18:06', NULL),
+(540, 187, 4, 1, 900, 9, 1, '2025-06-09 04:18:06', NULL),
+(541, 170, 4, 1, 890, 9, 1, '2025-06-09 04:18:06', NULL),
+(542, 173, 4, 1, 821, 9, 1, '2025-06-09 04:18:06', NULL),
+(543, 192, 4, 1, 916, 9, 1, '2025-06-09 04:18:06', NULL),
+(544, 190, 4, 1, 834, 9, 1, '2025-06-09 04:18:06', NULL),
+(545, 183, 4, 1, 808, 9, 1, '2025-06-09 04:18:06', NULL),
+(546, 168, 4, 1, 897, 9, 1, '2025-06-09 04:18:06', NULL),
+(547, 180, 4, 1, 879, 9, 1, '2025-06-09 04:18:06', NULL),
+(548, 179, 4, 1, 820, 9, 1, '2025-06-09 04:18:06', NULL),
+(549, 189, 4, 1, 903, 9, 1, '2025-06-09 04:18:06', NULL),
+(550, 175, 4, 1, 836, 9, 1, '2025-06-09 04:18:06', NULL),
+(551, 188, 4, 1, 806, 9, 1, '2025-06-09 04:18:06', NULL),
+(552, 177, 4, 1, 909, 9, 1, '2025-06-09 04:18:06', NULL),
+(553, 220, 3, 1, 885, 9, 1, '2025-06-09 04:36:46', NULL),
+(554, 219, 3, 1, 884, 9, 1, '2025-06-09 04:36:46', NULL),
+(555, 214, 3, 1, 911, 9, 1, '2025-06-09 04:36:46', NULL),
+(556, 213, 3, 1, 886, 9, 1, '2025-06-09 04:36:46', NULL),
+(557, 229, 3, 1, 877, 9, 1, '2025-06-09 04:36:46', NULL),
+(558, 227, 3, 1, 919, 9, 1, '2025-06-09 04:36:46', NULL),
+(559, 225, 3, 1, 899, 9, 1, '2025-06-09 04:36:46', NULL),
+(560, 230, 3, 1, 9290, 9, 1, '2025-06-09 04:36:46', NULL),
+(561, 223, 3, 1, 929, 9, 1, '2025-06-09 04:36:46', NULL),
+(562, 201, 3, 1, 905, 9, 1, '2025-06-09 04:36:46', NULL),
+(563, 212, 3, 1, 893, 9, 1, '2025-06-09 04:36:46', NULL),
+(564, 205, 3, 1, 883, 9, 1, '2025-06-09 04:36:46', NULL),
+(565, 221, 3, 1, 906, 9, 1, '2025-06-09 04:36:46', NULL),
+(566, 202, 3, 1, 891, 9, 1, '2025-06-09 04:36:46', NULL),
+(567, 208, 3, 1, 873, 9, 1, '2025-06-09 04:36:46', NULL),
+(568, 210, 3, 1, 904, 9, 1, '2025-06-09 04:36:46', NULL),
+(569, 217, 3, 1, 948, 9, 1, '2025-06-09 04:36:46', NULL),
+(570, 218, 3, 1, 951, 9, 1, '2025-06-09 04:36:46', NULL),
+(571, 204, 3, 1, 973, 9, 1, '2025-06-09 04:36:46', NULL),
+(572, 211, 3, 1, 952, 9, 1, '2025-06-09 04:36:46', NULL),
+(573, 216, 3, 1, 971, 9, 1, '2025-06-09 04:36:46', NULL),
+(574, 228, 3, 1, 932, 9, 1, '2025-06-09 04:36:46', NULL),
+(575, 200, 3, 1, 947, 9, 1, '2025-06-09 04:36:46', NULL),
+(576, 203, 3, 1, 941, 9, 1, '2025-06-09 04:36:46', NULL),
+(577, 222, 3, 1, 939, 9, 1, '2025-06-09 04:36:46', NULL),
+(578, 226, 3, 1, 935, 9, 1, '2025-06-09 04:36:46', NULL),
+(579, 207, 3, 1, 936, 9, 1, '2025-06-09 04:36:46', NULL),
+(580, 224, 3, 1, 953, 9, 1, '2025-06-09 04:36:46', NULL),
+(581, 215, 3, 1, 927, 9, 1, '2025-06-09 04:36:46', NULL),
+(582, 209, 3, 1, 921, 9, 1, '2025-06-09 04:36:46', NULL),
+(583, 206, 3, 1, 950, 9, 1, '2025-06-09 04:36:46', NULL),
+(584, 252, 2, 1, 962, 9, 1, '2025-06-09 04:38:55', NULL),
+(585, 269, 2, 1, 945, 9, 1, '2025-06-09 04:38:55', NULL),
+(586, 234, 2, 1, 970, 9, 1, '2025-06-09 04:38:55', NULL),
+(587, 241, 2, 1, 972, 9, 1, '2025-06-09 04:38:55', NULL),
+(588, 238, 2, 1, 961, 9, 1, '2025-06-09 04:38:55', NULL),
+(589, 245, 2, 1, 964, 9, 1, '2025-06-09 04:38:55', NULL),
+(590, 257, 2, 1, 963, 9, 1, '2025-06-09 04:38:55', NULL),
+(591, 261, 2, 1, 924, 9, 1, '2025-06-09 04:38:55', NULL),
+(592, 264, 2, 1, 944, 9, 1, '2025-06-09 04:38:55', NULL),
+(593, 236, 2, 1, 958, 9, 1, '2025-06-09 04:38:55', NULL),
+(594, 248, 2, 1, 938, 9, 1, '2025-06-09 04:38:55', NULL),
+(595, 232, 2, 1, 946, 9, 1, '2025-06-09 04:38:55', NULL),
+(596, 253, 2, 1, 956, 9, 1, '2025-06-09 04:38:55', NULL),
+(597, 256, 2, 1, 926, 9, 1, '2025-06-09 04:38:55', NULL),
+(598, 266, 2, 1, 965, 9, 1, '2025-06-09 04:38:55', NULL),
+(599, 255, 2, 1, 930, 9, 1, '2025-06-09 04:38:55', NULL),
+(600, 231, 2, 1, 968, 9, 1, '2025-06-09 04:38:55', NULL),
+(601, 243, 2, 1, 928, 9, 1, '2025-06-09 04:38:55', NULL),
+(602, 267, 2, 1, 967, 9, 1, '2025-06-09 04:38:55', NULL),
+(603, 254, 2, 1, 966, 9, 1, '2025-06-09 04:38:55', NULL),
+(604, 271, 2, 1, 959, 9, 1, '2025-06-09 04:38:55', NULL),
+(605, 242, 2, 1, 933, 9, 1, '2025-06-09 04:38:55', NULL),
+(606, 263, 2, 1, 937, 9, 1, '2025-06-09 04:38:55', NULL),
+(607, 235, 2, 1, 940, 9, 1, '2025-06-09 04:38:55', NULL),
+(608, 247, 2, 1, 969, 9, 1, '2025-06-09 04:38:55', NULL),
+(609, 260, 2, 1, 923, 9, 1, '2025-06-09 04:38:55', NULL),
+(610, 249, 2, 1, 943, 9, 1, '2025-06-09 04:38:55', NULL),
+(611, 270, 2, 1, 89, 9, 1, '2025-06-09 04:38:55', NULL),
+(612, 268, 2, 1, 29, 9, 1, '2025-06-09 04:38:55', NULL),
+(613, 251, 2, 1, 67, 9, 1, '2025-06-09 04:38:55', NULL),
+(614, 265, 2, 1, 79, 9, 1, '2025-06-09 04:38:55', NULL),
+(615, 262, 2, 1, 61, 9, 1, '2025-06-09 04:38:55', NULL),
+(616, 258, 2, 1, 86, 9, 1, '2025-06-09 04:38:55', NULL),
+(617, 250, 2, 1, 103, 9, 1, '2025-06-09 04:38:55', NULL),
+(618, 259, 2, 1, 45, 9, 1, '2025-06-09 04:38:55', NULL),
+(619, 237, 2, 1, 99, 9, 1, '2025-06-09 04:38:55', NULL),
+(620, 233, 2, 1, 102, 9, 1, '2025-06-09 04:38:55', NULL),
+(621, 244, 2, 1, 112, 9, 1, '2025-06-09 04:38:55', NULL),
+(622, 246, 2, 1, 91, 9, 1, '2025-06-09 04:38:55', NULL),
+(623, 239, 2, 1, 105, 9, 1, '2025-06-09 04:38:55', NULL),
+(624, 272, 2, 1, 64, 9, 1, '2025-06-09 04:38:55', NULL),
+(625, 240, 2, 1, 88, 9, 1, '2025-06-09 04:38:55', NULL),
+(626, 282, 1, 1, 89, 9, 1, '2025-06-09 04:51:47', NULL),
+(627, 284, 1, 1, 29, 9, 1, '2025-06-09 04:51:47', NULL),
+(628, 278, 1, 1, 67, 9, 1, '2025-06-09 04:51:47', NULL),
+(629, 292, 1, 1, 79, 9, 1, '2025-06-09 04:51:47', NULL),
+(630, 285, 1, 1, 61, 9, 1, '2025-06-09 04:51:47', NULL),
+(631, 289, 1, 1, 86, 9, 1, '2025-06-09 04:51:47', NULL),
+(632, 283, 1, 1, 103, 9, 1, '2025-06-09 04:51:47', NULL),
+(633, 279, 1, 1, 45, 9, 1, '2025-06-09 04:51:47', NULL),
+(634, 275, 1, 1, 99, 9, 1, '2025-06-09 04:51:47', NULL),
+(635, 293, 1, 1, 102, 9, 1, '2025-06-09 04:51:47', NULL),
+(636, 295, 1, 1, 112, 9, 1, '2025-06-09 04:51:47', NULL),
+(637, 288, 1, 1, 91, 9, 1, '2025-06-09 04:51:47', NULL),
+(638, 273, 1, 1, 105, 9, 1, '2025-06-09 04:51:47', NULL),
+(639, 287, 1, 1, 64, 9, 1, '2025-06-09 04:51:47', NULL),
+(640, 291, 1, 1, 88, 9, 1, '2025-06-09 04:51:47', NULL),
+(641, 276, 1, 1, 87, 9, 1, '2025-06-09 04:51:47', NULL),
+(642, 280, 1, 1, 5, 9, 1, '2025-06-09 04:51:47', NULL),
+(643, 281, 1, 1, 30, 9, 1, '2025-06-09 04:51:47', NULL),
+(644, 290, 1, 1, 85, 9, 1, '2025-06-09 04:51:47', NULL),
+(645, 277, 1, 1, 31, 9, 1, '2025-06-09 04:51:47', NULL),
+(646, 286, 1, 1, 69, 9, 1, '2025-06-09 04:51:47', NULL),
+(647, 274, 1, 1, 8, 9, 1, '2025-06-09 04:51:47', NULL),
+(648, 294, 1, 1, 68, 9, 1, '2025-06-09 04:51:47', NULL),
+(649, 307, 13, 1, 125, 9, 1, '2025-06-09 04:59:40', NULL),
+(650, 301, 13, 1, 123, 9, 1, '2025-06-09 04:59:40', NULL),
+(651, 299, 13, 1, 132, 9, 1, '2025-06-09 04:59:40', NULL),
+(652, 306, 13, 1, 127, 9, 1, '2025-06-09 04:59:40', NULL),
+(653, 305, 13, 1, 130, 9, 1, '2025-06-09 04:59:40', NULL),
+(654, 296, 13, 1, 124, 9, 1, '2025-06-09 04:59:40', NULL),
+(655, 308, 13, 1, 131, 9, 1, '2025-06-09 04:59:40', NULL),
+(656, 297, 13, 1, 120, 9, 1, '2025-06-09 04:59:40', NULL),
+(657, 302, 13, 1, 0, 9, 1, '2025-06-09 04:59:40', NULL),
+(658, 304, 13, 1, 128, 9, 1, '2025-06-09 04:59:40', NULL),
+(659, 298, 13, 1, 126, 9, 1, '2025-06-09 04:59:40', NULL),
+(660, 303, 13, 1, 122, 9, 1, '2025-06-09 04:59:40', NULL),
+(661, 300, 13, 1, 129, 9, 1, '2025-06-09 04:59:40', NULL),
+(662, 312, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(663, 310, 13, 1, 1051, 9, 1, '2025-06-09 05:08:11', NULL),
+(664, 317, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(665, 316, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(666, 323, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(667, 332, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(668, 320, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(669, 321, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(670, 313, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(671, 314, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(672, 334, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(673, 325, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(674, 322, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(675, 309, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(676, 328, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(677, 319, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(678, 331, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(679, 333, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(680, 327, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(681, 318, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(682, 335, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(683, 324, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(684, 330, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(685, 329, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(686, 315, 13, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(687, 326, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(688, 311, 12, 1, 0, 9, 1, '2025-06-09 05:08:11', NULL),
+(689, 353, 10, 1, 251, 9, 1, '2025-06-09 05:18:11', NULL),
+(690, 352, 10, 1, 303, 9, 1, '2025-06-09 05:18:11', NULL),
+(691, 351, 10, 1, 266, 9, 1, '2025-06-09 05:18:11', NULL),
+(692, 350, 10, 1, 267, 9, 1, '2025-06-09 05:18:11', NULL),
+(693, 349, 10, 1, 253, 9, 1, '2025-06-09 05:18:11', NULL),
+(694, 348, 10, 1, 336, 9, 1, '2025-06-09 05:18:11', NULL),
+(695, 347, 10, 1, 256, 9, 1, '2025-06-09 05:18:11', NULL),
+(696, 346, 10, 1, 252, 9, 1, '2025-06-09 05:18:11', NULL),
+(697, 345, 10, 1, 258, 9, 1, '2025-06-09 05:18:11', NULL),
+(698, 344, 10, 1, 259, 9, 1, '2025-06-09 05:18:11', NULL),
+(699, 343, 10, 1, 255, 9, 1, '2025-06-09 05:18:11', NULL),
+(700, 342, 10, 1, 297, 9, 1, '2025-06-09 05:18:11', NULL),
+(701, 341, 10, 1, 264, 9, 1, '2025-06-09 05:18:11', NULL),
+(702, 340, 10, 1, 261, 9, 1, '2025-06-09 05:18:11', NULL),
+(703, 339, 10, 1, 300, 9, 1, '2025-06-09 05:18:11', NULL),
+(704, 338, 10, 1, 262, 9, 1, '2025-06-09 05:18:11', NULL),
+(705, 337, 10, 1, 260, 9, 1, '2025-06-09 05:18:11', NULL),
+(706, 336, 10, 1, 314, 9, 1, '2025-06-09 05:18:11', NULL),
+(708, 355, 1, 1, 950, 9, 1, '2025-06-10 12:36:10', NULL),
+(709, 196, 4, 1, 817, 9, 1, '2025-06-11 02:07:20', NULL),
+(710, 111, 5, 1, 869, 9, 1, '2025-06-11 02:20:36', NULL),
+(711, 356, 1, 1, 50, 9, 1, '2025-06-11 04:36:02', NULL),
+(713, 358, 13, 1, 55, 9, 1, '2025-06-11 05:00:03', NULL),
+(714, 359, 13, 1, 1050, 9, 1, '2025-06-11 05:46:07', NULL),
+(715, 360, 11, 1, 1052, 9, 1, '2025-06-11 07:58:55', NULL),
+(716, 361, 1, 1, 1053, 9, 1, '2025-06-11 08:08:50', NULL),
+(717, 362, 2, 1, 1054, 9, 1, '2025-06-11 09:53:38', NULL),
+(718, 363, 13, 1, 1054, 9, 1, '2025-06-11 10:59:51', NULL),
+(719, 364, 2, 1, 974, 9, 1, '2025-06-11 11:50:30', NULL),
+(720, 365, 11, 1, 141, 9, 1, '2025-06-11 12:10:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -530,6 +1698,13 @@ CREATE TABLE `exam_hall` (
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `exam_hall`
+--
+
+INSERT INTO `exam_hall` (`id`, `hall_no`, `seats`, `branch_id`) VALUES
+(1, '2', 35, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -541,6 +1716,18 @@ CREATE TABLE `exam_mark_distribution` (
   `name` longtext NOT NULL,
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `exam_mark_distribution`
+--
+
+INSERT INTO `exam_mark_distribution` (`id`, `name`, `branch_id`) VALUES
+(1, '15', 1),
+(2, '20', 1),
+(3, '25', 1),
+(4, '50', 1),
+(5, '100', 1),
+(6, '10', 1);
 
 -- --------------------------------------------------------
 
@@ -554,6 +1741,51 @@ CREATE TABLE `exam_term` (
   `branch_id` int(11) DEFAULT NULL,
   `session_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `exam_term`
+--
+
+INSERT INTO `exam_term` (`id`, `name`, `branch_id`, `session_id`) VALUES
+(1, 'WEEKLY TEST', 1, 9),
+(2, 'ASSIGHNMENTS', 1, 9),
+(3, 'FA-1', 1, 9),
+(4, 'FA - 2', 1, 9),
+(5, 'FA - 3', 1, 9),
+(6, 'FA - 4', 1, 9),
+(7, 'SA - 1', 1, 9),
+(8, 'SA - 2', 1, 9),
+(9, 'PREFINAL', 1, 9),
+(10, 'GRAND HOPE TEST', 1, 9),
+(11, 'RT -1', 1, 9),
+(12, 'RT-2', 1, 9),
+(13, 'RT -3', 1, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fees`
+--
+
+CREATE TABLE `fees` (
+  `id` int(11) NOT NULL,
+  `student_id` int(11) NOT NULL,
+  `fee_type_id` int(11) NOT NULL,
+  `amount` decimal(18,2) NOT NULL,
+  `due_date` date NOT NULL,
+  `status` enum('pending','partial','paid','overdue') DEFAULT 'pending',
+  `paid_amount` decimal(18,2) NOT NULL DEFAULT 0.00,
+  `payment_date` date DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `transaction_id` varchar(100) DEFAULT NULL,
+  `remarks` text DEFAULT NULL,
+  `academic_year` varchar(20) NOT NULL,
+  `term` varchar(20) DEFAULT NULL,
+  `branch_id` int(11) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -588,6 +1820,21 @@ CREATE TABLE `fees_type` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `fees_type`
+--
+
+INSERT INTO `fees_type` (`id`, `name`, `fee_code`, `description`, `branch_id`, `system`, `created_at`) VALUES
+(1, 'ADMISSION', 'admission', 'Only for new students\r\n', 1, 0, '2025-06-02 05:41:02'),
+(2, 'ABACUS FEE', 'abacus-fee', '1st class to 5th class\r\n', 1, 0, '2025-06-02 05:42:49'),
+(3, 'Digital Fees', 'digital-fees', 'Nursery  to 10th class\r\n', 1, 0, '2025-06-02 05:44:29'),
+(4, 'Vedic maths', 'vedic-maths', '6th to 8th\r\n', 1, 0, '2025-06-02 05:46:07'),
+(5, 'Computer Fee', 'computer-fee', '1 to 5th\r\n', 1, 0, '2025-06-02 05:46:24'),
+(6, '1st term', '1st-term', '', 1, 0, '2025-06-02 10:02:32'),
+(7, '2nd term', '2nd-term', '', 1, 0, '2025-06-02 10:02:42'),
+(8, '3rd term', '3rd-term', '', 1, 0, '2025-06-02 10:02:50'),
+(9, 'Previous Session Balance', 'previous-balance', '', 1, 1, '2025-06-05 03:49:24');
+
 -- --------------------------------------------------------
 
 --
@@ -603,6 +1850,412 @@ CREATE TABLE `fee_allocation` (
   `prev_due` decimal(18,2) NOT NULL DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `fee_allocation`
+--
+
+INSERT INTO `fee_allocation` (`id`, `student_id`, `group_id`, `branch_id`, `session_id`, `prev_due`, `created_at`) VALUES
+(5, 35, 27, 1, 9, 2000.00, '2025-06-08 17:31:10'),
+(6, 39, 27, 1, 9, 3000.00, '2025-06-08 17:31:10'),
+(7, 25, 27, 1, 9, 4000.00, '2025-06-08 17:31:10'),
+(8, 19, 27, 1, 9, 7200.00, '2025-06-08 17:31:10'),
+(9, 34, 27, 1, 9, 1000.00, '2025-06-08 17:31:10'),
+(10, 23, 27, 1, 9, 7200.00, '2025-06-08 17:31:10'),
+(11, 21, 27, 1, 9, 7200.00, '2025-06-08 17:31:10'),
+(12, 24, 27, 1, 9, 2000.00, '2025-06-08 17:31:10'),
+(13, 28, 27, 1, 9, 19500.00, '2025-06-08 17:31:10'),
+(14, 54, 27, 1, 9, 2000.00, '2025-06-08 17:35:16'),
+(15, 53, 27, 1, 9, 24000.00, '2025-06-08 17:35:16'),
+(16, 46, 27, 1, 9, 7200.00, '2025-06-08 17:35:16'),
+(17, 52, 27, 1, 9, 1600.00, '2025-06-08 17:35:16'),
+(18, 49, 27, 1, 9, 2000.00, '2025-06-08 17:35:16'),
+(19, 56, 27, 1, 9, 1600.00, '2025-06-08 17:35:16'),
+(20, 43, 27, 1, 9, 7200.00, '2025-06-08 17:35:16'),
+(21, 19, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(22, 20, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(23, 21, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(24, 22, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(25, 23, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(26, 24, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(27, 25, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(28, 26, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(29, 27, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(30, 28, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(31, 29, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(32, 30, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(33, 31, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(34, 32, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(35, 33, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(36, 34, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(37, 35, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(38, 36, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(39, 37, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(40, 38, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(41, 39, 12, 1, 9, 0.00, '2025-06-08 17:37:54'),
+(42, 90, 27, 1, 9, 3500.00, '2025-06-08 17:41:38'),
+(43, 70, 27, 1, 9, 7100.00, '2025-06-08 17:41:38'),
+(44, 99, 27, 1, 9, 300.00, '2025-06-08 17:41:38'),
+(45, 82, 27, 1, 9, 3030.00, '2025-06-08 17:41:38'),
+(46, 66, 27, 1, 9, 250.00, '2025-06-08 17:41:38'),
+(47, 98, 27, 1, 9, 7100.00, '2025-06-08 17:41:38'),
+(48, 102, 27, 1, 9, 7300.00, '2025-06-08 17:41:38'),
+(49, 79, 27, 1, 9, 10500.00, '2025-06-08 17:41:38'),
+(50, 84, 27, 1, 9, 2500.00, '2025-06-08 17:41:38'),
+(51, 93, 27, 1, 9, 6500.00, '2025-06-08 17:41:38'),
+(52, 94, 27, 1, 9, 7500.00, '2025-06-08 17:41:38'),
+(53, 67, 27, 1, 9, 10300.00, '2025-06-08 17:41:38'),
+(54, 40, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(55, 41, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(56, 42, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(57, 43, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(58, 44, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(59, 45, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(60, 46, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(61, 47, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(62, 48, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(63, 49, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(64, 50, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(65, 51, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(66, 52, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(67, 53, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(68, 54, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(69, 55, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(70, 56, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(71, 57, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(72, 58, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(73, 59, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(74, 60, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(75, 61, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(76, 62, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(77, 63, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(78, 64, 11, 1, 9, 0.00, '2025-06-08 17:43:20'),
+(79, 65, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(80, 66, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(81, 67, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(82, 68, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(83, 69, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(84, 70, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(85, 71, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(86, 72, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(87, 73, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(88, 74, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(89, 75, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(90, 76, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(91, 77, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(92, 78, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(93, 79, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(94, 80, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(95, 81, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(96, 82, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(97, 83, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(98, 84, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(99, 85, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(100, 86, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(101, 87, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(102, 88, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(103, 89, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(104, 90, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(105, 91, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(106, 92, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(107, 93, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(108, 94, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(109, 95, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(110, 96, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(111, 97, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(112, 98, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(113, 99, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(114, 100, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(115, 101, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(116, 102, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(117, 103, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(118, 104, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(119, 105, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(120, 106, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(121, 107, 10, 1, 9, 0.00, '2025-06-08 17:43:55'),
+(122, 128, 27, 1, 9, 1100.00, '2025-06-08 17:46:34'),
+(123, 114, 27, 1, 9, 7300.00, '2025-06-08 17:46:34'),
+(124, 118, 27, 1, 9, 4500.00, '2025-06-08 17:46:34'),
+(125, 109, 27, 1, 9, 5500.00, '2025-06-08 17:46:34'),
+(126, 129, 27, 1, 9, 8000.00, '2025-06-08 17:46:34'),
+(127, 115, 27, 1, 9, 2500.00, '2025-06-08 17:46:34'),
+(128, 108, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(129, 109, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(130, 110, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(131, 111, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(132, 112, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(133, 113, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(134, 114, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(135, 115, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(136, 116, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(137, 117, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(138, 118, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(139, 119, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(140, 120, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(141, 121, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(142, 122, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(143, 123, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(144, 124, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(145, 125, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(146, 126, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(147, 127, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(148, 128, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(149, 129, 9, 1, 9, 0.00, '2025-06-08 17:50:44'),
+(150, 147, 27, 1, 9, 3500.00, '2025-06-09 04:09:03'),
+(151, 156, 27, 1, 9, 1800.00, '2025-06-09 04:09:03'),
+(152, 144, 27, 1, 9, 6750.00, '2025-06-09 04:09:03'),
+(153, 159, 27, 1, 9, 6500.00, '2025-06-09 04:09:03'),
+(154, 157, 27, 1, 9, 925.00, '2025-06-09 04:09:03'),
+(155, 166, 27, 1, 9, 5500.00, '2025-06-09 04:09:03'),
+(156, 162, 27, 1, 9, 9600.00, '2025-06-09 04:09:03'),
+(157, 161, 27, 1, 9, 10500.00, '2025-06-09 04:09:03'),
+(158, 135, 27, 1, 9, 4000.00, '2025-06-09 04:09:03'),
+(159, 134, 27, 1, 9, 500.00, '2025-06-09 04:09:03'),
+(160, 130, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(161, 131, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(162, 132, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(163, 133, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(164, 134, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(165, 135, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(166, 136, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(167, 137, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(168, 138, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(169, 139, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(170, 140, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(171, 141, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(172, 142, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(173, 143, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(174, 144, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(175, 145, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(176, 146, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(177, 147, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(178, 148, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(179, 149, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(180, 150, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(181, 151, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(182, 152, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(183, 153, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(184, 154, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(185, 155, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(186, 156, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(187, 157, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(188, 158, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(189, 159, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(190, 160, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(191, 161, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(192, 162, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(193, 163, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(194, 164, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(195, 165, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(196, 166, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(197, 167, 8, 1, 9, 0.00, '2025-06-09 04:15:04'),
+(198, 169, 27, 1, 9, 13000.00, '2025-06-09 04:18:06'),
+(199, 186, 27, 1, 9, 2000.00, '2025-06-09 04:18:06'),
+(200, 182, 27, 1, 9, 8500.00, '2025-06-09 04:18:06'),
+(201, 187, 27, 1, 9, 1000.00, '2025-06-09 04:18:06'),
+(202, 170, 27, 1, 9, 1000.00, '2025-06-09 04:18:06'),
+(203, 189, 27, 1, 9, 10500.00, '2025-06-09 04:18:06'),
+(204, 225, 27, 1, 9, 3800.00, '2025-06-09 04:36:46'),
+(205, 212, 27, 1, 9, 6000.00, '2025-06-09 04:36:46'),
+(206, 210, 27, 1, 9, 8250.00, '2025-06-09 04:36:46'),
+(207, 224, 27, 1, 9, 400.00, '2025-06-09 04:36:46'),
+(208, 209, 27, 1, 9, 5000.00, '2025-06-09 04:36:46'),
+(209, 271, 27, 1, 9, 14000.00, '2025-06-09 04:38:55'),
+(210, 263, 27, 1, 9, 8500.00, '2025-06-09 04:38:55'),
+(211, 249, 27, 1, 9, 6000.00, '2025-06-09 04:38:55'),
+(212, 265, 27, 1, 9, 6000.00, '2025-06-09 04:38:55'),
+(213, 258, 27, 1, 9, 8500.00, '2025-06-09 04:38:55'),
+(214, 282, 27, 1, 9, 5400.00, '2025-06-09 04:51:47'),
+(215, 278, 27, 1, 9, 750.00, '2025-06-09 04:51:47'),
+(216, 283, 27, 1, 9, 5400.00, '2025-06-09 04:51:47'),
+(217, 273, 27, 1, 9, 5000.00, '2025-06-09 04:51:47'),
+(218, 287, 27, 1, 9, 5000.00, '2025-06-09 04:51:47'),
+(219, 274, 27, 1, 9, 10000.00, '2025-06-09 04:51:47'),
+(220, 298, 27, 1, 9, 6500.00, '2025-06-09 04:59:40'),
+(221, 300, 27, 1, 9, 3500.00, '2025-06-09 04:59:40'),
+(222, 312, 27, 1, 9, 6500.00, '2025-06-09 05:08:11'),
+(223, 317, 27, 1, 9, 5500.00, '2025-06-09 05:08:11'),
+(224, 323, 27, 1, 9, 14300.00, '2025-06-09 05:08:11'),
+(225, 320, 27, 1, 9, 7500.00, '2025-06-09 05:08:11'),
+(226, 314, 27, 1, 9, 1375.00, '2025-06-09 05:08:11'),
+(227, 327, 27, 1, 9, 6875.00, '2025-06-09 05:08:11'),
+(228, 324, 27, 1, 9, 3100.00, '2025-06-09 05:08:11'),
+(229, 330, 27, 1, 9, 1900.00, '2025-06-09 05:08:11'),
+(230, 326, 27, 1, 9, 8000.00, '2025-06-09 05:08:11'),
+(231, 352, 27, 1, 9, 600.00, '2025-06-09 05:18:11'),
+(232, 350, 27, 1, 9, 2000.00, '2025-06-09 05:18:11'),
+(233, 348, 27, 1, 9, 6000.00, '2025-06-09 05:18:11'),
+(234, 343, 27, 1, 9, 7200.00, '2025-06-09 05:18:11'),
+(235, 339, 27, 1, 9, 1600.00, '2025-06-09 05:18:11'),
+(236, 338, 27, 1, 9, 4000.00, '2025-06-09 05:18:11'),
+(237, 337, 27, 1, 9, 2500.00, '2025-06-09 05:18:11'),
+(308, 200, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(309, 201, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(310, 202, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(311, 203, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(312, 204, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(313, 205, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(314, 206, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(315, 207, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(316, 208, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(317, 209, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(318, 210, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(319, 211, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(320, 212, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(321, 213, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(322, 214, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(323, 215, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(324, 216, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(325, 217, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(326, 218, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(327, 219, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(328, 220, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(329, 221, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(330, 222, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(331, 223, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(332, 224, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(333, 225, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(334, 226, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(335, 227, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(336, 228, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(337, 229, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(338, 230, 3, 1, 9, 0.00, '2025-06-09 14:45:47'),
+(339, 231, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(340, 232, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(341, 233, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(342, 234, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(343, 235, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(344, 236, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(345, 237, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(346, 238, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(347, 239, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(348, 240, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(349, 241, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(350, 242, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(351, 243, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(352, 244, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(353, 245, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(354, 246, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(355, 247, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(356, 248, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(357, 249, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(358, 250, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(359, 251, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(360, 252, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(361, 253, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(362, 254, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(363, 255, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(364, 256, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(365, 257, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(366, 258, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(367, 259, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(368, 260, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(369, 261, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(370, 262, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(371, 263, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(372, 264, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(373, 265, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(374, 266, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(375, 267, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(376, 268, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(377, 269, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(378, 270, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(379, 271, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(380, 272, 2, 1, 9, 0.00, '2025-06-09 14:46:19'),
+(381, 273, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(382, 274, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(383, 275, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(384, 276, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(385, 277, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(386, 278, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(387, 279, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(388, 280, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(389, 281, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(390, 282, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(391, 283, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(392, 284, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(393, 285, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(394, 286, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(395, 287, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(396, 288, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(397, 289, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(398, 290, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(399, 291, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(400, 292, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(401, 293, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(402, 294, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(403, 295, 1, 1, 9, 0.00, '2025-06-09 14:46:32'),
+(417, 336, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(418, 337, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(419, 338, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(420, 339, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(421, 340, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(422, 341, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(423, 342, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(424, 343, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(425, 344, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(426, 345, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(427, 346, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(428, 347, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(429, 348, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(430, 349, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(431, 350, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(432, 351, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(433, 352, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(434, 353, 13, 1, 9, 0.00, '2025-06-09 14:48:59'),
+(436, 196, 27, 1, 9, 1000.00, '2025-06-11 02:07:20'),
+(437, 111, 27, 1, 9, 3500.00, '2025-06-11 02:20:36'),
+(439, 360, 14, 1, 9, 0.00, '2025-06-11 08:00:36'),
+(440, 360, 28, 1, 9, 0.00, '2025-06-11 08:04:06'),
+(441, 361, 17, 1, 9, 0.00, '2025-06-11 08:09:28'),
+(452, 298, 7, 1, 9, 0.00, '2025-06-11 09:17:09'),
+(453, 300, 7, 1, 9, 0.00, '2025-06-11 09:17:09'),
+(454, 296, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(455, 297, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(456, 299, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(457, 301, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(458, 302, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(459, 303, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(460, 304, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(461, 305, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(462, 306, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(463, 307, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(464, 308, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(465, 309, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(466, 310, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(467, 313, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(468, 315, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(469, 318, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(470, 322, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(471, 324, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(472, 325, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(473, 329, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(474, 358, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(475, 359, 7, 1, 9, 0.00, '2025-06-11 09:21:23'),
+(476, 355, 1, 1, 9, 0.00, '2025-06-11 09:22:14'),
+(477, 356, 1, 1, 9, 0.00, '2025-06-11 09:22:14'),
+(478, 311, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(479, 312, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(480, 314, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(481, 316, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(482, 317, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(483, 319, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(484, 320, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(485, 321, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(486, 323, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(487, 326, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(488, 327, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(489, 328, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(490, 330, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(491, 331, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(492, 332, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(493, 333, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(494, 334, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(495, 335, 6, 1, 9, 0.00, '2025-06-11 09:35:18'),
+(497, 362, 18, 1, 9, 0.00, '2025-06-11 10:10:50'),
+(498, 363, 7, 1, 9, 0.00, '2025-06-11 11:00:26'),
+(499, 364, 18, 1, 9, 0.00, '2025-06-11 11:52:25'),
+(500, 365, 14, 1, 9, 0.00, '2025-06-11 12:11:41');
 
 -- --------------------------------------------------------
 
@@ -637,6 +2290,40 @@ CREATE TABLE `fee_groups` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `fee_groups`
+--
+
+INSERT INTO `fee_groups` (`id`, `name`, `description`, `session_id`, `system`, `branch_id`, `created_at`) VALUES
+(1, '1st class old', '', 9, 0, 1, '2025-06-02 10:21:41'),
+(2, '2nd class old', '', 9, 0, 1, '2025-06-02 13:31:55'),
+(3, '3rd class old', '', 9, 0, 1, '2025-06-02 13:33:16'),
+(4, '4th class old', '', 9, 0, 1, '2025-06-02 13:34:11'),
+(5, 'Nursery class old', '', 9, 0, 1, '2025-06-05 08:00:00'),
+(6, 'L.K.G class old', '', 9, 0, 1, '2025-06-05 08:00:01'),
+(7, 'U.K.G class old', '', 9, 0, 1, '2025-06-05 08:00:02'),
+(8, '5th class old', '', 9, 0, 1, '2025-06-05 08:00:03'),
+(9, '6th class old', '', 9, 0, 1, '2025-06-05 08:00:04'),
+(10, '7th class old', '', 9, 0, 1, '2025-06-05 08:00:05'),
+(11, '8th class old', '', 9, 0, 1, '2025-06-05 08:00:06'),
+(12, '9th class old', '', 9, 0, 1, '2025-06-05 08:00:07'),
+(13, '10th class old', '', 9, 0, 1, '2025-06-05 08:00:08'),
+(14, 'Nursery class new', '', 9, 0, 1, '2025-06-05 08:10:00'),
+(15, 'L.K.G class new', '', 9, 0, 1, '2025-06-05 08:10:01'),
+(16, 'U.K.G class new', '', 9, 0, 1, '2025-06-05 08:10:02'),
+(17, '1st class new', '', 9, 0, 1, '2025-06-05 08:10:03'),
+(18, '2nd class new', '', 9, 0, 1, '2025-06-05 08:10:04'),
+(19, '3rd class new', '', 9, 0, 1, '2025-06-05 08:10:05'),
+(20, '4th class new', '', 9, 0, 1, '2025-06-05 08:10:06'),
+(21, '5th class new', '', 9, 0, 1, '2025-06-05 08:10:07'),
+(22, '6th class new', '', 9, 0, 1, '2025-06-05 08:10:08'),
+(23, '7th class new', '', 9, 0, 1, '2025-06-05 08:10:09'),
+(24, '8th class new', '', 9, 0, 1, '2025-06-05 08:10:10'),
+(25, '9th class new', '', 9, 0, 1, '2025-06-05 08:10:11'),
+(26, '10th class new', '', 9, 0, 1, '2025-06-05 08:10:12'),
+(27, 'Due Record', NULL, 9, 1, 1, '2025-06-08 17:13:38'),
+(28, 'Nurser old 2', '', 9, 0, 1, '2025-06-11 08:03:25');
+
 -- --------------------------------------------------------
 
 --
@@ -651,6 +2338,94 @@ CREATE TABLE `fee_groups_details` (
   `due_date` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `fee_groups_details`
+--
+
+INSERT INTO `fee_groups_details` (`id`, `fee_groups_id`, `fee_type_id`, `amount`, `due_date`, `created_at`) VALUES
+(1, 5, 6, 6300.00, '2025-10-06', '2025-06-06 20:48:39'),
+(2, 5, 7, 6300.00, '2025-05-10', '2025-06-06 20:48:39'),
+(3, 5, 8, 5400.00, '2026-05-02', '2025-06-06 20:48:39'),
+(4, 6, 6, 6650.00, '2025-10-06', '2025-06-06 20:48:39'),
+(5, 6, 7, 6650.00, '2025-05-10', '2025-06-06 20:48:39'),
+(6, 6, 8, 5700.00, '2026-05-02', '2025-06-06 20:48:39'),
+(7, 7, 6, 6650.00, '2025-10-06', '2025-06-06 20:48:39'),
+(8, 7, 7, 6650.00, '2025-05-10', '2025-06-06 20:48:39'),
+(9, 7, 8, 5700.00, '2026-05-02', '2025-06-06 20:48:39'),
+(10, 8, 6, 8400.00, '2025-10-06', '2025-06-06 20:48:39'),
+(11, 8, 7, 8400.00, '2025-05-10', '2025-06-06 20:48:39'),
+(12, 8, 8, 7200.00, '2026-05-02', '2025-06-06 20:48:39'),
+(13, 9, 6, 8750.00, '2025-10-06', '2025-06-06 20:48:39'),
+(14, 9, 7, 8750.00, '2025-05-10', '2025-06-06 20:48:39'),
+(15, 9, 8, 7500.00, '2026-05-02', '2025-06-06 20:48:39'),
+(16, 10, 6, 8750.00, '2025-10-06', '2025-06-06 20:48:39'),
+(17, 10, 7, 8750.00, '2025-05-10', '2025-06-06 20:48:39'),
+(18, 10, 8, 7500.00, '2026-05-02', '2025-06-06 20:48:39'),
+(19, 11, 6, 8925.00, '2025-10-06', '2025-06-06 20:48:39'),
+(20, 11, 7, 8925.00, '2025-05-10', '2025-06-06 20:48:39'),
+(21, 11, 8, 7650.00, '2026-05-02', '2025-06-06 20:48:39'),
+(22, 12, 6, 9275.00, '2025-10-06', '2025-06-06 20:48:39'),
+(23, 12, 7, 9275.00, '2025-05-10', '2025-06-06 20:48:39'),
+(24, 12, 8, 7950.00, '2026-05-02', '2025-06-06 20:48:39'),
+(25, 13, 6, 10675.00, '2025-10-06', '2025-06-06 20:48:39'),
+(26, 13, 7, 10675.00, '2025-05-10', '2025-06-06 20:48:39'),
+(27, 13, 8, 9150.00, '2026-05-02', '2025-06-06 20:48:39'),
+(28, 14, 6, 6300.00, '2025-10-06', '2025-06-06 20:48:50'),
+(29, 14, 7, 6300.00, '2025-05-10', '2025-06-06 20:48:50'),
+(30, 14, 8, 5400.00, '2026-05-02', '2025-06-06 20:48:50'),
+(31, 15, 6, 6825.00, '2025-10-06', '2025-06-06 20:48:50'),
+(32, 15, 7, 6825.00, '2025-05-10', '2025-06-06 20:48:50'),
+(33, 15, 8, 5850.00, '2026-05-02', '2025-06-06 20:48:50'),
+(34, 16, 6, 6825.00, '2025-10-06', '2025-06-06 20:48:50'),
+(35, 16, 7, 6825.00, '2025-05-10', '2025-06-06 20:48:50'),
+(36, 16, 8, 5850.00, '2026-05-02', '2025-06-06 20:48:50'),
+(37, 17, 6, 7700.00, '2025-10-06', '2025-06-06 20:48:50'),
+(38, 17, 7, 7700.00, '2025-05-10', '2025-06-06 20:48:50'),
+(39, 17, 8, 6600.00, '2026-05-02', '2025-06-06 20:48:50'),
+(40, 18, 6, 7700.00, '2025-10-06', '2025-06-06 20:48:50'),
+(41, 18, 7, 7700.00, '2025-05-10', '2025-06-06 20:48:50'),
+(42, 18, 8, 6600.00, '2026-05-02', '2025-06-06 20:48:50'),
+(43, 19, 6, 8400.00, '2025-10-06', '2025-06-06 20:48:50'),
+(44, 19, 7, 8400.00, '2025-05-10', '2025-06-06 20:48:50'),
+(45, 19, 8, 7200.00, '2026-05-02', '2025-06-06 20:48:50'),
+(46, 20, 6, 8750.00, '2025-10-06', '2025-06-06 20:48:50'),
+(47, 20, 7, 8750.00, '2025-05-10', '2025-06-06 20:48:50'),
+(48, 20, 8, 7500.00, '2026-05-02', '2025-06-06 20:48:50'),
+(49, 21, 6, 8750.00, '2025-10-06', '2025-06-06 20:48:50'),
+(50, 21, 7, 8750.00, '2025-05-10', '2025-06-06 20:48:50'),
+(51, 21, 8, 7500.00, '2026-05-02', '2025-06-06 20:48:50'),
+(52, 22, 6, 9800.00, '2025-10-06', '2025-06-06 20:48:50'),
+(53, 22, 7, 9800.00, '2025-05-10', '2025-06-06 20:48:50'),
+(54, 22, 8, 8400.00, '2026-05-02', '2025-06-06 20:48:50'),
+(55, 23, 6, 9800.00, '2025-10-06', '2025-06-06 20:48:50'),
+(56, 23, 7, 9800.00, '2025-05-10', '2025-06-06 20:48:50'),
+(57, 23, 8, 8400.00, '2026-05-02', '2025-06-06 20:48:50'),
+(58, 24, 6, 9975.00, '2025-10-06', '2025-06-06 20:48:50'),
+(59, 24, 7, 9975.00, '2025-05-10', '2025-06-06 20:48:50'),
+(60, 24, 8, 8550.00, '2026-05-02', '2025-06-06 20:48:50'),
+(61, 25, 6, 9975.00, '2025-10-06', '2025-06-06 20:48:50'),
+(62, 25, 7, 9975.00, '2025-05-10', '2025-06-06 20:48:50'),
+(63, 25, 8, 8550.00, '2026-05-02', '2025-06-06 20:48:50'),
+(64, 26, 6, 11200.00, '2025-10-06', '2025-06-06 20:48:50'),
+(65, 26, 7, 11200.00, '2025-05-10', '2025-06-06 20:48:50'),
+(66, 26, 8, 9600.00, '2026-05-02', '2025-06-06 20:48:50'),
+(67, 1, 6, 7350.00, '2025-06-10', '2025-06-06 20:53:14'),
+(68, 1, 7, 7350.00, '2025-10-05', '2025-06-06 20:53:14'),
+(69, 1, 8, 6300.00, '2026-02-05', '2025-06-06 20:53:14'),
+(70, 2, 6, 7350.00, '2025-06-10', '2025-06-06 20:54:06'),
+(71, 2, 7, 7350.00, '2025-10-05', '2025-06-06 20:54:06'),
+(72, 2, 8, 6300.00, '2026-02-05', '2025-06-06 20:54:06'),
+(73, 27, 9, 0.00, '2025-07-08', '2025-06-08 17:13:38'),
+(74, 3, 6, 8050.00, '2025-06-10', '2025-06-11 06:49:34'),
+(75, 3, 7, 8050.00, '2025-10-05', '2025-06-11 06:49:34'),
+(76, 3, 8, 6900.00, '2026-02-05', '2025-06-11 06:49:34'),
+(77, 4, 6, 8400.00, '2025-06-10', '2025-06-11 06:50:08'),
+(78, 4, 7, 8400.00, '2025-10-05', '2025-06-11 06:50:08'),
+(79, 4, 8, 7200.00, '2026-02-05', '2025-06-11 06:50:08'),
+(80, 28, 6, 6475.00, '2025-06-10', '2025-06-11 08:03:25'),
+(81, 28, 7, 6475.00, '2025-10-05', '2025-06-11 08:03:25'),
+(82, 28, 8, 5550.00, '2026-02-05', '2025-06-11 08:03:25');
 
 -- --------------------------------------------------------
 
@@ -669,6 +2444,70 @@ CREATE TABLE `fee_payment_history` (
   `pay_via` varchar(20) NOT NULL,
   `remarks` longtext NOT NULL,
   `date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `fee_payment_history`
+--
+
+INSERT INTO `fee_payment_history` (`id`, `allocation_id`, `type_id`, `collect_by`, `amount`, `discount`, `fine`, `pay_via`, `remarks`, `date`) VALUES
+(2, 363, 6, '2', 1000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(3, 413, 6, '2', 500.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(4, 396, 6, '2', 2000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(5, 32, 6, '2', 6000.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(6, 117, 6, '2', 6000.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(8, 441, 6, '2', 7700.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(9, 440, 6, '2', 6475.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(10, 364, 6, '2', 2000.00, 0.00, 0.00, '5', '', '2025-06-11'),
+(11, 450, 6, '2', 6650.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(12, 473, 6, '2', 6650.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(13, 491, 6, '2', 6650.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(14, 475, 6, '2', 1000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(15, 493, 6, '2', 1000.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(16, 61, 6, '2', 1000.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(17, 497, 6, '2', 7700.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(18, 106, 6, '2', 1000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(19, 498, 6, '2', 1500.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(20, 102, 6, '2', 5000.00, 0.00, 0.00, '5', '', '2025-06-11'),
+(21, 51, 9, '2', 6500.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(22, 107, 6, '2', 8750.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(23, 499, 6, '2', 7700.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(24, 322, 6, '2', 5000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(25, 392, 6, '2', 5000.00, 0.00, 0.00, '4', '', '2025-06-11'),
+(26, 500, 6, '2', 6300.00, 0.00, 0.00, '1', '', '2025-06-11'),
+(27, 365, 6, '2', 7350.00, 0.00, 0.00, '4', '', '2025-06-11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `fee_types`
+--
+
+CREATE TABLE `fee_types` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `amount` decimal(18,2) NOT NULL,
+  `frequency` enum('one-time','monthly','quarterly','semi-annual','annual') DEFAULT 'one-time',
+  `is_active` tinyint(1) DEFAULT 1,
+  `applicable_to` enum('all','class','student') DEFAULT 'all',
+  `class_id` int(11) DEFAULT NULL,
+  `branch_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `footer_menu_config`
+--
+
+CREATE TABLE `footer_menu_config` (
+  `id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `menu_item` varchar(50) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
@@ -934,6 +2773,14 @@ CREATE TABLE `front_cms_gallery_category` (
   `branch_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `front_cms_gallery_category`
+--
+
+INSERT INTO `front_cms_gallery_category` (`id`, `name`, `branch_id`) VALUES
+(1, 'frontend', 2),
+(2, 'branch1', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -955,6 +2802,13 @@ CREATE TABLE `front_cms_gallery_content` (
   `branch_id` int(11) NOT NULL,
   `created_at` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `front_cms_gallery_content`
+--
+
+INSERT INTO `front_cms_gallery_content` (`id`, `title`, `alias`, `description`, `thumb_image`, `date`, `category_id`, `added_by`, `file_type`, `elements`, `show_web`, `branch_id`, `created_at`) VALUES
+(1, 'testing', 'testing', 'frontend', 'gallery-1748535070.jpg', '2025-05-29', 1, 1, '', '[]', 1, 2, '2025-05-29');
 
 -- --------------------------------------------------------
 
@@ -982,14 +2836,15 @@ INSERT INTO `front_cms_home` (`id`, `title`, `subtitle`, `item_type`, `descripti
 (2, 'Experience Teachers Team', NULL, 'teachers', 'Making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident.', '{\"teacher_start\":\"0\",\"image\":\"featured-parallax1.jpg\"}', 1, 1),
 (3, 'WHY CHOOSE US', NULL, 'services', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', '', 1, 1),
 (4, 'Request for a free Education Class', 'Medical Services', 'cta', '', '{\"mobile_no\":\"+2484-398-8987\",\"button_text\":\"Request Now\",\"button_url\":\"http:\\/\\/localhost\\/multi_pro\\/home\\/admission\\/\"}', 1, 1),
-(5, 'Wellcome To <span>Ramom</span>', NULL, 'slider', 'Lorem Ipsum is simply dummy text printer took a galley of type and scrambled it to make a type specimen book.', '{\"position\":\"c-left\",\"button_text1\":\"View Services\",\"button_url1\":\"https:\\/\\/www.youtube.com\\/watch?v=Zec8KQmoSOU\",\"button_text2\":\"Learn More\",\"button_url2\":\"#\",\"image\":\"home-slider-1592582779.jpg\"}', 1, 1),
-(6, 'Online <span>Live Class</span> Facility', NULL, 'slider', 'Lorem Ipsum is simply dummy text printer took a galley of type and scrambled it to make a type specimen book.', '{\"position\":\"c-left\",\"button_text1\":\"Read More\",\"button_url1\":\"#\",\"button_text2\":\"Get Started\",\"button_url2\":\"#\",\"image\":\"home-slider-1592582805.jpg\"}', 1, 1),
 (7, 'Online Classes', NULL, 'features', 'Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent taciti sociosqu.', '{\"button_text\":\"Read More\",\"button_url\":\"#\",\"icon\":\"fas fa-video\"}', 1, 1),
 (8, 'Scholarship', NULL, 'features', 'Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent taciti sociosqu.', '{\"button_text\":\"Read More\",\"button_url\":\"#\",\"icon\":\"fas fa-graduation-cap\"}', 1, 1),
 (9, 'Books & Liberary', NULL, 'features', 'Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent taciti sociosqu.', '{\"button_text\":\"Read More\",\"button_url\":\"#\",\"icon\":\"fas fa-book-reader\"}', 1, 1),
 (10, 'Trending Courses', NULL, 'features', 'Nulla metus metus ullamcorper vel tincidunt sed euismod nibh Quisque volutpat condimentum velit class aptent taciti sociosqu.', '{\"button_text\":\"Read More\",\"button_url\":\"#\",\"icon\":\"fab fa-discourse\"}', 1, 1),
 (11, 'WHAT PEOPLE SAYS', NULL, 'testimonial', 'Fusce sem dolor, interdum in efficitur at, faucibus nec lorem. Sed nec molestie justo.', '', 1, 1),
-(12, '20 years experience in the field of study', NULL, 'statistics', 'Lorem Ipsum is simply dummy text printer took a galley of type and scrambled it to make a type specimen book.', '{\"image\":\"counter-parallax1.jpg\",\"widget_title_1\":\"Certified Teachers\",\"widget_icon_1\":\"fas fa-user-tie\",\"type_1\":\"teacher\",\"widget_title_2\":\"Students Enrolled\",\"widget_icon_2\":\"fas fa-user-graduate\",\"type_2\":\"student\",\"widget_title_3\":\"Classes\",\"widget_icon_3\":\"fas fa-graduation-cap\",\"type_3\":\"class\",\"widget_title_4\":\"Section\",\"widget_icon_4\":\"fas fa-award\",\"type_4\":\"section\"}', 1, 1);
+(12, '20 years experience in the field of study', NULL, 'statistics', 'Lorem Ipsum is simply dummy text printer took a galley of type and scrambled it to make a type specimen book.', '{\"image\":\"counter-parallax1.jpg\",\"widget_title_1\":\"Certified Teachers\",\"widget_icon_1\":\"fas fa-user-tie\",\"type_1\":\"teacher\",\"widget_title_2\":\"Students Enrolled\",\"widget_icon_2\":\"fas fa-user-graduate\",\"type_2\":\"student\",\"widget_title_3\":\"Classes\",\"widget_icon_3\":\"fas fa-graduation-cap\",\"type_3\":\"class\",\"widget_title_4\":\"Section\",\"widget_icon_4\":\"fas fa-award\",\"type_4\":\"section\"}', 1, 1),
+(13, 'Hello', '23456789', 'wellcome', '3456789098uyhi8', '{\"image\":\"wellcome2.jpg\"}', 2, 1),
+(15, 'New', NULL, 'slider', '67', '{\"position\":\"c-center\",\"button_text1\":\"456789\",\"button_url1\":\"6789\",\"button_text2\":\"56789\",\"button_url2\":\"6789\",\"image\":\"home-slider-1748535333.jpg\"}', 2, 1),
+(16, 'New Slider', NULL, 'slider', 'NA', '{\"position\":\"c-left\",\"button_text1\":\"New\",\"button_url1\":\"vytechinfo.com\",\"button_text2\":\"NA\",\"button_url2\":\"NA\",\"image\":\"home-slider-1749243441.jpg\"}', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1066,6 +2921,21 @@ CREATE TABLE `front_cms_menu_visible` (
   `invisible` tinyint(2) NOT NULL DEFAULT 1,
   `branch_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `front_cms_menu_visible`
+--
+
+INSERT INTO `front_cms_menu_visible` (`id`, `name`, `menu_id`, `parent_id`, `ordering`, `invisible`, `branch_id`) VALUES
+(2, NULL, 1, NULL, NULL, 0, 1),
+(3, NULL, 3, NULL, NULL, 0, 1),
+(4, NULL, 1, NULL, NULL, 1, 2),
+(5, NULL, 3, NULL, NULL, 0, 2),
+(6, NULL, 2, NULL, NULL, 0, 1),
+(7, NULL, 4, NULL, NULL, 0, 1),
+(8, NULL, 2, NULL, NULL, 0, 2),
+(9, NULL, 4, NULL, NULL, 1, 2),
+(10, NULL, 5, NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1173,7 +3043,8 @@ CREATE TABLE `front_cms_setting` (
 --
 
 INSERT INTO `front_cms_setting` (`id`, `application_title`, `url_alias`, `cms_active`, `online_admission`, `theme`, `captcha_status`, `recaptcha_site_key`, `recaptcha_secret_key`, `address`, `mobile_no`, `fax`, `receive_contact_email`, `email`, `copyright_text`, `fav_icon`, `logo`, `footer_about_text`, `working_hours`, `facebook_url`, `twitter_url`, `youtube_url`, `google_plus`, `linkedin_url`, `pinterest_url`, `instagram_url`, `branch_id`) VALUES
-(1, 'School Management System With CMS', 'example', 0, 1, 'red', 'disable', '', '', 'Your Address', '+12345678', '12345678', 'info@example.com', 'info@demo.com', 'Copyright © 2020 <span>Ramom</span>. All Rights Reserved.', 'fav_icon1.png', 'logo1.png', 'If you are going to use a passage LorIsum, you anythirassing hidden in the middle of text. Lators on the Internet tend to.', '<span>Hours : </span>  Mon To Fri - 10AM - 04PM,  Sunday Closed', 'https://facebook.com', 'https://twitter.com', 'https://youtube.com', 'https://google.com', 'https://linkedin.com', 'https://pinterest.com', 'https://instagram.com', 1);
+(1, 'School Management System With CMS', 'example', 0, 0, 'red', 'disable', '', '', 'Your Address', '+12345678', '12345678', 'info@example.com', 'info@demo.com', 'Copyright © 2020 <span>Ramom</span>. All Rights Reserved.', 'fav_icon1.png', 'logo1.png', 'If you are going to use a passage LorIsum, you anythirassing hidden in the middle of text. Lators on the Internet tend to.', '<span>Hours : </span>  Mon To Fri - 10AM - 04PM,  Sunday Closed', 'https://facebook.com', 'https://twitter.com', 'https://youtube.com', 'https://google.com', 'https://linkedin.com', '', 'https://instagram.com', 1),
+(2, 'Pavan School', 'pavan_com', 0, 0, 'blue', 'disable', '', '', 'AKP', '98765434', '234567890', 'pavan@gmail.com', 'pavan@gmail.com', '34567890', '', '', '4567890', '10 Hours', '45678', '', '', '', '', 'http://localhost/newmultismsfrontend', '', 2);
 
 -- --------------------------------------------------------
 
@@ -1224,7 +3095,7 @@ INSERT INTO `front_cms_testimonial` (`id`, `name`, `surname`, `image`, `descript
 (2, 'Clifton Hyde', 'Newyork City', 'defualt.png', '“Owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted always holds”.', 4, 1, 1, '2019-08-23 12:26:42'),
 (3, 'Emily Lemus', 'Los Angeles', 'defualt.png', '“Intexure have done an excellent job presenting the analysis & insights. I am confident in saying  have helped encounter  is to be welcomed and every pain avoided”.', 5, 1, 1, '2019-08-23 12:26:42'),
 (4, 'Michel Jhon', 'CEO', 'defualt.png', '“Owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted always holds”.', 3, 2, 1, '2019-08-23 12:26:42'),
-(5, 'Hilda Howard', 'Chicago City', 'defualt.png', '“Owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted always holds”.', 4, 2, 1, '2019-08-23 12:26:42');
+(5, 'Hilda Howard', 'Chicago City', 'user-1748535134.jpg', '“Owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted always holds”.', 4, 2, 1, '2019-08-23 12:26:42');
 
 -- --------------------------------------------------------
 
@@ -1261,15 +3132,17 @@ CREATE TABLE `global_settings` (
   `file_extension` text DEFAULT NULL,
   `file_size` float DEFAULT 1024,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL
+  `updated_at` datetime NOT NULL,
+  `branch_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `global_settings`
 --
 
-INSERT INTO `global_settings` (`id`, `institute_name`, `institution_code`, `reg_prefix`, `institute_email`, `address`, `mobileno`, `currency`, `currency_symbol`, `sms_service_provider`, `session_id`, `translation`, `footer_text`, `animations`, `timezone`, `date_format`, `facebook_url`, `twitter_url`, `linkedin_url`, `youtube_url`, `cron_secret_key`, `preloader_backend`, `cms_default_branch`, `image_extension`, `image_size`, `file_extension`, `file_size`, `created_at`, `updated_at`) VALUES
-(1, 'bigwala technologies', 'RSM-', 'on', 'ramom@example.com', '', '', 'USD', '$', 'disabled', 4, 'english', '© 2022 Ramom School Management - Developed by RamomCoder', 'fadeInUp', 'Pacific/Midway', 'd.M.Y', '', '', '', '', '', 2, 1, 'jpeg, jpg, bmp, png', 2048, 'txt, pdf, doc, xls, docx, xlsx, jpg, jpeg, png, gif, bmp, zip, mp4, 7z, wmv, rar', 2048, '2018-10-22 09:07:49', '2020-05-01 22:37:06');
+INSERT INTO `global_settings` (`id`, `institute_name`, `institution_code`, `reg_prefix`, `institute_email`, `address`, `mobileno`, `currency`, `currency_symbol`, `sms_service_provider`, `session_id`, `translation`, `footer_text`, `animations`, `timezone`, `date_format`, `facebook_url`, `twitter_url`, `linkedin_url`, `youtube_url`, `cron_secret_key`, `preloader_backend`, `cms_default_branch`, `image_extension`, `image_size`, `file_extension`, `file_size`, `created_at`, `updated_at`, `branch_id`) VALUES
+(1, 'VIGNANA BHARATHI VIDYALAYAM', '28134100830', 'on', 'ramom@example.com', 'YLM & AKP', '9848030332', 'INR', '₹', 'disabled', 9, 'english', '@VBV YLM , AKP', 'fadeInUp', 'Asia/Kolkata', 'd-m-Y', '', '', '', '', '', 2, 1, 'jpg,jpeg,png,gif', 2048, 'txt, pdf, doc, xls, docx, xlsx, jpg, jpeg, png, gif, bmp, zip, mp4, 7z, wmv, rar', 2048, '2018-10-22 09:07:49', '2020-05-01 22:37:06', 1),
+(2, 'VY Tech Info Pvt Ltd', '1234567890', 'on', '', 'YLM & AKP', '9491976849', 'INR', '₹', '', 9, 'english', '@VY Tech Info Pvt Ltd', 'fadeInUp', 'Asia/Kolkata', 'd-m-Y', '', '', '', '', NULL, 2, 5, NULL, 1024, NULL, 1024, '2025-06-10 12:55:27', '0000-00-00 00:00:00', 5);
 
 -- --------------------------------------------------------
 
@@ -1331,6 +3204,13 @@ CREATE TABLE `homework` (
   `branch_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `homework`
+--
+
+INSERT INTO `homework` (`id`, `class_id`, `section_id`, `session_id`, `subject_id`, `date_of_homework`, `date_of_submission`, `description`, `created_by`, `create_date`, `status`, `sms_notification`, `schedule_date`, `document`, `evaluation_date`, `evaluated_by`, `branch_id`) VALUES
+(1, 1, 1, 9, 1, '2025-06-02', '2025-06-02', '<p>vjhvjhvhvhjk</p>', 2, '2025-06-02', '0', 1, NULL, 'QUIERIES.xlsx', '2025-06-02', 2, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -1346,6 +3226,14 @@ CREATE TABLE `homework_evaluation` (
   `date` date NOT NULL,
   `status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `homework_evaluation`
+--
+
+INSERT INTO `homework_evaluation` (`id`, `homework_id`, `student_id`, `remark`, `rank`, `date`, `status`) VALUES
+(1, 1, 1, '', 4, '2025-06-02', 'c'),
+(2, 1, 2, '', 1, '2025-06-02', 'u');
 
 -- --------------------------------------------------------
 
@@ -2611,11 +4499,119 @@ INSERT INTO `languages` (`id`, `word`, `english`, `bengali`, `arabic`, `french`,
 (1138, 'subject_assign', 'Subject Assign', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (1139, 'accounting', 'Accounting', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
 (1140, 'event', 'Event', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(1141, 'whatsapp', 'Whatsapp', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(1142, 'api_key_settings', 'Api Key Settings', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(1143, 'manage_schools', 'Manage Schools', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(1144, 'add_new_school', 'Add New School', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(1145, 'no_schools_found', 'No Schools Found', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+(1141, 'classes', 'Classes', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1142, 'edit_branch', 'Edit Branch', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1143, 'Student Activities', 'Student Activities', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1144, 'Communication', 'Communication', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1145, 'sendsmsmail', 'Sendsmsmail', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1146, 'Administration', 'Administration', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1147, 'create_section', 'Create Section', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1148, 'section_list', 'Section List', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1149, 'guardian_picture', 'Guardian Picture', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1150, 'my_child', 'My Child', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1151, 'select_child', 'Select Child', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1152, 'login_to_continue', 'Login To Continue', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1153, 'parent_menu', 'Parent Menu', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1154, 'statistics', 'Statistics', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1155, 'employees', 'Employees', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1156, 'thumb_image', 'Thumb Image', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1157, 'uploaded', 'Uploaded', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1158, 'show_website', 'Show Website', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1159, 'gallery_title', 'Gallery Title', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1160, 'file_size_shoud_be_less_than', 'File Size Shoud Be Less Than', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1161, 'june', 'June', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1162, 'edit_section', 'Edit Section', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1163, 'selected_revert', 'Selected Revert', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1164, 'sub_total', 'Sub Total', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1165, 'with_fine', 'With Fine', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1166, 'fees_pay_now', 'Fees Pay Now', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1167, 'fully_paid', 'Fully Paid', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1168, 'selected_fees_collect', 'Selected Fees Collect', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1169, 'guardian_confirmation_sms', 'Guardian Confirmation Sms', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1170, 'no_rows_selected', 'No Rows Selected', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1171, 'ajax_request_failed', 'Ajax Request Failed', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1172, 'no_rows_selected_to_print', 'No Rows Selected To Print', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1173, 'ajax_request_failed_for_print', 'Ajax Request Failed For Print', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1174, 'no_payment_history_selected_to_print', 'No Payment History Selected To Print', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1175, 'no_payment_selected_to_revert', 'No Payment Selected To Revert', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1176, 'revert_this_payment_information', 'Revert This Payment Information', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1177, 'yes_revert_it', 'Yes Revert It', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1178, 'reverted', 'Reverted', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1179, 'ajax_request_failed_balance_type', 'Ajax Request Failed Balance Type', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1180, 'assignment', 'Assignment', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1181, 'assignments', 'Assignments', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1182, 'no_fees_have_been_allocated', 'No Fees Have Been Allocated', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1183, 'total_discount', 'Total Discount', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1184, 'total_fine', 'Total Fine', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1185, 'total_balance', 'Total Balance', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1186, 'payment_status', 'Payment Status', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1187, 'teachers_list', 'Teachers List', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1188, 'the_next_session_was_transferred_to_the_students', 'The Next Session Was Transferred To The Students', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1189, 'promote_to_session', 'Promote To Session', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1190, 'promote_to_class', 'Promote To Class', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1191, 'promote_to_section', 'Promote To Section', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1192, 'mark_summary', 'Mark Summary', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1193, 'current_due_amount', 'Current Due Amount', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1194, 'promotion_history', 'Promotion History', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1195, 'from_class', 'From Class', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1196, 'from_session', 'From Session', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1197, 'promoted_class', 'Promoted Class', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1198, 'promoted_session', 'Promoted Session', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1199, 'promoted_date', 'Promoted Date', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1200, 'whatsapp', 'Whatsapp', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1201, 'information', 'Information', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1202, 'promote_section_id', 'Promote Section Id', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1203, 'no_roles_available', 'No Roles Available', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1204, 'Student Name', 'Student Name', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1205, 'Phone Number', 'Phone Number', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1206, 'Parent Name', 'Parent Name', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1207, 'no_child_was_found', 'No Child Was Found', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1208, 'belongs_to', 'Belongs To', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1209, 'bs_column', 'Bs Column', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1210, 'field_order', 'Field Order', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1211, 'Resources', 'Resources', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1212, 'whatsapp_settings', 'Whatsapp Settings', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1213, 'general_setting', 'General Setting', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1214, 'unique_roll', 'Unique Roll', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `languages` (`id`, `word`, `english`, `bengali`, `arabic`, `french`, `hindi`, `indonesian`, `italian`, `japanese`, `korean`, `dutch`, `portuguese`, `thai`, `turkish`, `urdu`, `chinese`, `afrikaans`, `german`, `greek`, `spanish`, `nepali`, `russian`, `danish`, `armenian`, `georgian`, `marathi`, `malay`, `punjabi`, `tamil`, `telugu`, `swedish`, `filipino`) VALUES
+(1215, 'classes_wise', 'Classes Wise', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1216, 'section_wise', 'Section Wise', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1217, 'fees_carry_forward_setting', 'Fees Carry Forward Setting', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1218, 'due_days', 'Due Days', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1219, 'due_fees_calculation_with_fine_', 'Due Fees Calculation With Fine ', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1220, 'all_classes', 'All Classes', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1221, 'template_body', 'Template Body', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1222, 'aisensy_template_name', 'Aisensy Template Name', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1223, 'message_template', 'Message Template', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1224, 'header_title', 'Header Title', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1225, 'frontend_enable_chat', 'Frontend Enable Chat', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1226, 'backend_enable_chat', 'Backend Enable Chat', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1227, 'whatsapp_agent', 'Whatsapp Agent', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1228, 'agent', 'Agent', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1229, 'whataspp_number', 'Whataspp Number', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1230, 'weekend', 'Weekend', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1231, 'active', 'Active', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1232, 'bulk_sms_and_whatsapp', 'Bulk Sms And Whatsapp', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1233, 'api_key_settings', 'Api Key Settings', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1234, 'service_provider_settings', 'Service Provider Settings', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1235, 'add_new_provider', 'Add New Provider', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1236, 'service_type', 'Service Type', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1237, 'provider_name', 'Provider Name', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1238, 'no_providers_found', 'No Providers Found', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1239, 'global_api_key_settings', 'Global Api Key Settings', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1240, 'global_api_key', 'Global Api Key', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1241, 'no_sms_gateway_available', 'No Sms Gateway Available', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1242, 'questions_qty', 'Questions Qty', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1243, 'exam_status', 'Exam Status', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1244, 'question', 'Question', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1245, 'random', 'Random', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1246, 'result_publish', 'Result Publish', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1247, 'negative_mark', 'Negative Mark', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1248, 'applicable', 'Applicable', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1249, 'marks_display', 'Marks Display', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1250, 'make', 'Make', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1251, 'fees_fine_reports', 'Fees Fine Reports', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(1252, 'Roll No', 'Roll No', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -2779,18 +4775,21 @@ CREATE TABLE `login_credential` (
   `username` varchar(100) NOT NULL,
   `password` varchar(250) NOT NULL,
   `role` tinyint(2) NOT NULL,
+  `branch_id` int(11) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1(active) 0(deactivate)',
   `last_login` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` datetime DEFAULT NULL,
+  `name` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `login_credential`
 --
 
-INSERT INTO `login_credential` (`id`, `user_id`, `username`, `password`, `role`, `active`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 1, 'pavansoft007@gmail.com', '$2y$10$7nH.3COdO2c5jzFGU8dEk.shOg9cIHXXQYC8GM5sbqzBGdcocAXBW', 1, 1, '2025-06-05 22:23:09', '2025-05-26 11:28:58', NULL);
+INSERT INTO `login_credential` (`id`, `user_id`, `username`, `password`, `role`, `branch_id`, `active`, `last_login`, `created_at`, `updated_at`, `name`) VALUES
+(1, 1, 'admin@gmail.com', '$2b$10$k3eqZBNfI3.h8mdHZFv0Pern./1ILPMWXI30wfagmmgtaqKThbKua', 1, NULL, 1, '2025-06-16 11:22:09', '2025-05-26 11:28:58', '2025-06-13 03:02:32', ''),
+(2, 1, 'superadmin@gmail.com', '$2a$08$lnKYOGlN8eOz4vvXlU1Jaub4ApojSqkkK9nh9SuoDpjZaceXEZTl2', 2, 3, 1, '2025-06-16 11:22:55', '2025-06-15 14:17:35', '2025-06-15 14:17:35', 'Pavan kumar');
 
 -- --------------------------------------------------------
 
@@ -2819,20 +4818,23 @@ CREATE TABLE `mark` (
 
 CREATE TABLE `master_admins` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `role` varchar(255) DEFAULT NULL,
+  `active` tinyint(4) DEFAULT 1,
+  `reset_password_key` varchar(255) DEFAULT NULL,
+  `mobile_no` varchar(255) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `master_admins`
 --
 
-INSERT INTO `master_admins` (`id`, `name`, `email`, `password`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Super Admin', 'admin@example.com', '$2y$10$7nH.3COdO2c5jzFGU8dEk.shOg9cIHXXQYC8GM5sbqzBGdcocAXBW', 1, '2025-06-06 09:35:27', NULL);
+INSERT INTO `master_admins` (`id`, `name`, `email`, `password`, `role`, `active`, `reset_password_key`, `mobile_no`, `created_at`, `updated_at`) VALUES
+(1, 'Pavan kumar', 'amaa@gmail.com', '$2a$08$RMx8VJX9vYyCqF04iHi8puuMEkKdnayJRtDJA8xJwFCp5lvg/4Ar2', NULL, 1, NULL, NULL, '2025-06-15 14:17:35', '2025-06-15 14:17:35');
 
 -- --------------------------------------------------------
 
@@ -2857,6 +4859,14 @@ CREATE TABLE `message` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`id`, `body`, `subject`, `file_name`, `enc_name`, `trash_sent`, `trash_inbox`, `fav_inbox`, `fav_sent`, `reciever`, `sender`, `read_status`, `reply_status`, `created_at`, `updated_at`) VALUES
+(1, '<p>Dg</p>', 'Hm', NULL, NULL, 0, 0, 0, 0, '6-1', '8-2', 1, 0, '2025-06-02 23:11:42', '2025-06-02 23:12:53'),
+(2, '<p>Hiii</p>', 'Hhjj', NULL, NULL, 0, 0, 0, 0, '6-1', '8-2', 1, 0, '2025-06-02 23:12:17', '2025-06-02 23:12:44');
 
 -- --------------------------------------------------------
 
@@ -3062,6 +5072,376 @@ CREATE TABLE `parent` (
   `active` tinyint(2) NOT NULL DEFAULT 0 COMMENT '0(active) 1(deactivate)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `parent`
+--
+
+INSERT INTO `parent` (`id`, `name`, `relation`, `father_name`, `mother_name`, `occupation`, `income`, `education`, `email`, `mobileno`, `address`, `city`, `state`, `branch_id`, `photo`, `facebook_url`, `linkedin_url`, `twitter_url`, `created_at`, `updated_at`, `active`) VALUES
+(1, 'SETTIBILLI HARINADH', 'Father', 'SETTIBILLI HARINADH', 'SETTIBILLI DHANA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:55', NULL, 0),
+(2, 'SHAIK AMEER SHAJID', 'Father', 'SHAIK AMEER SHAJID', 'SHAIK SULTANA RAJIYA BEGAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:55', NULL, 0),
+(3, 'KALIGATLA LOVA RAJU', 'Father', 'KALIGATLA LOVA RAJU', 'KALIGATLA PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:55', NULL, 0),
+(4, 'DADI APPALA NAIDU', 'Father', 'DADI APPALA NAIDU', 'PARIPURNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(5, 'AGRAHARAPU GOVINDU', 'Father', 'AGRAHARAPU GOVINDU', 'JANAKI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(6, 'KORIBILLI GANESH', 'Father', 'KORIBILLI GANESH', 'LAXMI KANTHAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(7, 'KONDAKANCHILI NOOKARAJU', 'Father', 'KONDAKANCHILI NOOKARAJU', 'KONDAKANCHILI LALITHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(8, 'YELLAPU NAIDU', 'Father', 'YELLAPU NAIDU', 'YELLAPU LOVA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(9, 'RANGA RAMANAYYA', 'Father', 'RANGA RAMANAYYA', 'R RAJESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(10, 'GANESH', 'Father', 'GANESH', 'SANAPATHILAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(11, 'KONA MURALI', 'Father', 'KONA MURALI', 'K TOLASI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(12, 'SUNDARAPU KONDALARAO', 'Father', 'SUNDARAPU KONDALARAO', 'PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:56', NULL, 0),
+(13, 'ESARAPU APPALARAJU', 'Father', 'ESARAPU APPALARAJU', 'GOWRI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(14, 'POLAROUTHUSATTIBABU', 'Father', 'POLAROUTHUSATTIBABU', 'PM VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(15, 'LAKSHMANA', 'Father', 'LAKSHMANA', 'LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(16, 'DUNGA NAGA SRINIVASARAO', 'Father', 'DUNGA NAGA SRINIVASARAO', 'NAGA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(17, 'GAGANAM NAGABABU', 'Father', 'GAGANAM NAGABABU', 'GAGANAM SAILAJA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(18, 'SIVARAMA SATYANARAYANA', 'Father', 'SIVARAMA SATYANARAYANA', 'UMA MAHESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:03:57', NULL, 0),
+(19, 'TANTAPUREDDI GANESH', 'Father', 'TANTAPUREDDI GANESH', 'TANTAPUREDDI SWARNAKUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:36', NULL, 0),
+(20, 'BUDUMURU SYAMASUNDARA RAO', 'Father', 'BUDUMURU SYAMASUNDARA RAO', 'BUDUMURU RAJINI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:36', NULL, 0),
+(21, 'KOTHALI SANTOSH', 'Father', 'KOTHALI SANTOSH', 'KOTHALI BHAGYA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:36', NULL, 0),
+(22, 'GANDIBOINA APPALANAIDU', 'Father', 'GANDIBOINA APPALANAIDU', 'APARNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:36', NULL, 0),
+(23, 'PANCHADARLA NARASIMHA MURTHY', 'Father', 'PANCHADARLA NARASIMHA MURTHY', 'PANCHADARLA PALLAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(24, 'KALLURU JAGADEESWARARAO', 'Father', 'KALLURU JAGADEESWARARAO', 'K RAJANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(25, 'TUMPALA SIVAJI', 'Father', 'TUMPALA SIVAJI', 'TUMPAL SEETHA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(26, 'GUDALA SANYASI RAO', 'Father', 'GUDALA SANYASI RAO', 'GUDALA RAMALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(27, 'KUNAPALLI MURAHARI', 'Father', 'KUNAPALLI MURAHARI', 'SANTHOSI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(28, 'GEDELA SRINIVASARAO', 'Father', 'GEDELA SRINIVASARAO', 'GEDELA KASULAMMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(29, 'BANDI NEELAKANTAM', 'Father', 'BANDI NEELAKANTAM', 'BANDI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(30, 'SUNDARAPU DHARAMARAJU', 'Father', 'SUNDARAPU DHARAMARAJU', 'SUNDARAPU VENKATALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(31, 'PANDURI PAIDINAIDU', 'Father', 'PANDURI PAIDINAIDU', 'KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(32, 'GAGANAM NAGABABU', 'Father', 'GAGANAM NAGABABU', 'GAGANAM SAILAJA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:37', NULL, 0),
+(33, 'PILLA SRINIVASA RAO', 'Father', 'PILLA SRINIVASA RAO', 'PILLA SUNITHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(34, 'PILLA NAGESWARARAO', 'Father', 'PILLA NAGESWARARAO', 'PILLA PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(35, 'YELLAPU VENKATA APPARAO', 'Father', 'YELLAPU VENKATA APPARAO', 'YELLAPU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(36, 'DADI ATCHINAIDU', 'Father', 'DADI ATCHINAIDU', 'DADI NAGALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(37, 'TANGELLA ESWARARAO', 'Father', 'TANGELLA ESWARARAO', 'TANGELLA LAXMISOMESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(38, 'CHAVAN SUNIL SHANTARAM', 'Father', 'CHAVAN SUNIL SHANTARAM', 'CHAVAN ASHA RANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(39, 'YELLAPU SANTHOSH SATYANARAYANA', 'Father', 'YELLAPU SANTHOSH SATYANARAYANA', 'YELLAPU LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:04:38', NULL, 0),
+(40, 'RAYI SRINU', 'Father', 'RAYI SRINU', 'RAYI DHANA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:43', NULL, 0),
+(41, 'B SATTIBABU', 'Father', 'B SATTIBABU', 'B MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:43', NULL, 0),
+(42, 'MARISETTY SRINIVASA RAO', 'Father', 'MARISETTY SRINIVASA RAO', 'MARISETTY JANAKI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:43', NULL, 0),
+(43, 'CHEBROLU GOVINDARAO', 'Father', 'CHEBROLU GOVINDARAO', 'CHEBROLU CHAYA DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(44, 'SETTIBILLI HARINADH', 'Father', 'SETTIBILLI HARINADH', 'SETTIBILLI DHANA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(45, 'KALIGATLA LOVARAJU', 'Father', 'KALIGATLA LOVARAJU', 'KALIGATLA PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(46, 'RAPETI SANKAR', 'Father', 'RAPETI SANKAR', 'RAPETI VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(47, 'VEGI SRINU', 'Father', 'VEGI SRINU', 'VEGI VIMALADEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(48, 'VANGALAPUDI SATYANARAYANA', 'Father', 'VANGALAPUDI SATYANARAYANA', 'VANGALAPUDI SATYAVENI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(49, 'PANDURU VENKATESWARA RAO', 'Father', 'PANDURU VENKATESWARA RAO', 'PANDURU NOOKARATNAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(50, 'KORIBILLI GANESH', 'Father', 'KORIBILLI GANESH', 'KORIBILLI LAKSHMI KANTHAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(51, 'PITLA SREENUVASA RAO', 'Father', 'PITLA SREENUVASA RAO', 'PITLA MOHINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(52, 'POLARAWATHU APPARAO', 'Father', 'POLARAWATHU APPARAO', 'POLARAWATHU KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:44', NULL, 0),
+(53, 'SHIAK ABDULLA', 'Father', 'SHIAK ABDULLA', 'SHAIK NOORJAHAN', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(54, 'ULLINGALA NAGESWARA RAO', 'Father', 'ULLINGALA NAGESWARA RAO', 'ULLINGALA DHANA LAKHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(55, 'BODDETI SANTHOSH NAIDU', 'Father', 'BODDETI SANTHOSH NAIDU', 'BODDETI SIVA LAKSHIMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(56, 'KARRI PAIDINAIDU', 'Father', 'KARRI PAIDINAIDU', 'KARRI KRISHNA KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(57, 'KARRI LAKSHMANA RAO', 'Father', 'KARRI LAKSHMANA RAO', 'KARRI HEMALATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(58, 'ANKIREDDI CHANDRA RAO', 'Father', 'ANKIREDDI CHANDRA RAO', 'ANKIREDDI PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(59, 'CHINNALA SRINUBABU', 'Father', 'CHINNALA SRINUBABU', 'CHINNALA NOOKARATNAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(60, 'DADI PRASAD RAO', 'Father', 'DADI PRASAD RAO', 'DADI JAGADHA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(61, 'MANDA SAGAR', 'Father', 'MANDA SAGAR', 'MANDA NAGA SUDHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:45', NULL, 0),
+(62, 'APPIKONDA LOKESWARARAO', 'Father', 'APPIKONDA LOKESWARARAO', 'APPIKONDA MANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:46', NULL, 0),
+(63, 'MALLA RAJU', 'Father', 'MALLA RAJU', 'MALLA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:46', NULL, 0),
+(64, 'MALLA NAGESWARARAO', 'Father', 'MALLA NAGESWARARAO', 'MALLA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:05:46', NULL, 0),
+(65, 'RAYAVARAPU SATTIBABU', 'Father', 'RAYAVARAPU SATTIBABU', 'RAYAVARAPU DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(66, 'RAIVADA JAGADESH CHANDRA PRASAD', 'Father', 'RAIVADA JAGADESH CHANDRA PRASAD', 'RAIVADA LATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(67, 'ADARI GODHARI NAIDU', 'Father', 'ADARI GODHARI NAIDU', 'ADARI VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(68, 'MARISETTY SRINIVASA RAO', 'Father', 'MARISETTY SRINIVASA RAO', 'MARISETTY JANAKI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(69, 'TANTAPUREDDI ANANDA RAO', 'Father', 'TANTAPUREDDI ANANDA RAO', 'TANTAPUREDDI VARA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(70, 'TANTAPUREDDI GANESH', 'Father', 'TANTAPUREDDI GANESH', 'TANTAPUREDDI SWARNA KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(71, 'KORIBILLI SRINU', 'Father', 'KORIBILLI SRINU', 'KORIBILLI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(72, 'TANTAPUREDDI SRINU', 'Father', 'TANTAPUREDDI SRINU', 'TANTAPUREDDI ASWINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(73, 'NUNNA GOVINDHU', 'Father', 'NUNNA GOVINDHU', 'NUNNA NOOKARATNAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:07', NULL, 0),
+(74, 'NUNNA GOVINDU', 'Father', 'NUNNA GOVINDU', 'NUNNA NOOKARATNAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(75, 'BUDUMURU SYAMA SUNDARARAO', 'Father', 'BUDUMURU SYAMA SUNDARARAO', 'BUDUMURU RAJINI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(76, 'BAMMIDI RAJU', 'Father', 'BAMMIDI RAJU', 'BAMMIDI ADILAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(77, 'ADIDAM APPALANAIDU', 'Father', 'ADIDAM APPALANAIDU', 'ADIDAM NAGA SHESHU', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(78, 'PANDURU SRINIVASARAO', 'Father', 'PANDURU SRINIVASARAO', 'PANDURU RAJESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(79, 'KARRI NANAJI', 'Father', 'KARRI NANAJI', 'KARRI BUJJI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(80, 'JAKKA RAJA', 'Father', 'JAKKA RAJA', 'JAKKA SUNITHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(81, 'GOWTHU BHULOKARAO', 'Father', 'GOWTHU BHULOKARAO', 'GOWTHU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(82, 'RAPETI SANKAR', 'Father', 'RAPETI SANKAR', 'RAPETI VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(83, 'SIGIREDDI SATISH', 'Father', 'SIGIREDDI SATISH', 'SIGIREDDI MAHESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:08', NULL, 0),
+(84, 'GOPISETTY VENKATESH', 'Father', 'GOPISETTY VENKATESH', 'GOPISETTY VIJAYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(85, 'ADARI SATTIBABU', 'Father', 'ADARI SATTIBABU', 'ADARI SATYAVATI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(86, 'DADI SEKHAR', 'Father', 'DADI SEKHAR', 'DADI DHANA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(87, 'PYDADA KOTESWARA RAO', 'Father', 'PYDADA KOTESWARA RAO', 'PYDADA PRAVALLIKA TULASI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(88, 'PANDURI MALINAIDU', 'Father', 'PANDURI MALINAIDU', 'PANDURI PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(89, 'DUNGA APPALASWAMY', 'Father', 'DUNGA APPALASWAMY', 'DUNGA SIVA KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(90, 'UPPUNURI APPALARAJU', 'Father', 'UPPUNURI APPALARAJU', 'UPPUNURI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(91, 'PANDURU KASILU', 'Father', 'PANDURU KASILU', 'PANDURU CHANDRAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(92, 'BODDAPU SATYA NAGESWARARAO', 'Father', 'BODDAPU SATYA NAGESWARARAO', 'BODDAPU PAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(93, 'VENKATA SATYAM', 'Father', 'VENKATA SATYAM', 'MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:09', NULL, 0),
+(94, 'DWARAPUDI RAMARAO', 'Father', 'DWARAPUDI RAMARAO', 'DWARAPUDI SATYAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(95, 'DADI PRASAD RAO', 'Father', 'DADI PRASAD RAO', 'DADI JAGADHA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(96, 'K KRUPACHARI', 'Father', 'K KRUPACHARI', 'KANITHI SWATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(97, 'YARAKAM SRINU', 'Father', 'YARAKAM SRINU', 'YARAKAM RAMALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(98, 'KOSANAM RAMA VENKATESWARA RAO', 'Father', 'KOSANAM RAMA VENKATESWARA RAO', 'KOSANAM VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(99, 'RAYAVARAPU LOVARAJU', 'Father', 'RAYAVARAPU LOVARAJU', 'RAYAVARAPU BHAGAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(100, 'POTHALA SRINU', 'Father', 'POTHALA SRINU', 'POTHALA VARALAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(101, 'SUNDARAPU BABUJI', 'Father', 'SUNDARAPU BABUJI', 'SUNDARAPU DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(102, 'KONA MURALI', 'Father', 'KONA MURALI', 'KONA TULASI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(103, 'SUNDARAPU DHARMARAJU', 'Father', 'SUNDARAPU DHARMARAJU', 'SUNDARAPU VENKATALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:10', NULL, 0),
+(104, 'PENAGANTI VENKATA SITARAM BABU', 'Father', 'PENAGANTI VENKATA SITARAM BABU', 'PENAGANTI BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:11', NULL, 0),
+(105, 'PANDURI ADINARAYANA', 'Father', 'PANDURI ADINARAYANA', 'PANDURI SIVA NAGALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:11', NULL, 0),
+(106, 'BISETTY PENTAYYA SWAMI', 'Father', 'BISETTY PENTAYYA SWAMI', 'BISETTY HIMA DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:11', NULL, 0),
+(107, 'PANDURU APPALA NAIDU', 'Father', 'PANDURU APPALA NAIDU', 'PANDURU RADHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:11', NULL, 0),
+(108, 'DHANALAKOTA SRINIVAS', 'Father', 'DHANALAKOTA SRINIVAS', 'DHANALAKOTA VENKATA RAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:43', NULL, 0),
+(109, 'DUNGA GANGADARARAO', 'Father', 'DUNGA GANGADARARAO', 'DUNGA NAGA UDAYESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:43', NULL, 0),
+(110, 'THOTA GOVIND', 'Father', 'THOTA GOVIND', 'THOTA SARVA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:43', NULL, 0),
+(111, 'GEDELA GANESH', 'Father', 'GEDELA GANESH', 'GEDELA CHINNAMMALU', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:43', NULL, 0),
+(112, 'KOTHALANKA RAVI', 'Father', 'KOTHALANKA RAVI', 'KOTHALANKA PAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(113, 'SUNKARA SIVA', 'Father', 'SUNKARA SIVA', 'SUNKARA SUJATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(114, 'KOTTALI SANTOSH', 'Father', 'KOTTALI SANTOSH', 'KOTTALI BHAGYA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(115, 'ADARI NAGESWAR RAO', 'Father', 'ADARI NAGESWAR RAO', 'ADARI SANTHOSHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(116, 'BODDAPU SREENU', 'Father', 'BODDAPU SREENU', 'BODDAPU SATYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(117, 'GANDIBOIYANA APPALANAIDU', 'Father', 'GANDIBOIYANA APPALANAIDU', 'GANDIBOIYANA APARNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(118, 'KARRI NANAJI', 'Father', 'KARRI NANAJI', 'KARRI BUJJI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(119, 'SANAPALA JOGARAO', 'Father', 'SANAPALA JOGARAO', 'SANAPALA VIJAYALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(120, 'ADARI SATTIBABU', 'Father', 'ADARI SATTIBABU', 'ADARI SATYAVATI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(121, 'BANDAM APPALA RAJU', 'Father', 'BANDAM APPALA RAJU', 'BANDAM SIREESHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:44', NULL, 0),
+(122, 'PILLA SRINIVASA RAO', 'Father', 'PILLA SRINIVASA RAO', 'PILLA TALUPULAMMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(123, 'VEMAVARAPU SRINIVASA RAO', 'Father', 'VEMAVARAPU SRINIVASA RAO', 'VEMAVARAPU NAVYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(124, 'PILLA APPALANAIDU', 'Father', 'PILLA APPALANAIDU', 'PILLA GANGABHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(125, 'BODDAPU NAGARAJU', 'Father', 'BODDAPU NAGARAJU', 'BODDAPU SATYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(126, 'ADAPAKA SRINIVASA RAO', 'Father', 'ADAPAKA SRINIVASA RAO', 'ADAPAKA KRISHNA VENI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(127, 'PILLI CHINNA LOVA RAJU', 'Father', 'PILLI CHINNA LOVA RAJU', 'PILLI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(128, 'SUNDARAPU NAGU', 'Father', 'SUNDARAPU NAGU', 'SUNDARAPU UMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(129, 'BARRI MATHAJI', 'Father', 'BARRI MATHAJI', 'BARRI SAROJINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:07:45', NULL, 0),
+(130, 'RAYI SRINU', 'Father', 'RAYI SRINU', 'RAYI DHANA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(131, 'RAYAVARAPU SATTIBABU', 'Father', 'RAYAVARAPU SATTIBABU', 'RAYAVARAPU DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(132, 'PILLA SRINIVASA RAO', 'Father', 'PILLA SRINIVASA RAO', 'PILLA MOHINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(133, 'BEESETTI SATTIBABU', 'Father', 'BEESETTI SATTIBABU', 'BEESETTI MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(134, 'ADARI SIVA', 'Father', 'ADARI SIVA', 'ADARI DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(135, 'ADARI JAGADESH', 'Father', 'ADARI JAGADESH', 'ADARI JYOSHNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:15', NULL, 0),
+(136, 'SUNDARAPU SREENU', 'Father', 'SUNDARAPU SREENU', 'SUNDARAPU MANGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(137, 'BATTHINA EASWARARAO', 'Father', 'BATTHINA EASWARARAO', 'BATTHINA VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(138, 'SURISHETTI RAMANA ALIAS SRINU', 'Father', 'SURISHETTI RAMANA ALIAS SRINU', 'SURISETTI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(139, 'AAVUPATI NANAJI', 'Father', 'AAVUPATI NANAJI', 'AAVUPATI LAKSHMI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(140, 'AAVUPATI NANAJI', 'Father', 'AAVUPATI NANAJI', 'AAVUPATI LAKSHMI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(141, 'KASIMKOTA NAGESWAR RAO', 'Father', 'KASIMKOTA NAGESWAR RAO', 'KASIMKOTA DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(142, 'KARANAM NAGASRINU', 'Father', 'KARANAM NAGASRINU', 'KARANAM DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(143, 'CHEBROLU GOVINDARAO', 'Father', 'CHEBROLU GOVINDARAO', 'CHEBROLU CHAYADEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(144, 'PANCHADARLA NARSHIMA MURTHY', 'Father', 'PANCHADARLA NARSHIMA MURTHY', 'PANCHADARLA PALLAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:16', NULL, 0),
+(145, 'GOWTHU BHULOKA RAO', 'Father', 'GOWTHU BHULOKA RAO', 'GOWTHU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(146, 'AGRAHARAPU LAKSHMI NARAYANA', 'Father', 'AGRAHARAPU LAKSHMI NARAYANA', 'AGRAHARAPU DIVYA VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(147, 'SIGIREDDI SATISH', 'Father', 'SIGIREDDI SATISH', 'SIGIREDDI MAHESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(148, 'VEESAM SIVA', 'Father', 'VEESAM SIVA', 'VEESAM KANAKA MAHALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(149, 'PENAGANTI VENKATA SITARAM BABU', 'Father', 'PENAGANTI VENKATA SITARAM BABU', 'PENAGANTI BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(150, 'BODDETI SRINIVASA RAO', 'Father', 'BODDETI SRINIVASA RAO', 'BODDETI PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(151, 'NAMMI RAMU', 'Father', 'NAMMI RAMU', 'NAMMI DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(152, 'ULLI MANGARAGU', 'Father', 'ULLI MANGARAGU', 'ULLI BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(153, 'NANEPALLI RAMESH', 'Father', 'NANEPALLI RAMESH', 'NANEPALLI ASWANI LAKSHMI DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(154, 'KAKADA RAJESH', 'Father', 'KAKADA RAJESH', 'KAKADA SARASWATI LAVANYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:17', NULL, 0),
+(155, 'DULI RAJENDRASINGH', 'Father', 'DULI RAJENDRASINGH', 'DULI LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(156, 'SADARAM BALA SUBRAHAMANYAM', 'Father', 'SADARAM BALA SUBRAHAMANYAM', 'SADARAM VANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(157, 'CHIPPADA UMAMAHESWARA RAO', 'Father', 'CHIPPADA UMAMAHESWARA RAO', 'CHIPPADA UMADEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(158, 'BESETTI TRINADH', 'Father', 'BESETTI TRINADH', 'BESETTI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(159, 'KODIGUDDU KRISHNA', 'Father', 'KODIGUDDU KRISHNA', 'KODIGUDDU DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(160, 'BODDAPU NARAYANARAO', 'Father', 'BODDAPU NARAYANARAO', 'BODDAPU CHANTI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(161, 'ATIKINASETTI ESWARARAO', 'Father', 'ATIKINASETTI ESWARARAO', 'ATIKINASETTI NAGALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(162, 'ATIKINASETTI RAMAKRISHNA', 'Father', 'ATIKINASETTI RAMAKRISHNA', 'ATIKINASETTI USHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(163, 'DUNGA APPALASWAMY', 'Father', 'DUNGA APPALASWAMY', 'DUNGA SIVA KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:18', NULL, 0),
+(164, 'KARRI TATAJI', 'Father', 'KARRI TATAJI', 'KARRI NAGALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:19', NULL, 0),
+(165, 'PANDURI ADINARAYANA', 'Father', 'PANDURI ADINARAYANA', 'PADURI SIVA NAGA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:19', NULL, 0),
+(166, 'BHEEMARASETTI SANYASIRAO', 'Father', 'BHEEMARASETTI SANYASIRAO', 'BHEEMARASETTI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:19', NULL, 0),
+(167, 'G RAMA SIVA', 'Father', 'G RAMA SIVA', 'G DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:19', NULL, 0),
+(168, 'DUNGA GANGADARARAO', 'Father', 'DUNGA GANGADARARAO', 'DUNGA NAGA UDAYESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:50', NULL, 0),
+(169, 'THOTA GOVIND', 'Father', 'THOTA GOVIND', 'THOTA SARVA LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:50', NULL, 0),
+(170, 'KOTHALANKA RAVI', 'Father', 'KOTHALANKA RAVI', 'KOTHALANKA PAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:50', NULL, 0),
+(171, 'RAIVADA JAGADESH CHANDRA PRASAD', 'Father', 'RAIVADA JAGADESH CHANDRA PRASAD', 'RAIVADA LATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:50', NULL, 0),
+(172, 'TANTAPUREDDI ANANDA RAO', 'Father', 'TANTAPUREDDI ANANDA RAO', 'TANTAPUREDDI VARALAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:50', NULL, 0),
+(173, 'KORIBILLI SRINU', 'Father', 'KORIBILLI SRINU', 'KORIBILLI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(174, 'PANDURU GANESH', 'Father', 'PANDURU GANESH', 'PANDURU SAROJINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(175, 'ARIGELA RAJENDAR', 'Father', 'ARIGELA RAJENDAR', 'ARIGELA MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(176, 'PANDURU BABURAO', 'Father', 'PANDURU BABURAO', 'PANDURU NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(177, 'ADAPAKA NANAJI', 'Father', 'ADAPAKA NANAJI', 'ADAPAKA MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(178, 'PANDURI SRINIVASA RAO', 'Father', 'PANDURI SRINIVASA RAO', 'PANDURU RAJESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(179, 'DULI NAGARAJU', 'Father', 'DULI NAGARAJU', 'DULI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(180, 'DULI NAGARAJU', 'Father', 'DULI NAGARAJU', 'DULI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(181, 'YELLAPU GANESH', 'Father', 'YELLAPU GANESH', 'YELLAPU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(182, 'MADAKA SRINU', 'Father', 'MADAKA SRINU', 'MADAKA PRABHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:51', NULL, 0),
+(183, 'JAKKA RAJA', 'Father', 'JAKKA RAJA', 'JAKKA SUNITHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(184, 'SANAPALA JOGA RAO', 'Father', 'SANAPALA JOGA RAO', 'SANAPALA VIJAYALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(185, 'PEELA NAGESWARA RAO', 'Father', 'PEELA NAGESWARA RAO', 'PEELA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(186, 'PANDURI APPALA SESHU', 'Father', 'PANDURI APPALA SESHU', 'PANDURI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(187, 'MADAKA RAJU', 'Father', 'MADAKA RAJU', 'MADAKA JYOTHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(188, 'ADARI KIRAN KUMAR', 'Father', 'ADARI KIRAN KUMAR', 'ADARI RENUKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(189, 'BODDAPU NAGARJUNA', 'Father', 'BODDAPU NAGARJUNA', 'BODDAPU BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(190, 'KALAVALAPALLI GOVINDA RAO', 'Father', 'KALAVALAPALLI GOVINDA RAO', 'KALAVALAPLLI SYAMALA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(191, 'YARAKAM SRINU', 'Father', 'YARAKAM SRINU', 'YARAKAM RAMALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(192, 'KATTUMURI KUMAR', 'Father', 'KATTUMURI KUMAR', 'KATTUMURI VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:52', NULL, 0),
+(193, 'RAPETI VENKATA GANGADHARA GOVINDA', 'Father', 'RAPETI VENKATA GANGADHARA GOVINDA', 'RAPETI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(194, 'PANDURU APPALA SESHU', 'Father', 'PANDURU APPALA SESHU', 'PANDURU LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(195, 'PATNALA RAMANA', 'Father', 'PATNALA RAMANA', 'PATNALA SURYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(196, 'PULI SRINU', 'Father', 'PULI SRINU', 'PULI ANANTHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(197, 'PANDURI APPARAO', 'Father', 'PANDURI APPARAO', 'PANDURI MANGATHAYURU', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(198, 'NAMMI RAMANA', 'Father', 'NAMMI RAMANA', 'NAMMI VEERA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(199, 'MARISETTY NAGA APPALA RAJU', 'Father', 'MARISETTY NAGA APPALA RAJU', 'MARISETTY NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:08:53', NULL, 0),
+(200, 'DHANALAKOTA SRINIVAS', 'Father', 'DHANALAKOTA SRINIVAS', 'DHANALAKOTA VENKATA RAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:22', NULL, 0),
+(201, 'PILLA SRINIVASA RAO', 'Father', 'PILLA SRINIVASA RAO', 'PILLA MOHINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:22', NULL, 0),
+(202, 'PANDURU SURIBABU', 'Father', 'PANDURU SURIBABU', 'PANDURU DHANALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:22', NULL, 0),
+(203, 'BUDHA CHANDRASEKHAR', 'Father', 'BUDHA CHANDRASEKHAR', 'BUDHA SAI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:22', NULL, 0),
+(204, 'KORIBILLI SRINU', 'Father', 'KORIBILLI SRINU', 'KORIBILLI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:22', NULL, 0),
+(205, 'PANDURU BABU RAO', 'Father', 'PANDURU BABU RAO', 'PANDURU NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(206, 'ADARI SIVA', 'Father', 'ADARI SIVA', 'ADARI DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(207, 'BAMMIDI RAJU', 'Father', 'BAMMIDI RAJU', 'BAMMIDI ADILAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(208, 'PANDURU JAGANNADHA RAO', 'Father', 'PANDURU JAGANNADHA RAO', 'PANDURU PUSHPA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(209, 'ADARI GANESH', 'Father', 'ADARI GANESH', 'ADARI LEELA RANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(210, 'PALAVALASA PRASAD', 'Father', 'PALAVALASA PRASAD', 'PALAVALASA VARALAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(211, 'KARANAM NAGA SRINU', 'Father', 'KARANAM NAGA SRINU', 'KARANAM DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(212, 'PEDAPUDI SATYA JOGA CHARI', 'Father', 'PEDAPUDI SATYA JOGA CHARI', 'PEDAPUDI LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(213, 'SURAKASULA RAMA KRISHNA', 'Father', 'SURAKASULA RAMA KRISHNA', 'SURAKASULA RAMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(214, 'SURISETTI APPARAO', 'Father', 'SURISETTI APPARAO', 'SURISETTI MOUNIKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:23', NULL, 0),
+(215, 'AGRAHARAPU LAKSHMI NARAYANA', 'Father', 'AGRAHARAPU LAKSHMI NARAYANA', 'AGRAHARAPU DIVYA VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(216, 'GEDELA VENKATA SURYA SATYANARAYANA', 'Father', 'GEDELA VENKATA SURYA SATYANARAYANA', 'GEDELA SWAPNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(217, 'MANDA SAGAR', 'Father', 'MANDA SAGAR', 'MANDA REVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(218, 'KORUKONDA RAJUKUMAR', 'Father', 'KORUKONDA RAJUKUMAR', 'MADA RAMALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(219, 'THANAKALA SURESH', 'Father', 'THANAKALA SURESH', 'THANAKALA NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(220, 'VAIDARSHI NAGESH', 'Father', 'VAIDARSHI NAGESH', 'VAIDARSHI VENKATA UMA MAHESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(221, 'PANDURU CHANDRA SEKHAR', 'Father', 'PANDURU CHANDRA SEKHAR', 'PANDURU PUSHPA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(222, 'BODDETI SRINIVASA RAO', 'Father', 'BODDETI SRINIVASA RAO', 'BODDETI PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(223, 'PILLI CHINNA LOVA RAJU', 'Father', 'PILLI CHINNA LOVA RAJU', 'PILLI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:24', NULL, 0),
+(224, 'ATIKINASETTI RAMAKRISHNA', 'Father', 'ATIKINASETTI RAMAKRISHNA', 'ATIKINASETTI USHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(225, 'RANDI GOVINDA', 'Father', 'RANDI GOVINDA', 'RANDI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(226, 'BANDAM APPALA RAJU', 'Father', 'BANDAM APPALA RAJU', 'BANDAM SIREESHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(227, 'SENAPATHI NANAJI', 'Father', 'SENAPATHI NANAJI', 'SENAPATHI ASWINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(228, 'DWARAPUREDDY MANIKYAM', 'Father', 'DWARAPUREDDY MANIKYAM', 'DWARAPUREDDY DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(229, 'SOMALA KASI ESWARA RAO', 'Father', 'SOMALA KASI ESWARA RAO', 'SOMALA TEREJAMMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(230, 'PYDADA KOTESWARA RAO', 'Father', 'PYDADA KOTESWARA RAO', 'PYDADA PRAVALLIKA TULASI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:25', NULL, 0),
+(231, 'MALLA GANESH', 'Father', 'MALLA GANESH', 'MALLA SATYA DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(232, 'PANDURU GANESH', 'Father', 'PANDURU GANESH', 'PANDURU SAROJINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(233, 'BANDI NANAJI', 'Father', 'BANDI NANAJI', 'BANDI VASANTHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(234, 'TANTAPUREDDI SRINU', 'Father', 'TANTAPUREDDI SRINU', 'TANTAPUREDDI ASWINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(235, 'KADIMI NAGESWARARAO', 'Father', 'KADIMI NAGESWARARAO', 'KADIMI RAMALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(236, 'POLLAROUTHU LAXMI', 'Father', 'POLLAROUTHU LAXMI', 'POLLAROUTHU GANESH', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(237, 'BANDI GANESH', 'Father', 'BANDI GANESH', 'BANDI SRAVANALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(238, 'SUNDARAPU SRINU', 'Father', 'SUNDARAPU SRINU', 'SUNDARAPU MANGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(239, 'ADIDAM APPALANAIDU', 'Father', 'ADIDAM APPALANAIDU', 'ADIDAM NAGA SHESHU', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(240, 'ADAPAKA NANAJI', 'Father', 'ADAPAKA NANAJI', 'ADAPAKA MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:53', NULL, 0),
+(241, 'SURISETTI RAMANA ALIAS SRINU', 'Father', 'SURISETTI RAMANA ALIAS SRINU', 'SURISETTI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(242, 'KASIMKOTA NAGESWAR RAO', 'Father', 'KASIMKOTA NAGESWAR RAO', 'KASIMKOTA DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(243, 'MADAKA SRINU', 'Father', 'MADAKA SRINU', 'MADAKA PRABHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(244, 'ATIKINASETTY SIVA', 'Father', 'ATIKINASETTY SIVA', 'ATIKINASETTY SASI KUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(245, 'SHAIK AMEER SHAJID', 'Father', 'SHAIK AMEER SHAJID', 'SHAIK SULTANA RAJIYA BEGAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(246, 'APPIKONDA LACHABABU', 'Father', 'APPIKONDA LACHABABU', 'APPIKONDA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(247, 'GOUTHU BHULOKA RAO', 'Father', 'GOUTHU BHULOKA RAO', 'GOUTHU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(248, 'PATALA GANESH', 'Father', 'PATALA GANESH', 'PATALA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(249, 'GANTLA APPARAO', 'Father', 'GANTLA APPARAO', 'GANTLA MALATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(250, 'BODDAPU LOVA APPALA RAJU', 'Father', 'BODDAPU LOVA APPALA RAJU', 'BODDAPU SOWJANYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:54', NULL, 0),
+(251, 'DADI VEERABHADRARAO', 'Father', 'DADI VEERABHADRARAO', 'DADI NAGA SATYAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(252, 'VEMAVARAPU MOHAN', 'Father', 'VEMAVARAPU MOHAN', 'VEMAVARAPU LAKSHMESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(253, 'PANDURI SRINUVASA RAO', 'Father', 'PANDURI SRINUVASA RAO', 'PANDURI RAMANAMMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(254, 'KONA CHIRANJEEVI', 'Father', 'KONA CHIRANJEEVI', 'KONA BHULAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(255, 'MARISA GOVINDA', 'Father', 'MARISA GOVINDA', 'MARISA NOOKARATHNAM', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(256, 'ADARI VEERU NAIDU', 'Father', 'ADARI VEERU NAIDU', 'PENTAKOTA SAI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(257, 'SANAPATHI NANAJI', 'Father', 'SANAPATHI NANAJI', 'SANAPATHI USHA SRI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(258, 'BODDAPU PREM KUMAR', 'Father', 'BODDAPU PREM KUMAR', 'BODDAPU MOUNIKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(259, 'BODDAPU SRINU', 'Father', 'BODDAPU SRINU', 'BODDAPU CHINNI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:55', NULL, 0),
+(260, 'GORLI SRINU', 'Father', 'GORLI SRINU', 'GORLI NAGA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(261, 'SANAPATHI NARASINGA RAO', 'Father', 'SANAPATHI NARASINGA RAO', 'SANAPATHI NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(262, 'BODDAPU LOVA APPALA RAJU', 'Father', 'BODDAPU LOVA APPALA RAJU', 'BODDAPU SOWJANYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(263, 'KARANAM ARUN KUMAR', 'Father', 'KARANAM ARUN KUMAR', 'KARANAM DIVYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(264, 'RAPETI MANIKANTA', 'Father', 'RAPETI MANIKANTA', 'RAPETI AMBIKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(265, 'CHALAPAKA SRINIVAS', 'Father', 'CHALAPAKA SRINIVAS', 'CH ALAPAKA MANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(266, 'NANEPALLI RAMESH', 'Father', 'NANEPALLI RAMESH', 'NANEPALLI ASWANI LAKSHMI DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0);
+INSERT INTO `parent` (`id`, `name`, `relation`, `father_name`, `mother_name`, `occupation`, `income`, `education`, `email`, `mobileno`, `address`, `city`, `state`, `branch_id`, `photo`, `facebook_url`, `linkedin_url`, `twitter_url`, `created_at`, `updated_at`, `active`) VALUES
+(267, 'KOTNI NANAJI', 'Father', 'KOTNI NANAJI', 'KOTNI NEELIMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(268, 'DULI CHIRANJEEVI', 'Father', 'DULI CHIRANJEEVI', 'DULI HEMA LATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(269, 'THANAKALA SURESH', 'Father', 'THANAKALA SURESH', 'THANAKALA NAGAMANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:56', NULL, 0),
+(270, 'GALLA KRISHNA', 'Father', 'GALLA KRISHNA', 'GALLA VARALAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:57', NULL, 0),
+(271, 'KATTUBOINA JAGAN MOHANRAO', 'Father', 'KATTUBOINA JAGAN MOHANRAO', 'CHNTA SOWJANYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:57', NULL, 0),
+(272, 'ADARI KIRAN KUMAR', 'Father', 'ADARI KIRAN KUMAR', 'ADARI RENUKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:09:57', NULL, 0),
+(273, 'GEDALA GANESH', 'Father', 'GEDALA GANESH', 'GEDALA CHINNAMMALU', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:38', NULL, 0),
+(274, 'ADARI GODHARI NAIDU', 'Father', 'ADARI GODHARI NAIDU', 'ADARI VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:38', NULL, 0),
+(275, 'PANDURI SURIBABU', 'Father', 'PANDURI SURIBABU', 'PANDURI DHANALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:38', NULL, 0),
+(276, 'BUDHA CHANDRA SEKHAR', 'Father', 'BUDHA CHANDRA SEKHAR', 'BUDHA SAI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:38', NULL, 0),
+(277, 'A RAJENDAR', 'Father', 'A RAJENDAR', 'A MADHAVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(278, 'SUNKARA SIVA', 'Father', 'SUNKARA SIVA', 'SUNKARA SUJATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(279, 'PANDURU JAGANNADHA RAO', 'Father', 'PANDURU JAGANNADHA RAO', 'PANDURU PUSHPA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(280, 'BODDAPU SREENU', 'Father', 'BODDAPU SREENU', 'BODDAPU SATYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(281, 'BATTINA ESWARARAO', 'Father', 'BATTINA ESWARARAO', 'BATTINA VENKATA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(282, 'YELLAPU GANESH', 'Father', 'YELLAPU GANESH', 'YELLAPU PARVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(283, 'PEDAPUDI SATYA JOGA CHARI', 'Father', 'PEDAPUDI SATYA JOGA CHARI', 'PEDAPUDI LAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(284, 'SURISETTI APPARAO', 'Father', 'SURISETTI APPARAO', 'SURISETTI MOUNIKA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(285, 'PEELA NAGESWARA RAO', 'Father', 'PEELA NAGESWARA RAO', 'PEELA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(286, 'ADARI MOHAN', 'Father', 'ADARI MOHAN', 'ADARI LAVANYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:39', NULL, 0),
+(287, 'DWARAPUDI NAGA SRINIVASA RAO', 'Father', 'DWARAPUDI NAGA SRINIVASA RAO', 'DWARAPUDI KALAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(288, 'KODUGUDDU NAGESWARA RAO', 'Father', 'KODUGUDDU NAGESWARA RAO', 'KODUGUDDU RAMALAXMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(289, 'PEDAPUDI PRASAD', 'Father', 'PEDAPUDI PRASAD', 'PEDAPUDI MANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(290, 'BANGARI NAGESWARA RAO', 'Father', 'BANGARI NAGESWARA RAO', 'BANGARI KANAKADEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(291, 'DANTLA BHASKARA RAO', 'Father', 'DANTLA BHASKARA RAO', 'DANTLA PAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(292, 'SADI APPALA RAMASESHU', 'Father', 'SADI APPALA RAMASESHU', 'SADI BHAGYA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(293, 'MOTUKURI NAGABHUSHANAM', 'Father', 'MOTUKURI NAGABHUSHANAM', 'MOTUKURI TEJA RANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(294, 'ADARI SRINU', 'Father', 'ADARI SRINU', 'ADARI ARUNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(295, 'MONDETI SRINIVAS SIVA KIRAN KUMAR', 'Father', 'MONDETI SRINIVAS SIVA KIRAN KUMAR', 'MONDETI VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:10:40', NULL, 0),
+(296, 'MALLA GANESH', 'Father', 'MALLA GANESH', 'MALLA SATYA DURGA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(297, 'KADIMI NAGESWARA RAO', 'Father', 'KADIMI NAGESWARA RAO', 'KADIMI RAMA LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(298, 'ADARI JAGADESH', 'Father', 'ADARI JAGADESH', 'ADARI JYOSHNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(299, 'POTHALA SIVA', 'Father', 'POTHALA SIVA', 'POTHALA SRAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(300, 'ADARI VENKATESH', 'Father', 'ADARI VENKATESH', 'ADARI DEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(301, 'YELLAPU SURESH', 'Father', 'YELLAPU SURESH', 'YELLAPU NAGESWARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(302, 'GANISETTI SRINIVASARAO', 'Father', 'GANISETTI SRINIVASARAO', 'GANISETTI BUJJI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(303, 'ADARI RAMESH', 'Father', 'ADARI RAMESH', 'ADARI LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(304, 'CHODAVARAPU POLARAO', 'Father', 'CHODAVARAPU POLARAO', 'CHODAVARAPU SATYAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:21', NULL, 0),
+(305, 'MANDALA YESU BABU', 'Father', 'MANDALA YESU BABU', 'MANDALA DURGA BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:22', NULL, 0),
+(306, 'PONNAGANTI RAMAKRISHNA', 'Father', 'PONNAGANTI RAMAKRISHNA', 'PONNAGANTI MANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:22', NULL, 0),
+(307, 'YELLAPU APPALARAJU', 'Father', 'YELLAPU APPALARAJU', 'KARRI YAMINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:22', NULL, 0),
+(308, 'KARRI RAMA KRISHNA', 'Father', 'KARRI RAMA KRISHNA', 'KARRI KANAKAVALLI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:11:22', NULL, 0),
+(309, 'NANAJI', 'Father', 'NANAJI', 'VASANTHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(310, 'GANESH', 'Father', 'GANESH', 'LAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(311, 'GANESH', 'Father', 'GANESH', 'SRAVANALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(312, 'PRASAD', 'Father', 'PRASAD', 'VARALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(313, 'EASWARARAOVENKATALAKSHIMI', 'Father', 'EASWARARAOVENKATALAKSHIMI', '', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(314, 'SHIVA', 'Father', 'SHIVA', 'SASHIKUMARI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(315, 'LACHABABU', 'Father', 'LACHABABU', 'BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(316, 'VENKATAKRISHNA', 'Father', 'VENKATAKRISHNA', 'GAYATHRI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(317, 'APPARAO', 'Father', 'APPARAO', 'MALATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:07', NULL, 0),
+(318, 'SRINU', 'Father', 'SRINU', 'MALLI NAGA JYOTHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(319, 'BALARAJU', 'Father', 'BALARAJU', 'MANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(320, 'VEEUNAIDU', 'Father', 'VEEUNAIDU', 'BHAVANI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(321, 'MADHU', 'Father', 'MADHU', 'DHANALAKSHMI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(322, 'SATYANARAYANA', 'Father', 'SATYANARAYANA', 'SWAPNA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(323, 'DURGAPRASAD', 'Father', 'DURGAPRASAD', 'PRABHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(324, 'LOVARAJU', 'Father', 'LOVARAJU', 'PADMA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(325, 'VASU', 'Father', 'VASU', 'SUJATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(326, 'ARUNKUMAR', 'Father', 'ARUNKUMAR', 'DIVYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(327, 'SURIBABU', 'Father', 'SURIBABU', 'SHYAMALA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:08', NULL, 0),
+(328, 'RAJESHKUMAR', 'Father', 'RAJESHKUMAR', 'HARITHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(329, 'VITALPRASAD', 'Father', 'VITALPRASAD', 'SATYAVATHI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(330, 'APPALARAJU', 'Father', 'APPALARAJU', 'AISHWARYA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(331, 'VENKATARAO', 'Father', 'VENKATARAO', 'TULASI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(332, 'NOOKESWARA RAO', 'Father', 'NOOKESWARA RAO', 'MOHINI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(333, 'ARUDRA NAIDU', 'Father', 'ARUDRA NAIDU', 'SRIDEVI', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(334, 'NAGESWARARAORAMYA', 'Father', 'NAGESWARARAORAMYA', '', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(335, 'CHIRANJEEVI', 'Father', 'CHIRANJEEVI', 'HEMALATHA', '', NULL, NULL, '', '', '', NULL, NULL, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 20:12:09', NULL, 0),
+(354, 'GANISETTI RISHITA`', 'FATHER', 'G APPALA NAIDU', 'G PADMA', 'ARMY', '12000', '12TH', 'RISHITA@GMAIL.COM', '9792215969', 'KATTUPALEM', 'YLM', 'AP', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-10 04:14:12', NULL, 0),
+(355, 'KATTUMURI.KUMAR', 'FATHER', 'KATTUMURI. KUMAR', 'KATTUMURIVENKATA LAKSHMI', 'MECHANIC', '15000', 'I.T.I', 'KUMARKATTUMURI@GMAIL.COM', '8978876044', 'DIMILI ROAD,YELLAMANCHILI', 'YELLAMANCHILI', 'AP', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-10 12:36:10', NULL, 0),
+(356, 'Muppini', 'Father', 'M. Srinu', 'M. Lakmi', 'Private company', '12000', '5th', 'srinu@gmail.com', '7036508729', 'Pedapalli', 'Pedapalli', 'Ap', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-11 07:58:55', NULL, 0),
+(357, 'muppini srinu', 'father', 'muppini srinu', 'muppini laxmi', 'private employee', '15000', '5', 'renuka@gmail.com', '7036508729', 'pedapalli', 'pedapalli', 'ap', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-11 08:08:50', NULL, 0),
+(358, 'BODDAPU SIVADORA', 'FATHER', 'BODDAPU SIVADORA', 'BODDAPU DEEPTHI', 'PVT EMPLOYEE', '10000', 'DEGREE', 'KUSHALVARDHAN@gmail.com', '9603237450', 'PEDAPALLI', 'PEDAPALLI', 'AP', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-11 10:59:50', NULL, 0),
+(359, 'SURESH', 'FATHER', 'SURESH', 'BHAVANI', 'LABOUR', '12000', '10', 'SURESH@gmail.com', '9948866702', 'YELLAMANCHILLI', 'YELLAMANCHILLI', 'AP', 1, 'defualt.png', NULL, NULL, NULL, '2025-06-11 11:50:30', NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL,
+  `fee_id` int(11) NOT NULL,
+  `amount` decimal(18,2) NOT NULL,
+  `payment_date` date NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `transaction_id` varchar(100) DEFAULT NULL,
+  `receipt_no` varchar(50) NOT NULL,
+  `remarks` text DEFAULT NULL,
+  `status` enum('pending','completed','failed','refunded') DEFAULT 'completed',
+  `collected_by` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -3220,146 +5600,58 @@ CREATE TABLE `permission` (
 --
 
 INSERT INTO `permission` (`id`, `module_id`, `name`, `prefix`, `show_view`, `show_add`, `show_edit`, `show_delete`, `created_at`) VALUES
-(1, 2, 'Student', 'student', 1, 1, 1, 1, '2020-01-22 11:45:47'),
-(2, 2, 'Multiple Import', 'multiple_import', 0, 1, 0, 0, '2020-01-22 11:45:47'),
-(3, 2, 'Student Category', 'student_category', 1, 1, 1, 1, '2020-01-22 11:45:47'),
-(4, 2, 'Student Id Card', 'student_id_card', 1, 0, 0, 0, '2020-01-22 11:45:47'),
-(5, 2, 'Disable Authentication', 'student_disable_authentication', 1, 1, 0, 0, '2020-01-22 11:45:47'),
-(6, 4, 'Employee', 'employee', 1, 1, 1, 1, '2020-01-22 11:55:19'),
-(7, 3, 'Parent', 'parent', 1, 1, 1, 1, '2020-01-22 13:24:05'),
-(8, 3, 'Disable Authentication', 'parent_disable_authentication', 1, 1, 0, 0, '2020-01-22 14:22:21'),
-(9, 4, 'Department', 'department', 1, 1, 1, 1, '2020-01-22 17:41:39'),
-(10, 4, 'Designation', 'designation', 1, 1, 1, 1, '2020-01-22 17:41:39'),
-(11, 4, 'Disable Authentication', 'employee_disable_authentication', 1, 1, 0, 0, '2020-01-22 17:41:39'),
-(12, 5, 'Salary Template', 'salary_template', 1, 1, 1, 1, '2020-01-23 05:13:57'),
-(13, 5, 'Salary Assign', 'salary_assign', 1, 1, 0, 0, '2020-01-23 05:14:05'),
-(14, 5, 'Salary Payment', 'salary_payment', 1, 1, 0, 0, '2020-01-24 06:45:40'),
-(15, 5, 'Salary Summary Report', 'salary_summary_report', 1, 0, 0, 0, '2020-03-14 17:09:17'),
-(16, 5, 'Advance Salary', 'advance_salary', 1, 1, 1, 1, '2020-01-28 18:23:39'),
-(17, 5, 'Advance Salary Manage', 'advance_salary_manage', 1, 1, 1, 1, '2020-01-25 04:57:12'),
-(18, 5, 'Advance Salary Request', 'advance_salary_request', 1, 1, 0, 1, '2020-01-28 17:49:58'),
-(19, 5, 'Leave Category', 'leave_category', 1, 1, 1, 1, '2020-01-29 02:46:23'),
-(20, 5, 'Leave Request', 'leave_request', 1, 1, 1, 1, '2020-01-30 12:06:33'),
-(21, 5, 'Leave Manage', 'leave_manage', 1, 1, 1, 1, '2020-01-29 07:27:15'),
-(22, 5, 'Award', 'award', 1, 1, 1, 1, '2020-01-31 18:49:11'),
-(23, 6, 'Classes', 'classes', 1, 1, 1, 1, '2020-02-01 18:10:00'),
-(24, 6, 'Section', 'section', 1, 1, 1, 1, '2020-02-01 21:06:44'),
-(25, 6, 'Assign Class Teacher', 'assign_class_teacher', 1, 1, 1, 1, '2020-02-02 07:09:22'),
-(26, 6, 'Subject', 'subject', 1, 1, 1, 1, '2020-02-03 04:32:39'),
-(27, 6, 'Subject Class Assign ', 'subject_class_assign', 1, 1, 1, 1, '2020-02-03 17:43:19'),
-(28, 6, 'Subject Teacher Assign', 'subject_teacher_assign', 1, 1, 0, 1, '2020-02-03 19:05:11'),
-(29, 6, 'Class Timetable', 'class_timetable', 1, 1, 1, 1, '2020-02-04 05:50:37'),
-(30, 2, 'Student Promotion', 'student_promotion', 1, 1, 0, 0, '2020-02-05 18:20:30'),
-(31, 8, 'Attachments', 'attachments', 1, 1, 1, 1, '2020-02-06 17:59:43'),
-(32, 7, 'Homework', 'homework', 1, 1, 1, 1, '2020-02-07 05:40:08'),
-(33, 8, 'Attachment Type', 'attachment_type', 1, 1, 1, 1, '2020-02-07 07:16:28'),
-(34, 9, 'Exam', 'exam', 1, 1, 1, 1, '2020-02-07 09:59:29'),
-(35, 9, 'Exam Term', 'exam_term', 1, 1, 1, 1, '2020-02-07 12:09:28'),
-(36, 9, 'Exam Hall', 'exam_hall', 1, 1, 1, 1, '2020-02-07 14:31:04'),
-(37, 9, 'Exam Timetable', 'exam_timetable', 1, 1, 0, 1, '2020-02-08 17:04:31'),
-(38, 9, 'Exam Mark', 'exam_mark', 1, 1, 1, 1, '2020-02-10 12:53:41'),
-(39, 9, 'Exam Grade', 'exam_grade', 1, 1, 1, 1, '2020-02-10 17:29:16'),
-(40, 10, 'Hostel', 'hostel', 1, 1, 1, 1, '2020-02-11 04:41:36'),
-(41, 10, 'Hostel Category', 'hostel_category', 1, 1, 1, 1, '2020-02-11 07:52:31'),
-(42, 10, 'Hostel Room', 'hostel_room', 1, 1, 1, 1, '2020-02-11 11:50:09'),
-(43, 10, 'Hostel Allocation', 'hostel_allocation', 1, 0, 0, 1, '2020-02-11 13:06:15'),
-(44, 11, 'Transport Route', 'transport_route', 1, 1, 1, 1, '2020-02-12 05:26:19'),
-(45, 11, 'Transport Vehicle', 'transport_vehicle', 1, 1, 1, 1, '2020-02-12 05:57:30'),
-(46, 11, 'Transport Stoppage', 'transport_stoppage', 1, 1, 1, 1, '2020-02-12 06:49:20'),
-(47, 11, 'Transport Assign', 'transport_assign', 1, 1, 1, 1, '2020-02-12 09:55:21'),
-(48, 11, 'Transport Allocation', 'transport_allocation', 1, 0, 0, 1, '2020-02-12 19:33:05'),
-(49, 12, 'Student Attendance', 'student_attendance', 0, 1, 0, 0, '2020-02-13 05:25:53'),
-(50, 12, 'Employee Attendance', 'employee_attendance', 0, 1, 0, 0, '2020-02-13 10:04:16'),
-(51, 12, 'Exam Attendance', 'exam_attendance', 0, 1, 0, 0, '2020-02-13 11:08:14'),
-(52, 12, 'Student Attendance Report', 'student_attendance_report', 1, 0, 0, 0, '2020-02-13 19:20:56'),
-(53, 12, 'Employee Attendance Report', 'employee_attendance_report', 1, 0, 0, 0, '2020-02-14 06:08:53'),
-(54, 12, 'Exam Attendance Report', 'exam_attendance_report', 1, 0, 0, 0, '2020-02-14 06:21:40'),
-(55, 13, 'Book', 'book', 1, 1, 1, 1, '2020-02-14 06:40:42'),
-(56, 13, 'Book Category', 'book_category', 1, 1, 1, 1, '2020-02-15 04:11:41'),
-(57, 13, 'Book Manage', 'book_manage', 1, 1, 0, 1, '2020-02-15 11:13:24'),
-(58, 13, 'Book Request', 'book_request', 1, 1, 0, 1, '2020-02-17 06:45:19'),
-(59, 14, 'Event', 'event', 1, 1, 1, 1, '2020-02-17 18:02:15'),
-(60, 14, 'Event Type', 'event_type', 1, 1, 1, 1, '2020-02-18 04:40:33'),
-(61, 15, 'Sendsmsmail', 'sendsmsmail', 1, 1, 0, 1, '2020-02-22 07:19:57'),
-(62, 15, 'Sendsmsmail Template', 'sendsmsmail_template', 1, 1, 1, 1, '2020-02-22 10:14:57'),
-(63, 17, 'Account', 'account', 1, 1, 1, 1, '2020-02-25 09:34:43'),
-(64, 17, 'Deposit', 'deposit', 1, 1, 1, 1, '2020-02-25 12:56:11'),
-(65, 17, 'Expense', 'expense', 1, 1, 1, 1, '2020-02-26 06:35:57'),
-(66, 17, 'All Transactions', 'all_transactions', 1, 0, 0, 0, '2020-02-26 13:35:05'),
-(67, 17, 'Voucher Head', 'voucher_head', 1, 1, 1, 1, '2020-02-25 10:50:56'),
-(68, 17, 'Accounting Reports', 'accounting_reports', 1, 1, 1, 1, '2020-02-25 13:36:24'),
-(69, 16, 'Fees Type', 'fees_type', 1, 1, 1, 1, '2020-02-27 10:11:03'),
-(70, 16, 'Fees Group', 'fees_group', 1, 1, 1, 1, '2020-02-26 05:49:09'),
-(71, 16, 'Fees Fine Setup', 'fees_fine_setup', 1, 1, 1, 1, '2020-03-05 02:59:27'),
-(72, 16, 'Fees Allocation', 'fees_allocation', 1, 1, 1, 1, '2020-03-01 13:47:43'),
-(73, 16, 'Collect Fees', 'collect_fees', 0, 1, 0, 0, '2020-03-15 04:23:58'),
-(74, 16, 'Fees Reminder', 'fees_reminder', 1, 1, 1, 1, '2020-03-15 04:29:58'),
-(75, 16, 'Due Invoice', 'due_invoice', 1, 0, 0, 0, '2020-03-15 04:33:36'),
-(76, 16, 'Invoice', 'invoice', 1, 0, 0, 1, '2020-03-15 04:38:06'),
-(77, 9, 'Mark Distribution', 'mark_distribution', 1, 1, 1, 1, '2020-03-19 13:02:54'),
-(78, 9, 'Report Card', 'report_card', 1, 0, 0, 0, '2020-03-20 12:20:28'),
-(79, 9, 'Tabulation Sheet', 'tabulation_sheet', 1, 0, 0, 0, '2020-03-21 07:12:38'),
-(80, 15, 'Sendsmsmail Reports', 'sendsmsmail_reports', 1, 0, 0, 0, '2020-03-21 17:02:02'),
-(81, 18, 'Global Settings', 'global_settings', 1, 0, 1, 0, '2020-03-22 05:05:41'),
-(82, 18, 'Payment Settings', 'payment_settings', 1, 1, 0, 0, '2020-03-22 05:08:57'),
-(83, 18, 'Sms Settings', 'sms_settings', 1, 1, 1, 1, '2020-03-22 05:08:57'),
-(84, 18, 'Email Settings', 'email_settings', 1, 1, 1, 1, '2020-03-22 05:10:39'),
-(85, 18, 'Translations', 'translations', 1, 1, 1, 1, '2020-03-22 05:18:33'),
-(86, 18, 'Backup', 'backup', 1, 1, 1, 1, '2020-03-22 07:09:33'),
-(87, 18, 'Backup Restore', 'backup_restore', 0, 1, 0, 0, '2020-03-22 07:09:34'),
-(88, 7, 'Homework Evaluate', 'homework_evaluate', 1, 1, 0, 0, '2020-03-28 04:20:29'),
-(89, 7, 'Evaluation Report', 'evaluation_report', 1, 0, 0, 0, '2020-03-28 09:56:04'),
-(90, 18, 'School Settings', 'school_settings', 1, 0, 1, 0, '2020-03-30 17:36:37'),
-(91, 1, 'Monthly Income Vs Expense Pie Chart', 'monthly_income_vs_expense_chart', 1, 0, 0, 0, '2020-03-31 06:15:31'),
-(92, 1, 'Annual Student Fees Summary Chart', 'annual_student_fees_summary_chart', 1, 0, 0, 0, '2020-03-31 06:15:31'),
-(93, 1, 'Employee Count Widget', 'employee_count_widget', 1, 0, 0, 0, '2020-03-31 06:31:56'),
-(94, 1, 'Student Count Widget', 'student_count_widget', 1, 0, 0, 0, '2020-03-31 06:31:56'),
-(95, 1, 'Parent Count Widget', 'parent_count_widget', 1, 0, 0, 0, '2020-03-31 06:31:56'),
-(96, 1, 'Teacher Count Widget', 'teacher_count_widget', 1, 0, 0, 0, '2020-03-31 06:31:56'),
-(97, 1, 'Student Quantity Pie Chart', 'student_quantity_pie_chart', 1, 0, 0, 0, '2020-03-31 07:14:07'),
-(98, 1, 'Weekend Attendance Inspection Chart', 'weekend_attendance_inspection_chart', 1, 0, 0, 0, '2020-03-31 07:14:07'),
-(99, 1, 'Admission Count Widget', 'admission_count_widget', 1, 0, 0, 0, '2020-03-31 07:22:05'),
-(100, 1, 'Voucher Count Widget', 'voucher_count_widget', 1, 0, 0, 0, '2020-03-31 07:22:05'),
-(101, 1, 'Transport Count Widget', 'transport_count_widget', 1, 0, 0, 0, '2020-03-31 07:22:05'),
-(102, 1, 'Hostel Count Widget', 'hostel_count_widget', 1, 0, 0, 0, '2020-03-31 07:22:05'),
-(103, 18, 'Accounting Links', 'accounting_links', 1, 0, 1, 0, '2020-03-31 09:46:30'),
-(104, 16, 'Fees Reports', 'fees_reports', 1, 0, 0, 0, '2020-04-01 15:52:19'),
-(105, 18, 'Cron Job', 'cron_job', 1, 0, 1, 0, '2020-03-31 09:46:30'),
-(106, 18, 'Custom Field', 'custom_field', 1, 1, 1, 1, '2020-03-31 09:46:30'),
-(107, 5, 'Leave Reports', 'leave_reports', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(108, 18, 'Live Class Config', 'live_class_config', 1, 0, 1, 0, '2020-03-31 09:46:30'),
-(109, 19, 'Live Class', 'live_class', 1, 1, 1, 1, '2020-03-31 09:46:30'),
-(110, 20, 'Certificate Templete', 'certificate_templete', 1, 1, 1, 1, '2020-03-31 09:46:30'),
-(111, 20, 'Generate Student Certificate', 'generate_student_certificate', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(112, 20, 'Generate Employee Certificate', 'generate_employee_certificate', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(113, 21, 'ID Card Templete', 'id_card_templete', 1, 1, 1, 1, '2020-03-31 09:46:30'),
-(114, 21, 'Generate Student ID Card', 'generate_student_idcard', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(115, 21, 'Generate Employee ID Card', 'generate_employee_idcard', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(116, 21, 'Admit Card Templete', 'admit_card_templete', 1, 1, 1, 1, '2020-03-31 09:46:30'),
-(117, 21, 'Generate Admit card', 'generate_admit_card', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(118, 22, 'Frontend Setting', 'frontend_setting', 1, 1, 0, 0, '2019-09-11 03:24:07'),
-(119, 22, 'Frontend Menu', 'frontend_menu', 1, 1, 1, 1, '2019-09-11 04:03:39'),
-(120, 22, 'Frontend Section', 'frontend_section', 1, 1, 0, 0, '2019-09-11 04:26:11'),
-(121, 22, 'Manage Page', 'manage_page', 1, 1, 1, 1, '2019-09-11 05:54:08'),
-(122, 22, 'Frontend Slider', 'frontend_slider', 1, 1, 1, 1, '2019-09-11 06:12:31'),
-(123, 22, 'Frontend Features', 'frontend_features', 1, 1, 1, 1, '2019-09-11 06:47:51'),
-(124, 22, 'Frontend Testimonial', 'frontend_testimonial', 1, 1, 1, 1, '2019-09-11 06:54:30'),
-(125, 22, 'Frontend Services', 'frontend_services', 1, 1, 1, 1, '2019-09-11 07:01:44'),
-(126, 22, 'Frontend Faq', 'frontend_faq', 1, 1, 1, 1, '2019-09-11 07:06:16'),
-(127, 2, 'Online Admission', 'online_admission', 1, 1, 0, 1, '2019-09-11 07:06:16'),
-(128, 18, 'System Update', 'system_update', 0, 1, 0, 0, '2019-09-11 07:06:16'),
-(129, 19, 'Live Class Reports', 'live_class_reports', 1, 0, 0, 0, '2020-03-31 09:46:30'),
-(130, 16, 'Fees Revert', 'fees_revert', 0, 0, 0, 1, '2020-03-31 09:46:30'),
-(131, 22, 'Frontend Gallery', 'frontend_gallery', 1, 1, 1, 1, '2019-09-11 07:06:16'),
-(132, 22, 'Frontend Gallery Category', 'frontend_gallery_category', 1, 1, 1, 1, '2019-09-11 07:06:16'),
-(133, 6, 'Teacher Timetable', 'teacher_timetable', 1, 0, 0, 0, '2021-03-31 09:46:30'),
-(134, 18, 'Whatsapp Config', 'whatsapp_config', 1, 1, 1, 1, '2021-03-31 09:46:30'),
-(135, 18, 'System Student Field', 'system_student_field', 1, 0, 1, 0, '2021-03-31 09:46:30'),
-(136, 23, 'Online Exam', 'online_exam', 1, 1, 1, 1, '2021-03-31 09:46:30'),
-(137, 23, 'Question Bank', 'question_bank', 1, 1, 1, 1, '2021-03-31 09:46:30'),
-(138, 23, 'Add Questions', 'add_questions', 0, 1, 0, 0, '2021-03-31 09:46:30'),
-(139, 23, 'Question Group', 'question_group', 1, 1, 1, 1, '2021-03-31 09:46:30'),
-(140, 23, 'Exam Result', 'exam_result', 1, 0, 0, 0, '2021-03-31 09:46:30');
+(1, 1, 'Monthly Income Vs Expense Pie Chart', 'monthly_income_vs_expense_pie_chart', 1, 1, 1, 1, '2025-06-15 17:41:42'),
+(2, 1, 'Annual Student Fees Summary Chart', 'annual_student_fees_summary_chart', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(3, 1, 'Employee Count Widget', 'employee_count_widget', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(4, 1, 'Student Count Widget', 'student_count_widget', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(5, 1, 'Parent Count Widget', 'parent_count_widget', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(6, 1, 'Teacher Count Widget', 'teacher_count_widget', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(7, 1, 'Student Quantity Pie Chart', 'student_quantity_pie_chart', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(8, 1, 'Student', 'student', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(9, 1, 'Multiple Import', 'multiple_import', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(10, 1, 'Student Category', 'student_category', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(11, 1, 'Student Id Card', 'student_id_card', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(12, 1, 'Disable Authentication', 'disable_authentication', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(13, 1, 'Class', 'class', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(14, 1, 'Section', 'section', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(15, 1, 'Subject', 'subject', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(16, 1, 'Exam', 'exam', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(17, 1, 'Homework', 'homework', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(18, 1, 'Class Schedule', 'class_schedule', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(19, 1, 'Teacher Schedule', 'teacher_schedule', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(20, 1, 'Employee', 'employee', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(21, 1, 'Department', 'department', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(22, 1, 'Designation', 'designation', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(23, 1, 'Payroll', 'payroll', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(24, 1, 'Award', 'award', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(25, 1, 'Parent', 'parent', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(26, 1, 'Fees Type', 'fees_type', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(27, 1, 'Fees Group', 'fees_group', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(28, 1, 'Fee Collection', 'fee_collection', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(29, 1, 'Fine Setup', 'fine_setup', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(30, 1, 'Fees Report', 'fees_report', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(31, 1, 'Book', 'book', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(32, 1, 'Book Category', 'book_category', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(33, 1, 'Book Issue/Return', 'book_issue/return', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(34, 1, 'Route', 'route', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(35, 1, 'Vehicle', 'vehicle', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(36, 1, 'Assign Vehicle', 'assign_vehicle', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(37, 1, 'Student Transport', 'student_transport', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(38, 1, 'Hostel', 'hostel', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(39, 1, 'Room Type', 'room_type', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(40, 1, 'Hostel Room', 'hostel_room', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(41, 1, 'Student Attendance', 'student_attendance', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(42, 1, 'Employee Attendance', 'employee_attendance', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(43, 1, 'Exam Term', 'exam_term', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(44, 1, 'Exam Hall', 'exam_hall', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(45, 1, 'Exam Setup', 'exam_setup', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(46, 1, 'Marks Register', 'marks_register', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(47, 1, 'Global Settings', 'global_settings', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(48, 1, 'School Settings', 'school_settings', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(49, 1, 'Session', 'session', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(50, 1, 'Role', 'role', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(51, 1, 'Permission', 'permission', 1, 1, 1, 1, '2025-06-15 17:41:43'),
+(52, 1, 'Backup', 'backup', 1, 1, 1, 1, '2025-06-15 17:41:43');
 
 -- --------------------------------------------------------
 
@@ -3375,35 +5667,6 @@ CREATE TABLE `permission_modules` (
   `sorted` tinyint(10) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `permission_modules`
---
-
-INSERT INTO `permission_modules` (`id`, `name`, `prefix`, `system`, `sorted`, `created_at`) VALUES
-(1, 'Dashboard', 'dashboard', 1, 1, '2019-05-26 22:23:00'),
-(2, 'Student', 'student', 1, 3, '2019-05-26 22:23:00'),
-(3, 'Parents', 'parents', 1, 4, '2019-05-26 22:23:00'),
-(4, 'Employee', 'employee', 1, 5, '2019-05-26 22:23:00'),
-(5, 'Human Resource', 'human_resource', 1, 8, '2019-05-26 22:23:00'),
-(6, 'Academic', 'academic', 1, 9, '2019-05-26 22:23:00'),
-(7, 'Homework', 'homework', 1, 12, '2019-05-26 22:23:00'),
-(8, 'Attachments Book', 'attachments_book', 1, 11, '2019-05-26 22:23:00'),
-(9, 'Exam Master', 'exam_master', 1, 13, '2019-05-26 22:23:00'),
-(10, 'Hostel', 'hostel', 1, 14, '2019-05-26 22:23:00'),
-(11, 'Transport', 'transport', 1, 15, '2019-05-26 22:23:00'),
-(12, 'Attendance', 'attendance', 1, 16, '2019-05-26 22:23:00'),
-(13, 'Library', 'library', 1, 17, '2019-05-26 22:23:00'),
-(14, 'Events', 'events', 1, 18, '2019-05-26 22:23:00'),
-(15, 'Bulk Sms And Email', 'bulk_sms_and_email', 1, 19, '2019-05-26 22:23:00'),
-(16, 'Student Accounting', 'student_accounting', 1, 20, '2019-05-26 22:23:00'),
-(17, 'Office Accounting', 'office_accounting', 1, 21, '2019-05-26 22:23:00'),
-(18, 'Settings', 'settings', 1, 23, '2019-05-26 22:23:00'),
-(19, 'Live Class', 'live_class', 1, 10, '2019-05-26 22:23:00'),
-(20, 'Certificate', 'certificate', 1, 7, '2019-05-26 22:23:00'),
-(21, 'Card Management', 'card_management', 1, 6, '2019-05-26 22:23:00'),
-(22, 'Website', 'website', 1, 2, '2019-05-26 22:23:00'),
-(23, 'Online Exam', 'online_exam', 1, 22, '2019-05-26 22:23:00');
 
 -- --------------------------------------------------------
 
@@ -3423,6 +5686,369 @@ CREATE TABLE `promotion_history` (
   `prev_due` float NOT NULL DEFAULT 0,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `promotion_history`
+--
+
+INSERT INTO `promotion_history` (`id`, `student_id`, `pre_class`, `pre_section`, `pre_session`, `pro_class`, `pro_section`, `pro_session`, `prev_due`, `date`) VALUES
+(1, 1, 1, 1, 9, 2, 1, 9, 0, '2025-06-05 09:16:25'),
+(2, 2, 1, 1, 9, 2, 1, 9, 0, '2025-06-05 09:16:25'),
+(3, 1, 2, 1, 9, 3, 1, 9, 15000, '2025-06-05 09:19:24'),
+(4, 2, 2, 1, 9, 3, 1, 9, 0, '2025-06-05 09:19:24'),
+(5, 8, 9, 1, 7, 10, 1, 9, 0, '2025-06-07 03:04:59'),
+(6, 12, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(7, 2, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(8, 15, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(9, 1, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(10, 10, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(11, 9, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(12, 14, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(13, 6, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(14, 7, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(15, 11, 9, 1, 7, 10, 1, 9, 7200, '2025-06-08 22:43:38'),
+(16, 3, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(17, 18, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(18, 17, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(19, 13, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(20, 16, 9, 1, 7, 10, 1, 9, 4000, '2025-06-08 22:43:38'),
+(21, 4, 9, 1, 7, 10, 1, 9, 2500, '2025-06-08 22:43:38'),
+(22, 5, 9, 1, 7, 10, 1, 9, 0, '2025-06-08 22:43:38'),
+(23, 35, 8, 1, 7, 9, 1, 9, 2000, '2025-06-08 23:01:10'),
+(24, 39, 8, 1, 7, 9, 1, 9, 3000, '2025-06-08 23:01:10'),
+(25, 25, 8, 1, 7, 9, 1, 9, 4000, '2025-06-08 23:01:10'),
+(26, 19, 8, 1, 7, 9, 1, 9, 7200, '2025-06-08 23:01:10'),
+(27, 37, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(28, 30, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(29, 33, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(30, 34, 8, 1, 7, 9, 1, 9, 1000, '2025-06-08 23:01:10'),
+(31, 31, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(32, 23, 8, 1, 7, 9, 1, 9, 7200, '2025-06-08 23:01:10'),
+(33, 27, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(34, 21, 8, 1, 7, 9, 1, 9, 7200, '2025-06-08 23:01:10'),
+(35, 24, 8, 1, 7, 9, 1, 9, 2000, '2025-06-08 23:01:10'),
+(36, 26, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(37, 28, 8, 1, 7, 9, 1, 9, 19500, '2025-06-08 23:01:10'),
+(38, 22, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(39, 32, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(40, 36, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(41, 20, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(42, 29, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(43, 38, 8, 1, 7, 9, 1, 9, 0, '2025-06-08 23:01:10'),
+(44, 47, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(45, 48, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(46, 54, 7, 1, 7, 8, 1, 9, 2000, '2025-06-08 23:05:16'),
+(47, 53, 7, 1, 7, 8, 1, 9, 24000, '2025-06-08 23:05:16'),
+(48, 44, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(49, 40, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(50, 46, 7, 1, 7, 8, 1, 9, 7200, '2025-06-08 23:05:16'),
+(51, 52, 7, 1, 7, 8, 1, 9, 1600, '2025-06-08 23:05:16'),
+(52, 51, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(53, 49, 7, 1, 7, 8, 1, 9, 2000, '2025-06-08 23:05:16'),
+(54, 42, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(55, 61, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(56, 64, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(57, 63, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(58, 50, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(59, 56, 7, 1, 7, 8, 1, 9, 1600, '2025-06-08 23:05:16'),
+(60, 57, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(61, 45, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(62, 60, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(63, 59, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(64, 43, 7, 1, 7, 8, 1, 9, 7200, '2025-06-08 23:05:16'),
+(65, 55, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(66, 41, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(67, 62, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(68, 58, 7, 1, 7, 8, 1, 9, 0, '2025-06-08 23:05:16'),
+(69, 97, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(70, 90, 6, 1, 7, 7, 1, 9, 3500, '2025-06-08 23:11:38'),
+(71, 72, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(72, 70, 6, 1, 7, 7, 1, 9, 7100, '2025-06-08 23:11:38'),
+(73, 69, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(74, 101, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(75, 103, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(76, 83, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(77, 65, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(78, 99, 6, 1, 7, 7, 1, 9, 300, '2025-06-08 23:11:38'),
+(79, 82, 6, 1, 7, 7, 1, 9, 3030, '2025-06-08 23:11:38'),
+(80, 66, 6, 1, 7, 7, 1, 9, 250, '2025-06-08 23:11:38'),
+(81, 87, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(82, 100, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(83, 104, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(84, 107, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(85, 78, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(86, 91, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(87, 88, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(88, 105, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(89, 74, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(90, 73, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(91, 68, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(92, 98, 6, 1, 7, 7, 1, 9, 7100, '2025-06-08 23:11:38'),
+(93, 71, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(94, 102, 6, 1, 7, 7, 1, 9, 7300, '2025-06-08 23:11:38'),
+(95, 79, 6, 1, 7, 7, 1, 9, 10500, '2025-06-08 23:11:38'),
+(96, 96, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(97, 80, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(98, 81, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(99, 84, 6, 1, 7, 7, 1, 9, 2500, '2025-06-08 23:11:38'),
+(100, 93, 6, 1, 7, 7, 1, 9, 6500, '2025-06-08 23:11:38'),
+(101, 94, 6, 1, 7, 7, 1, 9, 7500, '2025-06-08 23:11:38'),
+(102, 89, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(103, 95, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(104, 86, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(105, 75, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(106, 92, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(107, 106, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(108, 76, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(109, 77, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(110, 85, 6, 1, 7, 7, 1, 9, 0, '2025-06-08 23:11:38'),
+(111, 67, 6, 1, 7, 7, 1, 9, 10300, '2025-06-08 23:11:38'),
+(112, 123, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(113, 110, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(114, 113, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(115, 128, 5, 1, 7, 6, 1, 9, 1100, '2025-06-08 23:16:34'),
+(116, 119, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(117, 127, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(118, 124, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(119, 122, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(120, 114, 5, 1, 7, 6, 1, 9, 7300, '2025-06-08 23:16:34'),
+(121, 112, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(122, 118, 5, 1, 7, 6, 1, 9, 4500, '2025-06-08 23:16:34'),
+(123, 111, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(124, 117, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(125, 109, 5, 1, 7, 6, 1, 9, 5500, '2025-06-08 23:16:34'),
+(126, 108, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(127, 125, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(128, 116, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(129, 129, 5, 1, 7, 6, 1, 9, 8000, '2025-06-08 23:16:34'),
+(130, 121, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(131, 120, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(132, 115, 5, 1, 7, 6, 1, 9, 2500, '2025-06-08 23:16:34'),
+(133, 126, 5, 1, 7, 6, 1, 9, 0, '2025-06-08 23:16:34'),
+(134, 148, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(135, 152, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(136, 138, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(137, 136, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(138, 147, 4, 1, 7, 5, 1, 9, 3500, '2025-06-09 09:39:03'),
+(139, 156, 4, 1, 7, 5, 1, 9, 1800, '2025-06-09 09:39:03'),
+(140, 130, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(141, 131, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(142, 132, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(143, 149, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(144, 165, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(145, 144, 4, 1, 7, 5, 1, 9, 6750, '2025-06-09 09:39:03'),
+(146, 153, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(147, 151, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(148, 159, 4, 1, 7, 5, 1, 9, 6500, '2025-06-09 09:39:03'),
+(149, 141, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(150, 164, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(151, 142, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(152, 154, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(153, 145, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(154, 167, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(155, 163, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(156, 155, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(157, 157, 4, 1, 7, 5, 1, 9, 925, '2025-06-09 09:39:03'),
+(158, 143, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(159, 150, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(160, 160, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(161, 166, 4, 1, 7, 5, 1, 9, 5500, '2025-06-09 09:39:03'),
+(162, 133, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(163, 158, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(164, 137, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(165, 162, 4, 1, 7, 5, 1, 9, 9600, '2025-06-09 09:39:03'),
+(166, 161, 4, 1, 7, 5, 1, 9, 10500, '2025-06-09 09:39:03'),
+(167, 146, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(168, 135, 4, 1, 7, 5, 1, 9, 4000, '2025-06-09 09:39:03'),
+(169, 134, 4, 1, 7, 5, 1, 9, 500, '2025-06-09 09:39:03'),
+(170, 140, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(171, 139, 4, 1, 7, 5, 1, 9, 0, '2025-06-09 09:39:03'),
+(172, 181, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(173, 191, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(174, 169, 3, 1, 7, 4, 1, 9, 13000, '2025-06-09 09:48:06'),
+(175, 172, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(176, 184, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(177, 193, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(178, 171, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(180, 185, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(181, 195, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(182, 176, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(183, 194, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(184, 186, 3, 1, 7, 4, 1, 9, 2000, '2025-06-09 09:48:06'),
+(185, 174, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(186, 178, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(187, 197, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(188, 198, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(189, 199, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(190, 182, 3, 1, 7, 4, 1, 9, 8500, '2025-06-09 09:48:06'),
+(191, 187, 3, 1, 7, 4, 1, 9, 1000, '2025-06-09 09:48:06'),
+(192, 170, 3, 1, 7, 4, 1, 9, 1000, '2025-06-09 09:48:06'),
+(193, 173, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(194, 192, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(195, 190, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(197, 168, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(198, 180, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(199, 179, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(200, 189, 3, 1, 7, 4, 1, 9, 10500, '2025-06-09 09:48:06'),
+(201, 175, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(202, 188, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(203, 177, 3, 1, 7, 4, 1, 9, 0, '2025-06-09 09:48:06'),
+(204, 220, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(205, 219, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(206, 214, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(207, 213, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(208, 229, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(209, 227, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(210, 225, 2, 1, 7, 3, 1, 9, 3800, '2025-06-09 10:06:46'),
+(211, 230, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(212, 223, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(213, 201, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(214, 212, 2, 1, 7, 3, 1, 9, 6000, '2025-06-09 10:06:46'),
+(215, 205, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(216, 221, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(217, 202, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(218, 208, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(219, 210, 2, 1, 7, 3, 1, 9, 8250, '2025-06-09 10:06:46'),
+(220, 217, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(221, 218, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(222, 204, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(223, 211, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(224, 216, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(225, 228, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(226, 200, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(227, 203, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(228, 222, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(229, 226, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(230, 207, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(231, 224, 2, 1, 7, 3, 1, 9, 400, '2025-06-09 10:06:46'),
+(232, 215, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(233, 209, 2, 1, 7, 3, 1, 9, 5000, '2025-06-09 10:06:46'),
+(234, 206, 2, 1, 7, 3, 1, 9, 0, '2025-06-09 10:06:46'),
+(235, 252, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(236, 269, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(237, 234, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(238, 241, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(239, 238, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(240, 245, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(241, 257, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(242, 261, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(243, 264, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(244, 236, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(245, 248, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(246, 232, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(247, 253, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(248, 256, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(249, 266, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(250, 255, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(251, 231, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(252, 243, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(253, 267, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(254, 254, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(255, 271, 1, 1, 7, 2, 1, 9, 14000, '2025-06-09 10:08:55'),
+(256, 242, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(257, 263, 1, 1, 7, 2, 1, 9, 8500, '2025-06-09 10:08:55'),
+(258, 235, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(259, 247, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(260, 260, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(261, 249, 1, 1, 7, 2, 1, 9, 6000, '2025-06-09 10:08:55'),
+(262, 270, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(263, 268, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(264, 251, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(265, 265, 1, 1, 7, 2, 1, 9, 6000, '2025-06-09 10:08:55'),
+(266, 262, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(267, 258, 1, 1, 7, 2, 1, 9, 8500, '2025-06-09 10:08:55'),
+(268, 250, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(269, 259, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(270, 237, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(271, 233, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(272, 244, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(273, 246, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(274, 239, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(275, 272, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(276, 240, 1, 1, 7, 2, 1, 9, 0, '2025-06-09 10:08:55'),
+(277, 282, 13, 1, 7, 1, 1, 9, 5400, '2025-06-09 10:21:47'),
+(278, 284, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(279, 278, 13, 1, 7, 1, 1, 9, 750, '2025-06-09 10:21:47'),
+(280, 292, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(281, 285, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(282, 289, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(283, 283, 13, 1, 7, 1, 1, 9, 5400, '2025-06-09 10:21:47'),
+(284, 279, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(285, 275, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(286, 293, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(287, 295, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(288, 288, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(289, 273, 13, 1, 7, 1, 1, 9, 5000, '2025-06-09 10:21:47'),
+(290, 287, 13, 1, 7, 1, 1, 9, 5000, '2025-06-09 10:21:47'),
+(291, 291, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(292, 276, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(293, 280, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(294, 281, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(295, 290, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(296, 277, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(297, 286, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(298, 274, 13, 1, 7, 1, 1, 9, 10000, '2025-06-09 10:21:47'),
+(299, 294, 13, 1, 7, 1, 1, 9, 0, '2025-06-09 10:21:47'),
+(300, 307, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(301, 301, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(302, 299, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(303, 306, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(304, 305, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(305, 296, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(306, 308, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(307, 297, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(308, 302, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(309, 304, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(310, 298, 12, 1, 7, 13, 1, 9, 6500, '2025-06-09 10:29:40'),
+(311, 303, 12, 1, 7, 13, 1, 9, 0, '2025-06-09 10:29:40'),
+(312, 300, 12, 1, 7, 13, 1, 9, 3500, '2025-06-09 10:29:40'),
+(313, 312, 11, 1, 7, 12, 1, 9, 6500, '2025-06-09 10:38:11'),
+(314, 310, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(315, 317, 11, 1, 7, 12, 1, 9, 5500, '2025-06-09 10:38:11'),
+(316, 316, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(317, 323, 11, 1, 7, 12, 1, 9, 14300, '2025-06-09 10:38:11'),
+(318, 332, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(319, 320, 11, 1, 7, 12, 1, 9, 7500, '2025-06-09 10:38:11'),
+(320, 321, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(321, 313, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(322, 314, 11, 1, 7, 12, 1, 9, 1375, '2025-06-09 10:38:11'),
+(323, 334, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(324, 325, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(325, 322, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(326, 309, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(327, 328, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(328, 319, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(329, 331, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(330, 333, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(331, 327, 11, 1, 7, 12, 1, 9, 6875, '2025-06-09 10:38:11'),
+(332, 318, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(333, 335, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(334, 324, 11, 1, 7, 12, 1, 9, 3100, '2025-06-09 10:38:11'),
+(335, 330, 11, 1, 7, 12, 1, 9, 1900, '2025-06-09 10:38:11'),
+(336, 329, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(337, 315, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(338, 326, 11, 1, 7, 12, 1, 9, 8000, '2025-06-09 10:38:11'),
+(339, 311, 11, 1, 7, 12, 1, 9, 0, '2025-06-09 10:38:11'),
+(340, 353, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(341, 352, 9, 1, 7, 10, 1, 9, 600, '2025-06-09 10:48:11'),
+(342, 351, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(343, 350, 9, 1, 7, 10, 1, 9, 2000, '2025-06-09 10:48:11'),
+(344, 349, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(345, 348, 9, 1, 7, 10, 1, 9, 6000, '2025-06-09 10:48:11'),
+(346, 347, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(347, 346, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(348, 345, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(349, 344, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(350, 343, 9, 1, 7, 10, 1, 9, 7200, '2025-06-09 10:48:11'),
+(351, 342, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(352, 341, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(353, 340, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(354, 339, 9, 1, 7, 10, 1, 9, 1600, '2025-06-09 10:48:11'),
+(355, 338, 9, 1, 7, 10, 1, 9, 4000, '2025-06-09 10:48:11'),
+(356, 337, 9, 1, 7, 10, 1, 9, 2500, '2025-06-09 10:48:11'),
+(357, 336, 9, 1, 7, 10, 1, 9, 0, '2025-06-09 10:48:11'),
+(358, 196, 3, 1, 7, 4, 1, 9, 1000, '2025-06-11 07:37:20'),
+(359, 111, 4, 1, 7, 5, 1, 9, 3500, '2025-06-11 07:50:36');
 
 -- --------------------------------------------------------
 
@@ -3482,6 +6108,21 @@ CREATE TABLE `question_group` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `refresh_tokens`
+--
+
+CREATE TABLE `refresh_tokens` (
+  `id` int(11) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `userId` int(11) DEFAULT NULL,
+  `expiryDate` datetime DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reset_password`
 --
 
@@ -3505,27 +6146,27 @@ CREATE TABLE `rm_sessions` (
   `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `rm_sessions`
+-- Table structure for table `role`
 --
 
-INSERT INTO `rm_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
-('0s6ppba4h5t8n7qjckc8h3qm90nvugk2', '::1', 1749214978, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393231343937383b6e616d657c733a31313a22706176616e206b756d6172223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b),
-('1jjthirt7s7ve4hcollc58djssjf5de4', '::1', 1749277273, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393237373237333b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('3ta0621ds1321pi6ipovnk9fet70r6pl', '::1', 1749215332, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393231353333323b6e616d657c733a31313a2253757065722041646d696e223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('4hcilln63drbv1e9mj75ou3g9vg826la', '::1', 1749273751, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393237333735313b),
-('5edocc0iir07nbo3ocp29k7t58dad30l', '::1', 1749209110, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393230393131303b6e616d657c733a31313a22706176616e206b756d6172223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b),
-('6dllcsfq84clb7a24176b9iceatco0bh', '::1', 1749288456, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393238383435323b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('e979tdg9vgbusj02mtojkqpov5i93tra', '::1', 1749281991, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393238313939313b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('gpcdrpk7g5pbgt9ev4g0b37vqps4tmtj', '::1', 1749287417, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393238373431373b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('i647uka8hu89atk3d1aq9gvlermfd63d', '::1', 1749288452, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393238383435323b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('j4tstrmgmdh7llofh7t2poqea2u6vkag', '::1', 1749208219, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393230383231353b6e616d657c733a31313a22706176616e206b756d6172223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b),
-('k73vnvjig3d7led7bedscq3bke3diojo', '::1', 1749202196, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393230323139363b6e616d657c733a31313a22706176616e206b756d6172223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b),
-('l7kbvts5hqi6jcijvr0aihcidqbih1la', '::1', 1749278183, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393237383138333b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('m3okhkm6l97fq05f1of9ks16g92h04sj', '::1', 1749214667, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393231343636373b6e616d657c733a31313a22706176616e206b756d6172223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b),
-('mnel0esu3fehbs7p814ulnjos60okkfu', '::1', 1749215337, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393231353333323b6e616d657c733a31313a2253757065722041646d696e223b6c6f676765725f70686f746f7c4e3b6c6f67676564696e5f6272616e63687c4e3b6c6f67676564696e5f69647c733a313a2231223b6c6f67676564696e5f7573657269647c733a313a2231223b6c6f67676564696e5f726f6c655f69647c733a313a2231223b6c6f67676564696e5f747970657c733a353a227374616666223b7365745f6c616e677c733a373a22656e676c697368223b7365745f73657373696f6e5f69647c733a313a2234223b6c6f67676564696e7c623a313b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('ttmc5p5b60icqm83g92kj91usp4r7dih', '::1', 1749277739, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393237373537363b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b),
-('uc8d7a0djnbcrf9lmgo3d1edcenqhptf', '::1', 1749277576, 0x5f5f63695f6c6173745f726567656e65726174657c693a313734393237373537363b6c6f676765645f696e7c623a313b757365725f69647c733a313a2231223b6e616d657c733a31313a2253757065722041646d696e223b656d61696c7c733a31373a2261646d696e406578616d706c652e636f6d223b726f6c657c733a31323a226d61737465725f61646d696e223b);
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(255) NOT NULL,
+  `role_code` varchar(255) NOT NULL,
+  `permissions` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`permissions`)),
+  `is_active` tinyint(1) DEFAULT 1,
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `role_name`, `role_code`, `permissions`, `is_active`, `created_at`) VALUES
+(1, 'Administrator', 'ADMIN', NULL, 1, '2025-06-13 02:53:03');
 
 -- --------------------------------------------------------
 
@@ -3545,13 +6186,62 @@ CREATE TABLE `roles` (
 --
 
 INSERT INTO `roles` (`id`, `name`, `prefix`, `is_system`) VALUES
-(1, 'Super Admin', 'superadmin', '1'),
-(2, 'Admin', 'admin', '1'),
-(3, 'Teacher', 'teacher', '1'),
-(4, 'Accountant', 'accountant', '1'),
-(5, 'Librarian', 'librarian', '1'),
-(6, 'Parent', 'parent', '1'),
-(7, 'Student', 'student', '1');
+(1, 'Master Admin', 'masteradmin', '1'),
+(2, 'Super Admin', 'superadmin', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_groups`
+--
+
+CREATE TABLE `role_groups` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `is_active` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_groups`
+--
+
+INSERT INTO `role_groups` (`id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'Master Admin group', 'Master Admin Default', 1, '2025-06-04 11:46:50', '2025-06-15 17:05:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_group_roles`
+--
+
+CREATE TABLE `role_group_roles` (
+  `id` int(11) NOT NULL,
+  `role_group_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_group_roles`
+--
+
+INSERT INTO `role_group_roles` (`id`, `role_group_id`, `role_id`) VALUES
+(19, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_permissions`
+--
+
+CREATE TABLE `role_permissions` (
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `permissionId` int(11) NOT NULL,
+  `roleId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -3611,38 +6301,6 @@ INSERT INTO `schoolyear` (`id`, `school_year`, `created_by`, `created_at`, `upda
 -- --------------------------------------------------------
 
 --
--- Table structure for table `school_roles`
---
-
-CREATE TABLE `school_roles` (
-  `id` int(11) NOT NULL,
-  `school_id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `permissions` text NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `school_users`
---
-
-CREATE TABLE `school_users` (
-  `id` int(11) NOT NULL,
-  `school_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `role_id` int(11) NOT NULL,
-  `created_by` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `section`
 --
 
@@ -3652,6 +6310,33 @@ CREATE TABLE `section` (
   `capacity` varchar(20) DEFAULT NULL,
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `section`
+--
+
+INSERT INTO `section` (`id`, `name`, `capacity`, `branch_id`) VALUES
+(1, 'A', '50', 1),
+(2, 'B', '50', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sections`
+--
+
+CREATE TABLE `sections` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `class_id` int(11) NOT NULL,
+  `branch_id` int(11) NOT NULL,
+  `capacity` int(11) DEFAULT NULL,
+  `teacher_id` int(11) DEFAULT NULL COMMENT 'Class teacher/homeroom teacher ID',
+  `is_active` tinyint(1) DEFAULT 1,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `deletedAt` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -3664,6 +6349,25 @@ CREATE TABLE `sections_allocation` (
   `class_id` int(11) NOT NULL,
   `section_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `sections_allocation`
+--
+
+INSERT INTO `sections_allocation` (`id`, `class_id`, `section_id`) VALUES
+(1, 1, 1),
+(2, 2, 1),
+(3, 3, 1),
+(4, 4, 1),
+(5, 5, 1),
+(6, 6, 1),
+(7, 7, 1),
+(8, 8, 1),
+(9, 9, 1),
+(10, 10, 1),
+(11, 11, 1),
+(12, 12, 1),
+(13, 13, 1);
 
 -- --------------------------------------------------------
 
@@ -3809,7 +6513,34 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`id`, `staff_id`, `name`, `department`, `qualification`, `experience_details`, `total_experience`, `designation`, `joining_date`, `birthday`, `sex`, `religion`, `blood_group`, `present_address`, `permanent_address`, `mobileno`, `email`, `salary_template_id`, `branch_id`, `photo`, `facebook_url`, `linkedin_url`, `twitter_url`, `created_at`, `updated_at`) VALUES
-(1, 'bf4cb12', 'pavan kumar', 0, '', NULL, NULL, 0, '2025-05-26', '', '', '', '', '', '', '', 'pavansoft007@gmail.com', 0, NULL, NULL, NULL, NULL, NULL, '2025-05-26 11:28:58', NULL);
+(1, 'bf4cb12', 'pavan kumar', 0, '', NULL, NULL, 0, '2025-05-26', '', '', '', '', '', '', '', 'pavansoft007@gmail.com', 0, NULL, '94063b2d9d1f9348aca4621ece87a873.png', '', '', '', '2025-05-26 11:28:58', NULL),
+(2, '8492be2', 'ALI', 1, 'NA', '', '', 1, '2025-05-28', '', 'male', '', '', 'Yelamanchili, AKP, Visakhapatnam', '', '8309209488', 'vbvshool@gmail.com', 0, 1, 'dfd4387fdea3a9c803f9d2ee0e9e7532.JPG', '', '', '', '2025-05-28 03:29:18', NULL),
+(3, 'd71c086', 'pavan', 2, '1234567890', '', '', 2, '2025-05-28', '', 'male', '', '', 'AKP', '', '098765432345', 'pavan@gmail.com', 0, 2, 'defualt.png', '', '', '', '2025-05-28 14:59:48', NULL),
+(4, '668163c', 'Shai', 4, 'bsc', '', '2', 3, '2025-03-12', '', 'male', 'hind', 'A-', 'ylm', '', '83092094888', 'alibaba786as@gmail.com', 0, 1, 'defualt.png', '', '', '', '2025-06-02 17:31:48', NULL),
+(5, 'f4c3c4e', 'N jhansi', 4, 'Bsc', '', '', 1, '2025-04-30', '2022-03-04', 'female', '', '', 'RV6C+XG9, Ramnagariya, Jaipur, Rajasthan 302017, India', 'RV6C+XG9, Ramnagariya, Jaipur, Rajasthan 302017, India', '8309209488', 'vbvschool2002@gmail.com', 0, 1, 'defualt.png', 'vbvschool@gmail.com', 'vbvschool@gmail.com', 'vbvschool@gmail.com', '2025-06-02 18:58:08', NULL),
+(6, 'd039327', 'MUSULURI .AMMAJI', 4, 'DEGREE- BA', NULL, NULL, 3, '2010-01-11', '1970-01-01', 'FEMALE', 'HINDU', '', 'KAKIVANI VEEDHI', 'YELLAMANCHILI', '8985948128', 'musuluriammaji@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:51', NULL),
+(7, 'ced4e1a', 'TERAPALLI .NOOKARATNAM', 4, 'DEGREE-BSC DIET', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'PATHA HARIJANA PETA', 'YELLAMANCHILI', '9848866264', 'terapallinookratnam@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:51', NULL),
+(8, 'bb39e90', 'JAJALA .RAMA.JOGI.NAIDU', 4, 'MA-BE-D', NULL, NULL, 3, '2022-01-06', '1970-01-01', 'MALE', 'HINDU', 'O-POSITIVE', 'SOWBHAGYA RESIDENCE', 'YELLAMANCHILI', '8555949528', 'Jrjnaidu1@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:51', NULL),
+(9, 'ff671ab', 'GUBBALA.APPALARAJYAM', 4, 'BSC-BED', NULL, NULL, 3, '2025-02-06', '1991-01-06', 'FEMALE', 'HINDU', 'O-NEGITIVE', 'NEHRU NAGAR', 'YELLAMANCHILI', '9701362861', 'rajyamgubbala@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:51', NULL),
+(10, '61d6085', 'KAKARA.HARIKA', 4, 'DEGREE-BA', NULL, NULL, 3, '2025-02-06', '1970-01-01', 'FEMALE', 'HINDU', '', 'NEHRU NAGAR', 'YELLAMANCHILI', '7995811528', 'haarimiss@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:51', NULL),
+(11, '75a6f42', 'SUNDARAPU.MADHUSUDHANA RAO', 4, 'INTER,DIPLOMA', NULL, NULL, 3, '1970-01-01', '1973-01-07', 'MALE', 'HINDU', 'O-POSITIVE', 'ASR COLONY', 'YELLAMANCHILI', '9640931261', 'sundarapumadhu@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(12, 'b7795f0', 'NADELLA.JHANSI', 4, 'DEGREE-BSC', NULL, NULL, 3, '1970-01-01', '2001-12-07', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '9492460334', 'jhansinadella01@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(13, 'e1b0142', 'BUDAMURU.RAJINI KUMARI', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '6301944300', 'budamururajini@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(14, '0b7e612', 'K.VARALAKSHMI', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'KAKAVANI VEEDHI', 'YELLAMANCHILI', '9381992355', 'varalakshmi@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(15, '96ad3f6', 'AVADUTHALA.BHAVANI', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '9912923153', 'avaduthalabhavani@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(16, '745ddc0', 'BHARNIKALA.HARITHA', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '8639073594', 'bharnikalaharitha@gmil.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-05 03:52:52', NULL),
+(17, '3f84c75', 'MUSULURI .AMMAJI', 4, 'DEGREE- BA', NULL, NULL, 3, '2010-01-11', '1970-01-01', 'FEMALE', 'HINDU', '', 'KAKIVANI VEEDHI', 'YELLAMANCHILI', '8985948128', 'musuluriammaji@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(18, 'cf7cac7', 'TERAPALLI .NOOKARATNAM', 4, 'DEGREE-BSC DIET', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'PATHA HARIJANA PETA', 'YELLAMANCHILI', '9848866264', 'terapallinookratnam@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(19, 'ce762a2', 'JAJALA .RAMA.JOGI.NAIDU', 4, 'MA-BE-D', NULL, NULL, 3, '2022-01-06', '1970-01-01', 'MALE', 'HINDU', 'O-POSITIVE', 'SOWBHAGYA RESIDENCE', 'YELLAMANCHILI', '8555949528', 'Jrjnaidu1@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(20, 'e93b35a', 'GUBBALA.APPALARAJYAM', 4, 'BSC-BED', NULL, NULL, 3, '2025-02-06', '1991-01-06', 'FEMALE', 'HINDU', 'O-NEGITIVE', 'NEHRU NAGAR', 'YELLAMANCHILI', '9701362861', 'rajyamgubbala@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(21, '0a50cc8', 'KAKARA.HARIKA', 4, 'DEGREE-BA', NULL, NULL, 3, '2025-02-06', '1970-01-01', 'FEMALE', 'HINDU', '', 'NEHRU NAGAR', 'YELLAMANCHILI', '7995811528', 'haarimiss@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(22, 'b6029e2', 'SUNDARAPU.MADHUSUDHANA RAO', 4, 'INTER,DIPLOMA', NULL, NULL, 3, '1970-01-01', '1973-01-07', 'MALE', 'HINDU', 'O-POSITIVE', 'ASR COLONY', 'YELLAMANCHILI', '9640931261', 'sundarapumadhu@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(23, 'af070f8', 'NADELLA.JHANSI', 4, 'DEGREE-BSC', NULL, NULL, 3, '1970-01-01', '2001-12-07', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '9492460334', 'jhansinadella01@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(24, '5808885', 'BUDUMURU.RAJINI KUMARI', 4, '', NULL, NULL, 3, '1970-01-01', '1999-10-01', 'female', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '6301944300', 'budumururajini@gmail.com', 0, 1, 'defualt.png', '', '', '', '2025-06-06 19:48:36', NULL),
+(25, 'e0ed911', 'K.VARALAKSHMI', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'KAKAVANI VEEDHI', 'YELLAMANCHILI', '9381992355', 'varalakshmi@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(26, '3c93816', 'AVADUTHALA.BHAVANI', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '9912923153', 'avaduthalabhavani@gmail.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(27, 'd4515a6', 'BHARNIKALA.HARITHA', 4, '', NULL, NULL, 3, '1970-01-01', '1970-01-01', 'FEMALE', 'HINDU', '', 'DIMILI ROAD', 'YELLAMANCHILI', '8639073594', 'bharnikalaharitha@gmil.com', 0, 1, 'defualt.png', NULL, NULL, NULL, '2025-06-06 19:48:36', NULL),
+(29, 'bfb1f88', 'Venkatesh', 6, 'BSC', '', '', 5, '2025-06-10', '', 'male', '', '', 'AKP', '', '9491976849', 'venki1992kv@gmail.com', 0, 5, '4ba84474a0ac9c22e00cc880801532bf.png', '', '', '', '2025-06-10 12:54:33', NULL);
 
 -- --------------------------------------------------------
 
@@ -3859,6 +6590,15 @@ CREATE TABLE `staff_department` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `staff_department`
+--
+
+INSERT INTO `staff_department` (`id`, `name`, `branch_id`, `created_at`, `updated_at`) VALUES
+(1, 'VBV School Super Admin', 1, '2025-05-28 03:21:19', NULL),
+(4, 'TEACHERS', 1, '2025-06-02 17:28:35', NULL),
+(6, 'Super Admin', 5, '2025-06-10 12:52:46', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -3872,6 +6612,17 @@ CREATE TABLE `staff_designation` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `staff_designation`
+--
+
+INSERT INTO `staff_designation` (`id`, `name`, `branch_id`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', 1, '2025-05-28 03:21:38', NULL),
+(2, 'Super Admin', 2, '2025-05-28 14:57:07', NULL),
+(3, 'Teacher', 1, '2025-06-02 17:29:03', NULL),
+(4, 'Dummy', 3, '2025-06-07 12:23:12', NULL),
+(5, 'Super Admin', 5, '2025-06-10 12:52:56', NULL);
 
 -- --------------------------------------------------------
 
@@ -3912,9 +6663,9 @@ CREATE TABLE `staff_privileges` (
 --
 
 INSERT INTO `staff_privileges` (`id`, `role_id`, `permission_id`, `is_add`, `is_edit`, `is_view`, `is_delete`) VALUES
-(1, 3, 1, 1, 1, 1, 1),
+(1, 3, 1, 1, 1, 1, 0),
 (2, 3, 2, 0, 0, 0, 0),
-(3, 3, 3, 1, 1, 1, 1),
+(3, 3, 3, 1, 1, 1, 0),
 (4, 3, 4, 0, 0, 0, 0),
 (5, 3, 5, 0, 0, 0, 0),
 (6, 3, 30, 0, 0, 0, 0),
@@ -3968,10 +6719,10 @@ INSERT INTO `staff_privileges` (`id`, `role_id`, `permission_id`, `is_add`, `is_
 (55, 3, 52, 0, 0, 0, 0),
 (56, 3, 53, 0, 0, 0, 0),
 (57, 3, 54, 0, 0, 0, 0),
-(58, 3, 55, 0, 0, 1, 0),
+(58, 3, 55, 0, 0, 0, 0),
 (59, 3, 56, 0, 0, 0, 0),
 (60, 3, 57, 0, 0, 0, 0),
-(61, 3, 58, 1, 0, 1, 1),
+(61, 3, 58, 0, 0, 0, 0),
 (62, 3, 59, 0, 0, 1, 0),
 (63, 3, 60, 0, 0, 0, 0),
 (64, 3, 61, 0, 0, 0, 0),
@@ -4448,13 +7199,13 @@ INSERT INTO `staff_privileges` (`id`, `role_id`, `permission_id`, `is_add`, `is_
 (539, 2, 115, 0, 0, 1, 0),
 (540, 2, 116, 1, 1, 1, 1),
 (541, 2, 117, 0, 0, 1, 0),
-(542, 3, 110, 1, 1, 1, 1),
+(542, 3, 110, 1, 0, 1, 0),
 (543, 3, 111, 0, 0, 1, 0),
 (544, 3, 112, 0, 0, 0, 0),
-(545, 3, 113, 1, 1, 1, 1),
+(545, 3, 113, 1, 0, 1, 0),
 (546, 3, 114, 0, 0, 1, 0),
 (547, 3, 115, 0, 0, 0, 0),
-(548, 3, 116, 1, 1, 1, 1),
+(548, 3, 116, 1, 0, 1, 0),
 (549, 3, 117, 0, 0, 1, 0),
 (550, 2, 127, 1, 0, 1, 1),
 (551, 2, 118, 1, 0, 1, 0),
@@ -4532,7 +7283,479 @@ INSERT INTO `staff_privileges` (`id`, `role_id`, `permission_id`, `is_add`, `is_
 (623, 3, 139, 1, 1, 1, 1),
 (624, 3, 140, 0, 0, 1, 0),
 (625, 3, 134, 0, 0, 0, 0),
-(626, 3, 135, 0, 0, 0, 0);
+(626, 3, 135, 0, 0, 0, 0),
+(627, 8, 91, 0, 0, 1, 0),
+(628, 8, 92, 0, 0, 1, 0),
+(629, 8, 93, 0, 0, 1, 0),
+(630, 8, 94, 0, 0, 1, 0),
+(631, 8, 95, 0, 0, 1, 0),
+(632, 8, 96, 0, 0, 1, 0),
+(633, 8, 97, 0, 0, 1, 0),
+(634, 8, 98, 0, 0, 1, 0),
+(635, 8, 99, 0, 0, 1, 0),
+(636, 8, 100, 0, 0, 1, 0),
+(637, 8, 101, 0, 0, 1, 0),
+(638, 8, 102, 0, 0, 0, 0),
+(639, 8, 118, 0, 0, 0, 0),
+(640, 8, 119, 0, 0, 0, 0),
+(641, 8, 120, 0, 0, 0, 0),
+(642, 8, 121, 0, 0, 0, 0),
+(643, 8, 122, 0, 0, 0, 0),
+(644, 8, 123, 0, 0, 0, 0),
+(645, 8, 124, 0, 0, 0, 0),
+(646, 8, 125, 0, 0, 0, 0),
+(647, 8, 126, 0, 0, 0, 0),
+(648, 8, 131, 0, 0, 0, 0),
+(649, 8, 132, 0, 0, 0, 0),
+(650, 8, 1, 1, 1, 1, 1),
+(651, 8, 2, 1, 0, 0, 0),
+(652, 8, 3, 1, 1, 1, 1),
+(653, 8, 4, 0, 0, 1, 0),
+(654, 8, 5, 1, 0, 1, 0),
+(655, 8, 30, 1, 0, 1, 0),
+(656, 8, 127, 1, 0, 1, 1),
+(657, 8, 7, 1, 1, 1, 1),
+(658, 8, 8, 1, 0, 1, 0),
+(659, 8, 6, 1, 1, 1, 1),
+(660, 8, 9, 1, 1, 1, 1),
+(661, 8, 10, 1, 1, 1, 1),
+(662, 8, 11, 1, 0, 1, 0),
+(663, 8, 113, 1, 1, 1, 1),
+(664, 8, 114, 0, 0, 1, 0),
+(665, 8, 115, 0, 0, 1, 0),
+(666, 8, 116, 1, 1, 1, 1),
+(667, 8, 117, 0, 0, 1, 0),
+(668, 8, 110, 1, 1, 1, 1),
+(669, 8, 111, 0, 0, 1, 0),
+(670, 8, 112, 0, 0, 1, 0),
+(671, 8, 12, 1, 1, 1, 1),
+(672, 8, 13, 1, 0, 1, 0),
+(673, 8, 14, 1, 0, 1, 0),
+(674, 8, 15, 0, 0, 1, 0),
+(675, 8, 16, 1, 1, 1, 1),
+(676, 8, 17, 1, 1, 1, 1),
+(677, 8, 18, 1, 0, 1, 1),
+(678, 8, 19, 1, 1, 1, 1),
+(679, 8, 20, 1, 1, 1, 1),
+(680, 8, 21, 1, 1, 1, 1),
+(681, 8, 22, 1, 1, 1, 1),
+(682, 8, 107, 0, 0, 1, 0),
+(683, 8, 23, 1, 1, 1, 1),
+(684, 8, 24, 1, 1, 1, 1),
+(685, 8, 25, 1, 1, 1, 1),
+(686, 8, 26, 1, 1, 1, 1),
+(687, 8, 27, 1, 1, 1, 1),
+(688, 8, 28, 1, 0, 1, 1),
+(689, 8, 29, 1, 1, 1, 1),
+(690, 8, 133, 0, 0, 1, 0),
+(691, 8, 109, 1, 1, 1, 1),
+(692, 8, 129, 0, 0, 1, 0),
+(693, 8, 31, 1, 1, 1, 1),
+(694, 8, 33, 1, 1, 1, 1),
+(695, 8, 32, 1, 1, 1, 1),
+(696, 8, 88, 1, 0, 1, 0),
+(697, 8, 89, 0, 0, 1, 0),
+(698, 8, 34, 1, 1, 1, 1),
+(699, 8, 35, 1, 1, 1, 1),
+(700, 8, 36, 1, 1, 1, 1),
+(701, 8, 37, 1, 0, 1, 1),
+(702, 8, 38, 1, 1, 1, 1),
+(703, 8, 39, 1, 1, 1, 1),
+(704, 8, 77, 1, 1, 1, 1),
+(705, 8, 78, 0, 0, 1, 0),
+(706, 8, 79, 0, 0, 1, 0),
+(707, 8, 40, 0, 0, 0, 0),
+(708, 8, 41, 0, 0, 0, 0),
+(709, 8, 42, 0, 0, 0, 0),
+(710, 8, 43, 0, 0, 0, 0),
+(711, 8, 44, 0, 0, 0, 0),
+(712, 8, 45, 0, 0, 0, 0),
+(713, 8, 46, 0, 0, 0, 0),
+(714, 8, 47, 0, 0, 0, 0),
+(715, 8, 48, 0, 0, 0, 0),
+(716, 8, 49, 1, 0, 0, 0),
+(717, 8, 50, 1, 0, 0, 0),
+(718, 8, 51, 1, 0, 0, 0),
+(719, 8, 52, 0, 0, 1, 0),
+(720, 8, 53, 0, 0, 1, 0),
+(721, 8, 54, 0, 0, 1, 0),
+(722, 8, 55, 0, 0, 0, 0),
+(723, 8, 56, 0, 0, 0, 0),
+(724, 8, 57, 0, 0, 0, 0),
+(725, 8, 58, 0, 0, 0, 0),
+(726, 8, 59, 1, 1, 1, 1),
+(727, 8, 60, 1, 1, 1, 1),
+(728, 8, 61, 1, 0, 1, 1),
+(729, 8, 62, 1, 1, 1, 1),
+(730, 8, 80, 0, 0, 1, 0),
+(731, 8, 69, 1, 1, 1, 1),
+(732, 8, 70, 1, 1, 1, 1),
+(733, 8, 71, 1, 1, 1, 1),
+(734, 8, 72, 1, 1, 1, 1),
+(735, 8, 73, 1, 0, 0, 0),
+(736, 8, 74, 1, 1, 1, 1),
+(737, 8, 75, 0, 0, 1, 0),
+(738, 8, 76, 0, 0, 1, 1),
+(739, 8, 104, 0, 0, 1, 0),
+(740, 8, 130, 0, 0, 0, 1),
+(741, 8, 63, 1, 1, 1, 1),
+(742, 8, 64, 1, 1, 1, 1),
+(743, 8, 65, 1, 1, 1, 1),
+(744, 8, 66, 0, 0, 1, 0),
+(745, 8, 67, 1, 1, 1, 1),
+(746, 8, 68, 1, 1, 1, 1),
+(747, 8, 136, 1, 1, 1, 1),
+(748, 8, 137, 1, 1, 1, 1),
+(749, 8, 138, 1, 0, 0, 0),
+(750, 8, 139, 1, 1, 1, 1),
+(751, 8, 140, 0, 0, 1, 0),
+(752, 8, 81, 0, 1, 1, 0),
+(753, 8, 82, 0, 0, 0, 0),
+(754, 8, 83, 1, 1, 1, 1),
+(755, 8, 84, 0, 0, 0, 0),
+(756, 8, 85, 1, 1, 1, 1),
+(757, 8, 86, 0, 0, 0, 0),
+(758, 8, 87, 0, 0, 0, 0),
+(759, 8, 90, 0, 0, 0, 0),
+(760, 8, 103, 0, 0, 0, 0),
+(761, 8, 105, 0, 0, 0, 0),
+(762, 8, 106, 0, 0, 0, 0),
+(763, 8, 108, 0, 0, 0, 0),
+(764, 8, 128, 0, 0, 0, 0),
+(765, 8, 134, 1, 1, 1, 1),
+(766, 8, 135, 0, 0, 0, 0),
+(767, 9, 91, 0, 0, 0, 0),
+(768, 9, 92, 0, 0, 0, 0),
+(769, 9, 93, 0, 0, 1, 0),
+(770, 9, 94, 0, 0, 1, 0),
+(771, 9, 95, 0, 0, 1, 0),
+(772, 9, 96, 0, 0, 1, 0),
+(773, 9, 97, 0, 0, 1, 0),
+(774, 9, 98, 0, 0, 1, 0),
+(775, 9, 99, 0, 0, 1, 0),
+(776, 9, 100, 0, 0, 0, 0),
+(777, 9, 101, 0, 0, 0, 0),
+(778, 9, 102, 0, 0, 0, 0),
+(779, 9, 118, 0, 0, 0, 0),
+(780, 9, 119, 0, 0, 0, 0),
+(781, 9, 120, 0, 0, 0, 0),
+(782, 9, 121, 0, 0, 0, 0),
+(783, 9, 122, 0, 0, 0, 0),
+(784, 9, 123, 0, 0, 0, 0),
+(785, 9, 124, 0, 0, 0, 0),
+(786, 9, 125, 0, 0, 0, 0),
+(787, 9, 126, 0, 0, 0, 0),
+(788, 9, 131, 0, 0, 0, 0),
+(789, 9, 132, 0, 0, 0, 0),
+(790, 9, 1, 0, 0, 0, 0),
+(791, 9, 2, 0, 0, 0, 0),
+(792, 9, 3, 0, 0, 0, 0),
+(793, 9, 4, 0, 0, 0, 0),
+(794, 9, 5, 0, 0, 0, 0),
+(795, 9, 30, 0, 0, 0, 0),
+(796, 9, 127, 0, 0, 0, 0),
+(797, 9, 7, 0, 0, 0, 0),
+(798, 9, 8, 0, 0, 0, 0),
+(799, 9, 6, 0, 0, 0, 0),
+(800, 9, 9, 0, 0, 0, 0),
+(801, 9, 10, 0, 0, 0, 0),
+(802, 9, 11, 0, 0, 0, 0),
+(803, 9, 113, 0, 0, 0, 0),
+(804, 9, 114, 0, 0, 0, 0),
+(805, 9, 115, 0, 0, 0, 0),
+(806, 9, 116, 0, 0, 0, 0),
+(807, 9, 117, 0, 0, 0, 0),
+(808, 9, 110, 0, 0, 0, 0),
+(809, 9, 111, 0, 0, 0, 0),
+(810, 9, 112, 0, 0, 0, 0),
+(811, 9, 12, 0, 0, 0, 0),
+(812, 9, 13, 0, 0, 0, 0),
+(813, 9, 14, 0, 0, 0, 0),
+(814, 9, 15, 0, 0, 0, 0),
+(815, 9, 16, 0, 0, 0, 0),
+(816, 9, 17, 0, 0, 0, 0),
+(817, 9, 18, 0, 0, 0, 0),
+(818, 9, 19, 0, 0, 0, 0),
+(819, 9, 20, 0, 0, 0, 0),
+(820, 9, 21, 0, 0, 0, 0),
+(821, 9, 22, 0, 0, 0, 0),
+(822, 9, 107, 0, 0, 0, 0),
+(823, 9, 23, 0, 0, 0, 0),
+(824, 9, 24, 0, 0, 0, 0),
+(825, 9, 25, 0, 0, 0, 0),
+(826, 9, 26, 0, 0, 0, 0),
+(827, 9, 27, 0, 0, 0, 0),
+(828, 9, 28, 0, 0, 0, 0),
+(829, 9, 29, 0, 0, 0, 0),
+(830, 9, 133, 0, 0, 0, 0),
+(831, 9, 109, 0, 0, 0, 0),
+(832, 9, 129, 0, 0, 0, 0),
+(833, 9, 31, 1, 1, 1, 0),
+(834, 9, 33, 1, 1, 1, 0),
+(835, 9, 32, 1, 1, 1, 0),
+(836, 9, 88, 1, 0, 1, 0),
+(837, 9, 89, 0, 0, 1, 0),
+(838, 9, 34, 1, 1, 1, 0),
+(839, 9, 35, 1, 1, 1, 0),
+(840, 9, 36, 1, 1, 1, 0),
+(841, 9, 37, 1, 0, 1, 0),
+(842, 9, 38, 1, 1, 1, 0),
+(843, 9, 39, 1, 1, 1, 0),
+(844, 9, 77, 1, 1, 1, 0),
+(845, 9, 78, 0, 0, 1, 0),
+(846, 9, 79, 0, 0, 1, 0),
+(847, 9, 40, 0, 0, 0, 0),
+(848, 9, 41, 0, 0, 0, 0),
+(849, 9, 42, 0, 0, 0, 0),
+(850, 9, 43, 0, 0, 0, 0),
+(851, 9, 44, 0, 0, 0, 0),
+(852, 9, 45, 0, 0, 0, 0),
+(853, 9, 46, 0, 0, 0, 0),
+(854, 9, 47, 0, 0, 0, 0),
+(855, 9, 48, 0, 0, 0, 0),
+(856, 9, 49, 1, 0, 0, 0),
+(857, 9, 50, 1, 0, 0, 0),
+(858, 9, 51, 1, 0, 0, 0),
+(859, 9, 52, 0, 0, 1, 0),
+(860, 9, 53, 0, 0, 1, 0),
+(861, 9, 54, 0, 0, 1, 0),
+(862, 9, 55, 0, 0, 0, 0),
+(863, 9, 56, 0, 0, 0, 0),
+(864, 9, 57, 0, 0, 0, 0),
+(865, 9, 58, 0, 0, 0, 0),
+(866, 9, 59, 0, 0, 0, 0),
+(867, 9, 60, 0, 0, 0, 0),
+(868, 9, 61, 1, 0, 1, 0),
+(869, 9, 62, 1, 1, 1, 0),
+(870, 9, 80, 0, 0, 1, 0),
+(871, 9, 69, 0, 0, 1, 0),
+(872, 9, 70, 0, 0, 1, 0),
+(873, 9, 71, 0, 0, 1, 0),
+(874, 9, 72, 0, 0, 1, 0),
+(875, 9, 73, 1, 0, 0, 0),
+(876, 9, 74, 0, 0, 1, 0),
+(877, 9, 75, 0, 0, 1, 0),
+(878, 9, 76, 0, 0, 1, 0),
+(879, 9, 104, 0, 0, 1, 0),
+(880, 9, 130, 0, 0, 0, 0),
+(881, 9, 63, 0, 0, 0, 0),
+(882, 9, 64, 0, 0, 0, 0),
+(883, 9, 65, 0, 0, 0, 0),
+(884, 9, 66, 0, 0, 0, 0),
+(885, 9, 67, 0, 0, 0, 0),
+(886, 9, 68, 0, 0, 0, 0),
+(887, 9, 136, 0, 0, 0, 0),
+(888, 9, 137, 0, 0, 0, 0),
+(889, 9, 138, 0, 0, 0, 0),
+(890, 9, 139, 0, 0, 0, 0),
+(891, 9, 140, 0, 0, 0, 0),
+(892, 9, 81, 0, 0, 0, 0),
+(893, 9, 82, 0, 0, 0, 0),
+(894, 9, 83, 0, 0, 0, 0),
+(895, 9, 84, 0, 0, 0, 0),
+(896, 9, 85, 0, 0, 0, 0),
+(897, 9, 86, 0, 0, 0, 0),
+(898, 9, 87, 0, 0, 0, 0),
+(899, 9, 90, 0, 0, 0, 0),
+(900, 9, 103, 0, 0, 0, 0),
+(901, 9, 105, 0, 0, 0, 0),
+(902, 9, 106, 0, 0, 0, 0),
+(903, 9, 108, 0, 0, 0, 0),
+(904, 9, 128, 0, 0, 0, 0),
+(905, 9, 134, 0, 0, 0, 0),
+(906, 9, 135, 0, 0, 0, 0),
+(907, 10, 91, 0, 0, 1, 0),
+(908, 10, 92, 0, 0, 1, 0),
+(909, 10, 93, 0, 0, 1, 0),
+(910, 10, 94, 0, 0, 1, 0),
+(911, 10, 95, 0, 0, 1, 0),
+(912, 10, 96, 0, 0, 1, 0),
+(913, 10, 97, 0, 0, 1, 0),
+(914, 10, 98, 0, 0, 1, 0),
+(915, 10, 99, 0, 0, 1, 0),
+(916, 10, 100, 0, 0, 1, 0),
+(917, 10, 101, 0, 0, 1, 0),
+(918, 10, 102, 0, 0, 1, 0),
+(919, 10, 118, 1, 0, 1, 0),
+(920, 10, 119, 1, 1, 1, 1),
+(921, 10, 120, 1, 0, 1, 0),
+(922, 10, 121, 1, 1, 1, 1),
+(923, 10, 122, 1, 1, 1, 1),
+(924, 10, 123, 1, 1, 1, 1),
+(925, 10, 124, 1, 1, 1, 1),
+(926, 10, 125, 1, 1, 1, 1),
+(927, 10, 126, 1, 1, 1, 1),
+(928, 10, 131, 1, 1, 1, 1),
+(929, 10, 132, 1, 1, 1, 1),
+(930, 10, 1, 1, 1, 1, 1),
+(931, 10, 2, 1, 0, 0, 0),
+(932, 10, 3, 1, 1, 1, 1),
+(933, 10, 4, 0, 0, 1, 0),
+(934, 10, 5, 1, 0, 1, 0),
+(935, 10, 30, 1, 0, 1, 0),
+(936, 10, 127, 1, 0, 1, 1),
+(937, 10, 7, 1, 1, 1, 1),
+(938, 10, 8, 1, 0, 1, 0),
+(939, 10, 6, 1, 1, 1, 1),
+(940, 10, 9, 1, 1, 1, 1),
+(941, 10, 10, 1, 1, 1, 1),
+(942, 10, 11, 1, 0, 1, 0),
+(943, 10, 113, 1, 1, 1, 1),
+(944, 10, 114, 0, 0, 1, 0),
+(945, 10, 115, 0, 0, 1, 0),
+(946, 10, 116, 1, 1, 1, 1),
+(947, 10, 117, 0, 0, 1, 0),
+(948, 10, 110, 1, 1, 1, 1),
+(949, 10, 111, 0, 0, 1, 0),
+(950, 10, 112, 0, 0, 1, 0),
+(951, 10, 12, 1, 1, 1, 1),
+(952, 10, 13, 1, 0, 1, 0),
+(953, 10, 14, 1, 0, 1, 0),
+(954, 10, 15, 0, 0, 1, 0),
+(955, 10, 16, 1, 1, 1, 1),
+(956, 10, 17, 1, 1, 1, 1),
+(957, 10, 18, 1, 0, 1, 1),
+(958, 10, 19, 1, 1, 1, 1),
+(959, 10, 20, 1, 1, 1, 1),
+(960, 10, 21, 1, 1, 1, 1),
+(961, 10, 22, 1, 1, 1, 1),
+(962, 10, 107, 0, 0, 1, 0),
+(963, 10, 23, 1, 1, 1, 1),
+(964, 10, 24, 1, 1, 1, 1),
+(965, 10, 25, 1, 1, 1, 1),
+(966, 10, 26, 1, 1, 1, 1),
+(967, 10, 27, 1, 1, 1, 1),
+(968, 10, 28, 1, 0, 1, 1),
+(969, 10, 29, 1, 1, 1, 1),
+(970, 10, 133, 0, 0, 1, 0),
+(971, 10, 109, 1, 1, 1, 1),
+(972, 10, 129, 0, 0, 1, 0),
+(973, 10, 31, 1, 1, 1, 1),
+(974, 10, 33, 1, 1, 1, 1),
+(975, 10, 32, 1, 1, 1, 1),
+(976, 10, 88, 1, 0, 1, 0),
+(977, 10, 89, 0, 0, 1, 0),
+(978, 10, 34, 1, 1, 1, 1),
+(979, 10, 35, 1, 1, 1, 1),
+(980, 10, 36, 1, 1, 1, 1),
+(981, 10, 37, 1, 0, 1, 1),
+(982, 10, 38, 1, 1, 1, 1),
+(983, 10, 39, 1, 1, 1, 1),
+(984, 10, 77, 1, 1, 1, 1),
+(985, 10, 78, 0, 0, 1, 0),
+(986, 10, 79, 0, 0, 1, 0),
+(987, 10, 40, 1, 1, 1, 1),
+(988, 10, 41, 1, 1, 1, 1),
+(989, 10, 42, 1, 1, 1, 1),
+(990, 10, 43, 0, 0, 1, 1),
+(991, 10, 44, 1, 1, 1, 1),
+(992, 10, 45, 1, 1, 1, 1),
+(993, 10, 46, 1, 1, 1, 1),
+(994, 10, 47, 1, 1, 1, 1),
+(995, 10, 48, 0, 0, 1, 1),
+(996, 10, 49, 1, 0, 0, 0),
+(997, 10, 50, 1, 0, 0, 0),
+(998, 10, 51, 1, 0, 0, 0),
+(999, 10, 52, 0, 0, 1, 0),
+(1000, 10, 53, 0, 0, 1, 0),
+(1001, 10, 54, 0, 0, 1, 0),
+(1002, 10, 55, 1, 1, 1, 1),
+(1003, 10, 56, 1, 1, 1, 1),
+(1004, 10, 57, 1, 0, 1, 1),
+(1005, 10, 58, 1, 0, 1, 1),
+(1006, 10, 59, 1, 1, 1, 1),
+(1007, 10, 60, 1, 1, 1, 1),
+(1008, 10, 61, 1, 0, 1, 1),
+(1009, 10, 62, 1, 1, 1, 1),
+(1010, 10, 80, 0, 0, 1, 0),
+(1011, 10, 69, 1, 1, 1, 1),
+(1012, 10, 70, 1, 1, 1, 1),
+(1013, 10, 71, 1, 1, 1, 1),
+(1014, 10, 72, 1, 1, 1, 1),
+(1015, 10, 73, 1, 0, 0, 0),
+(1016, 10, 74, 1, 1, 1, 1),
+(1017, 10, 75, 0, 0, 1, 0),
+(1018, 10, 76, 0, 0, 1, 1),
+(1019, 10, 104, 0, 0, 1, 0),
+(1020, 10, 130, 0, 0, 0, 1),
+(1021, 10, 63, 1, 1, 1, 1),
+(1022, 10, 64, 1, 1, 1, 1),
+(1023, 10, 65, 1, 1, 1, 1),
+(1024, 10, 66, 0, 0, 1, 0),
+(1025, 10, 67, 1, 1, 1, 1),
+(1026, 10, 68, 1, 1, 1, 1),
+(1027, 10, 136, 1, 1, 1, 1),
+(1028, 10, 137, 1, 1, 1, 1),
+(1029, 10, 138, 1, 0, 0, 0),
+(1030, 10, 139, 1, 1, 1, 1),
+(1031, 10, 140, 0, 0, 1, 0),
+(1032, 10, 81, 0, 1, 1, 0),
+(1033, 10, 82, 1, 0, 1, 0),
+(1034, 10, 83, 1, 1, 1, 1),
+(1035, 10, 84, 1, 1, 1, 1),
+(1036, 10, 85, 1, 1, 1, 1),
+(1037, 10, 86, 1, 1, 1, 1),
+(1038, 10, 87, 1, 0, 0, 0),
+(1039, 10, 90, 0, 1, 1, 0),
+(1040, 10, 103, 0, 1, 1, 0),
+(1041, 10, 105, 0, 1, 1, 0),
+(1042, 10, 106, 1, 1, 1, 1),
+(1043, 10, 108, 0, 1, 1, 0),
+(1044, 10, 128, 1, 0, 0, 0),
+(1045, 10, 134, 1, 1, 1, 1),
+(1046, 10, 135, 0, 1, 1, 0),
+(1115, 1, 1, 1, 1, 1, 1),
+(1116, 1, 2, 1, 1, 1, 1),
+(1117, 1, 3, 1, 1, 1, 1),
+(1118, 1, 4, 1, 1, 1, 1),
+(1119, 1, 5, 1, 1, 1, 1),
+(1120, 1, 6, 1, 1, 1, 1),
+(1121, 1, 7, 1, 1, 1, 1),
+(1122, 1, 8, 1, 1, 1, 1),
+(1123, 1, 9, 1, 1, 1, 1),
+(1124, 1, 10, 1, 1, 1, 1),
+(1125, 1, 11, 1, 1, 1, 1),
+(1126, 1, 12, 1, 1, 1, 1),
+(1127, 1, 13, 1, 1, 1, 1),
+(1128, 1, 14, 1, 1, 1, 1),
+(1129, 1, 15, 1, 1, 1, 1),
+(1130, 1, 16, 1, 1, 1, 1),
+(1131, 1, 17, 1, 1, 1, 1),
+(1132, 1, 18, 1, 1, 1, 1),
+(1133, 1, 19, 1, 1, 1, 1),
+(1134, 1, 20, 1, 1, 1, 1),
+(1135, 1, 21, 1, 1, 1, 1),
+(1136, 1, 22, 1, 1, 1, 1),
+(1137, 1, 23, 1, 1, 1, 1),
+(1138, 1, 24, 1, 1, 1, 1),
+(1139, 1, 25, 1, 1, 1, 1),
+(1140, 1, 26, 1, 1, 1, 1),
+(1141, 1, 27, 1, 1, 1, 1),
+(1142, 1, 28, 1, 1, 1, 1),
+(1143, 1, 29, 1, 1, 1, 1),
+(1144, 1, 30, 1, 1, 1, 1),
+(1145, 1, 31, 1, 1, 1, 1),
+(1146, 1, 32, 1, 1, 1, 1),
+(1147, 1, 33, 1, 1, 1, 1),
+(1148, 1, 34, 1, 1, 1, 1),
+(1149, 1, 35, 1, 1, 1, 1),
+(1150, 1, 36, 1, 1, 1, 1),
+(1151, 1, 37, 1, 1, 1, 1),
+(1152, 1, 38, 1, 1, 1, 1),
+(1153, 1, 39, 1, 1, 1, 1),
+(1154, 1, 40, 1, 1, 1, 1),
+(1155, 1, 41, 1, 1, 1, 1),
+(1156, 1, 42, 1, 1, 1, 1),
+(1157, 1, 43, 1, 1, 1, 1),
+(1158, 1, 44, 1, 1, 1, 1),
+(1159, 1, 45, 1, 1, 1, 1),
+(1160, 1, 46, 1, 1, 1, 1),
+(1161, 1, 47, 1, 1, 1, 1),
+(1162, 1, 48, 1, 1, 1, 1),
+(1163, 1, 49, 1, 1, 1, 1),
+(1164, 1, 50, 1, 1, 1, 1),
+(1165, 1, 51, 1, 1, 1, 1),
+(1166, 1, 52, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -4570,6 +7793,358 @@ CREATE TABLE `student` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `student`
+--
+
+INSERT INTO `student` (`id`, `register_no`, `admission_date`, `first_name`, `last_name`, `gender`, `birthday`, `religion`, `caste`, `blood_group`, `mother_tongue`, `current_address`, `permanent_address`, `city`, `state`, `mobileno`, `category_id`, `email`, `parent_id`, `route_id`, `vehicle_id`, `hostel_id`, `room_id`, `previous_details`, `photo`, `created_at`, `updated_at`) VALUES
+(19, '281341008300022', '2022-07-01', 'TANTAPUREDDI', 'KAVYA SRI', 'Female', '2011-07-27', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8106457217', 1, '2-8106457217@gmail.com', 19, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:36', NULL),
+(20, '281341008300037', '2017-06-10', 'BUDUMURU', 'HASINI', 'Female', '2012-07-18', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8985312309', 1, '2-8985312309@gmail.com', 20, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:36', NULL),
+(21, '281341008300030', '2017-06-12', 'KOTHALI', 'NAGA CHANDRAVATHI', 'Female', '2011-01-11', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010662352', 1, '2-9010662352@gmail.com', 21, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:36', NULL),
+(22, '281341008300034', '2017-06-12', 'GANDIBOINA', 'SIMHADRI DURGA SHYAM', 'Male', '2011-05-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9505764618', 1, '2-9505764618@gmail.com', 22, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(23, '281341008300028', '2022-07-06', 'PANCHADARLA', 'SURYA GOWTHAM', 'Male', '2011-11-04', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9866046576', 1, '2-9866046576@gmail.com', 23, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(24, '281341008300031', '2017-07-26', 'KALLURI', 'MOHAN KUMAR', 'Male', '2010-11-29', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7032562886', 1, '7032562886@gmail.com', 24, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(25, '281341008300021', '2017-06-15', 'THUMPALA', 'VENKATA AJAY KUMAR DHANUSH', 'Male', '2010-09-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7036222119', 1, '7036222119@gmail.com', 25, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(26, '281341008300032', '2023-11-06', 'GUDALA', 'SAI KUMAR', 'Male', '2010-07-02', 'Hindus', '2-SC', '', 'Telugu', 'kottapalam', 'kottapalam', 'kottapalam', 'A.P', '7036229782', 1, '7036229782@gmail.com', 26, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(27, '281341008300029', '2021-09-08', 'KUNAPALLI', 'HASINI', 'Female', '2011-09-23', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7093779808', 1, '7093779808@gmail.com', 27, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(28, '281341008300033', '2022-07-01', 'GEDELA', 'GUNA SEKHAR', 'Male', '2012-07-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '7288905833', 1, '7288905833@gmail.com', 28, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(29, '281341008300038', '2023-06-17', 'BANDI', 'HEMANTH KUMAR', 'Male', '2010-06-05', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7893352359', 1, '7893352359@gmail.com', 29, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(30, '281341008300024', '2022-08-13', 'SUNDARAPU', 'SANYASI MOHAN', 'Male', '2010-11-02', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9014892664', 1, '9014892664@gmail.com', 30, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(31, '281341008300027', '2022-07-27', 'PANDURI', 'GIRI CHARAN', 'Male', '2011-07-18', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9177886455', 1, '9177886455@gmail.com', 31, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:37', NULL),
+(32, '281341008300035', '2023-06-23', 'GAGANAM', 'DILEEP', 'Male', '2011-02-05', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9533549443', 1, '9533549443@gmail.com', 32, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(33, '281341008300025', '2022-08-01', 'PILLA', 'MAHESH', 'Male', '2011-08-25', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9553270224', 1, '9553270224@gmail.com', 33, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(34, '281341008300026', '2018-06-25', 'PILLA', 'DHANUSH KUMAR', 'Male', '2010-09-22', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9642954402', 1, '9642954402@gmail.com', 34, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(35, '281341008300019', '2017-06-26', 'YELLAPU', 'LASYA', 'Female', '2011-06-21', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9666158889', 1, '9666158889@gmail.com', 35, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(36, '281341008300036', '2024-06-28', 'DADI', 'VIKASH', 'Male', '2011-02-13', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9666656254', 1, '9666656254@gmail.com', 36, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(37, '281341008300023', '2017-06-19', 'TANGELLA', 'DEVI SANKAR', 'Male', '2012-01-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848429018', 1, '9848429018@gmail.com', 37, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(38, '281341008300039', '2021-02-04', 'AYUSH', 'SUNIL CHAVAN', 'Male', '2011-12-06', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9885458336', 1, '9885458336@gmail.com', 38, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(39, '281341008300020', '2017-06-20', 'YELLAPU', 'DEEPIKA', 'Female', '2012-01-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9885912268', 1, '9885912268@gmail.com', 39, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:04:38', NULL),
+(40, '281341008300045', '2018-06-25', 'RAYI', 'VENKATA DURGA RAO', 'Male', '2011-08-15', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7036815898', 1, '2-7036815898@gmail.com', 40, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:43', NULL),
+(41, '281341008300062', '2018-06-24', 'BEESETTI', 'KIRAN DEVA', 'Male', '2011-10-18', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7995129866', 1, '2-7995129866@gmail.com', 41, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:43', NULL),
+(42, '281341008300050', '2024-06-21', 'MARISETTY', 'MANOJ KUMAR', 'Male', '2011-08-28', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7997184068', 1, '2-7997184068@gmail.com', 42, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(43, '281341008300060', '2022-07-23', 'CHEBROLU', 'INDHUMATHI', 'Female', '2013-09-27', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9848154220', 1, '2-9848154220@gmail.com', 43, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(44, '281341008300044', '2018-06-18', 'SETTIBILLI', 'DURGA JAGADISH', 'Male', '2011-08-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9849647308', 1, '6-9849647308@gmail.com', 44, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(45, '281341008300057', '2023-06-17', 'KALIGATLA', 'PRASAD', 'Male', '2012-02-02', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9912196313', 1, '4-9912196313@gmail.com', 45, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(46, '281341008300046', '2022-07-16', 'RAPETI', 'CHARAN TEJA', 'Male', '2012-10-12', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9951685862', 1, '2-9951685862@gmail.com', 46, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(47, '281341008300040', '2024-06-24', 'VEGI', 'KISHORE', 'Male', '2012-03-04', 'Hindus', '4-OBC', '', 'Telugu', 'kottapalam', 'kottapalam', 'kottapalam', 'A.P', '6281738654', 1, '6281738654@gmail.com', 47, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(48, '281341008300041', '2018-06-15', 'VANGALAPUDI', 'SHYAM', 'Male', '2011-07-20', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7095640703', 1, '7095640703@gmail.com', 48, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(49, '281341008300049', '2021-08-27', 'PANDURU', 'SATWIK SIDDU', 'Male', '2013-05-31', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7416124001', 1, '7416124001@gmail.com', 49, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(50, '281341008300054', '2018-06-19', 'KORIBILLI', 'DHANUSHREE', 'Female', '2012-03-23', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7416868188', 1, '7416868188@gmail.com', 50, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(51, '281341008300048', '2022-07-13', 'PITLA', 'NAGA MANOJ', 'Male', '2012-08-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8501885322', 1, '8501885322@gmail.com', 51, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:44', NULL),
+(52, '281341008300047', '2018-06-13', 'POLARAWATHU', 'VEERA VENKATA YOGENDRA PRASAD', 'Male', '2011-11-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9000824335', 1, '9000824335@gmail.com', 52, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(53, '281341008300043', '2023-06-15', 'SHAIK', 'LABIBA', 'Female', '2011-12-07', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9154614290', 1, '9154614290@gmail.com', 53, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(54, '281341008300042', '2020-06-19', 'ULLINGALA', 'YASWANTH', 'Male', '2011-09-21', 'Hindus', '1-GENERAL', '', 'Telugu', 'kottupalem', 'kottupalem', 'kottupalem', 'A.P', '9160930428', 1, '9160930428@gmail.com', 54, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(55, '281341008300061', '2022-07-22', 'BODDETI', 'JNANA KARTHEEKA', 'Female', '2013-12-18', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9290835136', 1, '9290835136@gmail.com', 55, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(56, '281341008300055', '2017-07-15', 'KARRI', 'ROHITH', 'Male', '2012-06-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9505569955', 1, '9505569955@gmail.com', 56, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(57, '281341008300056', '2017-06-26', 'KARRI', 'HARIKA', 'Female', '2012-05-24', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9553160286', 1, '9553160286@gmail.com', 57, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(58, '281341008300064', '2023-05-16', 'ANKIREDDI', 'MOHITH', 'Male', '2012-10-12', 'Hindus', '4-OBC', '', 'Telugu', 'ramareddy pallem', 'ramareddy pallem', 'Ramareddy pallem', 'A.P', '9618551254', 1, '9618551254@gmail.com', 58, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(59, '281341008300059', '2023-06-20', 'CHINNALA', 'JASWANTH', 'Male', '2012-10-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9676580112', 1, '9676580112@gmail.com', 59, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(60, '281341008300058', '2022-07-21', 'DADI', 'DHARANI', 'Female', '2012-02-20', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9701457569', 1, '9701457569@gmail.com', 60, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(61, '281341008300051', '2018-06-13', 'MANDA', 'YASWANTH', 'Male', '2012-07-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9703639343', 1, '9703639343@gmail.com', 61, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:45', NULL),
+(62, '281341008300063', '2018-06-24', 'APPIKONDA', 'GOPI SRINIVAS', 'Male', '2012-08-31', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848610771', 1, '9848610771@gmail.com', 62, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:46', NULL),
+(63, '281341008300053', '2024-06-24', 'MALLA', 'SHANMUK', 'Male', '2011-11-21', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9885653929', 1, '9885653929@gmail.com', 63, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:46', NULL),
+(64, '281341008300052', '2018-11-15', 'MALLA', 'THEEKSHAN', 'Male', '2012-10-17', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9959359291', 1, '9959359291@gmail.com', 64, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:05:46', NULL),
+(65, '281341008300073', '2022-07-18', 'RAYAVARAPU', 'LAKSHMI PRASANNA', 'Female', '2014-12-30', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7702244022', 1, '4-7702244022@gmail.com', 65, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(66, '281341008300076', '2019-07-20', 'RAIVADA', 'SANDEEP', 'Male', '2013-07-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7842986512', 1, '2-7842986512@gmail.com', 66, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(67, '281341008300107', '2019-06-10', 'ADARI', 'JNANA VIVEK', 'Male', '2013-06-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7893093762', 1, '2-7893093762@gmail.com', 67, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(68, '281341008300087', '2024-06-21', 'MARISETTI', 'VENU', 'Male', '2013-12-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7997184068', 1, '7997184068@gmail.com', 68, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(69, '281341008300069', '2024-06-20', 'TANTAPUREDDI', 'JAHNAVI', 'Female', '2014-05-05', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8096178700', 1, '2-8096178700@gmail.com', 69, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(70, '281341008300068', '2021-09-17', 'TANTAPUREDDI', 'MANIDEEP', 'Male', '2014-01-19', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8106457217', 1, '8106457217@gmail.com', 70, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(71, '281341008300089', '2019-06-07', 'KORIBILLI', 'SHYAM', 'Male', '2013-06-03', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8374842246', 1, '3-8374842246@gmail.com', 71, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(72, '281341008300067', '2019-06-24', 'TANTAPUREDDI', 'PRASANTH', 'Male', '2014-05-10', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8919848921', 1, '2-8919848921@gmail.com', 72, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(73, '281341008300086', '2024-06-29', 'NUNNA', 'BANNY', 'Male', '2012-03-16', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '8978255162', 1, '8978255162@gmail.com', 73, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:07', NULL),
+(74, '281341008300085', '2024-06-07', 'NUNNA', 'MANOJ', 'Male', '2014-08-26', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '8978255162', 1, '2-8978255162@gmail.com', 74, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(75, '281341008300101', '2019-06-17', 'BUDUMURU', 'NIKITHA', 'Female', '2014-06-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8985312309', 1, '8985312309@gmail.com', 75, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(76, '281341008300104', '2021-09-28', 'BAMMIDI', 'SATWIK', 'Male', '2013-07-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9030225143', 1, '2-9030225143@gmail.com', 76, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(77, '281341008300105', '2022-07-19', 'ADIDAM', 'BAVYASRI', 'Female', '2014-03-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9553424007', 1, '2-9553424007@gmail.com', 77, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(78, '281341008300081', '2021-02-04', 'PANDURU', 'HIMABINDU', 'Female', '2013-11-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9640204300', 1, '2-9640204300@gmail.com', 78, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(79, '281341008300091', '2019-06-20', 'KARRI', 'LOHITH KUMAR', 'Male', '2012-08-09', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9676513709', 1, '2-9676513709@gmail.com', 79, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(80, '281341008300093', '2019-06-18', 'JAKKA', 'CHINNARI', 'Female', '2013-12-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9948476424', 1, '2-9948476424@gmail.com', 80, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(81, '281341008300094', '2022-07-18', 'GOWTHU', 'NISSI', 'Male', '2014-10-25', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9951142086', 1, '3-9951142086@gmail.com', 81, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(82, '281341008300075', '2022-07-16', 'RAPETI', 'HARI VINDHRA', 'Male', '2014-01-16', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9951685862', 1, '4-9951685862@gmail.com', 82, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(83, '281341008300072', '2024-06-12', 'SIGIREDDI', 'CHIRANJEEVI', 'Male', '2014-03-04', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9989629658', 1, '2-9989629658@gmail.com', 83, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:08', NULL),
+(84, '281341008300095', '2023-07-04', 'GOPISETTY', 'PRAVEEN', 'Male', '2013-10-01', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '6305943227', 1, '6305943227@gmail.com', 84, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(85, '281341008300106', '2022-07-23', 'ADARI', 'VENKAT KARTHIK', 'Male', '2013-09-26', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7095151448', 1, '7095151448@gmail.com', 85, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(86, '281341008300100', '2024-06-24', 'DADI', 'CHAITANYA', 'Male', '2014-06-22', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7287071350', 1, '7287071350@gmail.com', 86, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(87, '281341008300077', '2019-07-01', 'PYDADA', 'BHAVANA', 'Female', '2013-05-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7396143077', 1, '7396143077@gmail.com', 87, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(88, '281341008300083', '2019-06-17', 'PANDURI', 'KOMAL KUMAR', 'Male', '2013-01-25', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7680812603', 1, '7680812603@gmail.com', 88, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(89, '281341008300098', '2022-07-25', 'DUNGA', 'MEENAKSHI', 'Female', '2013-05-18', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7680909942', 1, '7680909942@gmail.com', 89, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(90, '281341008300066', '2023-06-16', 'UPPUNURI', 'VEERENDRA', 'Male', '2012-08-12', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7993242295', 1, '7993242295@gmail.com', 90, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(91, '281341008300082', '2024-06-20', 'PANDURU', 'HEMANTH', 'Male', '2013-02-03', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8106465043', 1, '8106465043@gmail.com', 91, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(92, '281341008300102', '2020-12-14', 'BODDAPU', 'PALLAVI', 'Female', '2013-12-25', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8885412218', 1, '8885412218@gmail.com', 92, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:09', NULL),
+(93, '281341008300096', '2022-07-25', 'GONTHINA', 'SWAROOP', 'Male', '2014-03-16', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9010467123', 1, '9010467123@gmail.com', 93, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(94, '281341008300097', '2019-06-17', 'DWARAPUDI', 'DEEVEN KUMAR', 'Male', '2012-12-12', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9290931876', 1, '9290931876@gmail.com', 94, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(95, '281341008300099', '2022-07-21', 'DADI', 'DIVIJA', 'Female', '2014-06-03', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9291452270', 1, '9291452270@gmail.com', 95, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(96, '281341008300092', '2021-09-17', 'KANITHI', 'INDU VARA PRASAD', 'Male', '2013-03-02', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9491751580', 1, '9491751580@gmail.com', 96, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(97, '281341008300065', '2023-07-07', 'YARAKAM', 'CHAKRI VIGNESH', 'Male', '2014-05-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9494252541', 1, '9494252541@gmail.com', 97, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(98, '281341008300088', '2019-06-12', 'KOSANAM', 'MOHAN ADITHYA', 'Male', '2013-02-23', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9502098567', 1, '9502098567@gmail.com', 98, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(99, '281341008300074', '2023-06-29', 'RAYAVARAPU', 'AJAY', 'Male', '2013-07-09', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9515218736', 1, '9515218736@gmail.com', 99, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(100, '281341008300078', '2022-07-25', 'POTHALA', 'MOUNIKA', 'Female', '2013-04-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9542846619', 1, '9542846619@gmail.com', 100, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(101, '281341008300070', '2022-07-16', 'SUNDARAPU', 'VENKATA SAI JAGADEESH', 'Male', '2013-05-02', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9553438016', 1, '9553438016@gmail.com', 101, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(102, '281341008300090', '2019-06-12', 'KONA', 'KUSUMA PRIYA', 'Female', '2013-10-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652831354', 1, '9652831354@gmail.com', 102, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:10', NULL),
+(103, '281341008300071', '2022-07-18', 'SUNDARAPU', 'PURNANAND', 'Male', '2012-12-09', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9666745726', 1, '9666745726@gmail.com', 103, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:11', NULL),
+(104, '281341008300079', '2019-07-01', 'PENAGANTI', 'BHARATH SIVA GANESH', 'Male', '2013-05-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848577364', 1, '9848577364@gmail.com', 104, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:11', NULL),
+(105, '281341008300084', '2024-06-07', 'PANDURI', 'BINDU SRI', 'Female', '2013-10-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9849203552', 1, '9849203552@gmail.com', 105, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:11', NULL),
+(106, '281341008300103', '2024-06-07', 'BISETTY', 'RAKESH', 'Male', '2014-01-23', 'Hindus', '4-OBC', '', 'Telugu', 'kottupalem', 'kottupalem', 'kottupalem', 'A.P', '9908241825', 1, '9908241825@gmail.com', 106, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:11', NULL),
+(107, '281341008300080', '2024-06-14', 'PANDURU', 'YAMINI', 'Female', '2013-08-16', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9959564672', 1, '9959564672@gmail.com', 107, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:11', NULL),
+(108, '281341008300122', '2020-02-26', 'DHANALAKOTA', 'ASHOK VARDHAN', 'Male', '2015-01-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '6305002520', 1, '2-6305002520@gmail.com', 108, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:43', NULL),
+(109, '281341008300121', '2023-06-01', 'DUNGA', 'ANURADHA NAGA LAKSHMI', 'Female', '2014-10-27', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7013597392', 1, '2-7013597392@gmail.com', 109, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:43', NULL),
+(110, '281341008300109', '2023-07-03', 'THOTA', 'POOJITHA', 'Female', '2013-11-01', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7036167491', 1, '2-7036167491@gmail.com', 110, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:43', NULL),
+(111, '281341008300119', '2022-08-18', 'GEDELA', 'ANIL', 'male', '2015-12-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '7330963256', 1, '2-7330963256@gmail.com', 111, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:07:43', NULL),
+(112, '281341008300117', '2021-09-25', 'KOTHALANKA', 'MOKSHITHA DURGA', 'Female', '2014-12-13', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7842106285', 1, '2-7842106285@gmail.com', 112, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(113, '281341008300110', '2020-12-14', 'SUNKARA', 'SUBRA JOSHITH', 'Male', '2014-11-27', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8978990532', 1, '2-8978990532@gmail.com', 113, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(114, '281341008300116', '2020-12-14', 'KOTTALI', 'NAGA VENKATA SAI KUMAR', 'Male', '2014-04-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010662352', 1, '9010662352@gmail.com', 114, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(115, '281341008300128', '2020-12-12', 'ADARI', 'ESHITHA CHANDU', 'Female', '2014-04-30', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9391677571', 1, '2-9391677571@gmail.com', 115, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(116, '281341008300124', '2022-07-25', 'BODDAPU', 'HEMASRI', 'Female', '2015-01-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9494182143', 1, '2-9494182143@gmail.com', 116, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(117, '281341008300120', '2020-12-12', 'GANDIBOIYANA', 'GUNASHEKAR', 'Male', '2013-06-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9505764618', 1, '4-9505764618@gmail.com', 117, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(118, '281341008300118', '2020-12-12', 'KARRI', 'TEJA', 'Male', '2014-03-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9676513709', 1, '9676513709@gmail.com', 118, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(119, '281341008300112', '2020-12-14', 'SANAPALA', 'BHAVYA SRI', 'Female', '2014-03-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951394205', 1, '2-9951394205@gmail.com', 119, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(120, '281341008300127', '2022-07-23', 'ADARI', 'JAHNAVI', 'Female', '2015-02-16', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7852936023', 1, '7852936023@gmail.com', 120, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:44', NULL),
+(121, '281341008300126', '2020-12-12', 'BANDAM', 'SHANWITH KUMAR', 'Male', '2014-02-18', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8096786566', 1, '8096786566@gmail.com', 121, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(122, '281341008300115', '2021-09-16', 'PILLA', 'GIRI VENKATA ADITYA', 'Male', '2014-07-15', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9246608563', 1, '9246608563@gmail.com', 122, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(123, '281341008300108', '2020-12-12', 'VEMAVARAPU', 'NAGA AKSHAYA', 'Female', '2014-04-18', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9291294044', 1, '9291294044@gmail.com', 123, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(124, '281341008300114', '2024-06-12', 'PILLA', 'PRENEETH', 'Male', '2015-05-28', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9502486819', 1, '9502486819@gmail.com', 124, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(125, '281341008300123', '2022-07-19', 'BODDAPU', 'JASIKA', 'Female', '2015-09-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9640692666', 1, '9640692666@gmail.com', 125, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(126, '281341008300129', '2019-12-14', 'ADAPAKA', 'HEMA JSHOTHNA', 'Female', '2013-09-02', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9676731210', 1, '9676731210@gmail.com', 126, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(127, '281341008300113', '2020-12-14', 'PILLI', 'LEELA MOHAN', 'Male', '2014-10-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9705103605', 1, '9705103605@gmail.com', 127, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(128, '281341008300111', '2022-07-16', 'SUNDARAPU', 'POORNA SAI', 'Male', '2014-07-05', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9849589046', 1, '9849589046@gmail.com', 128, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(129, '281341008300125', '2022-09-22', 'BARRI', 'VINAY', 'Male', '2014-06-25', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9948377855', 1, '9948377855@gmail.com', 129, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:07:45', NULL),
+(130, '281341008300136', '2021-09-13', 'RAYI', 'ROSHINI', 'Female', '2015-05-19', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7036815898', 1, '7036815898@gmail.com', 130, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:15', NULL),
+(131, '281341008300137', '2022-07-23', 'RAYAVARAPU', 'PUSHPASRI', 'Female', '2016-03-23', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7702244022', 1, '7702244022@gmail.com', 131, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:15', NULL),
+(132, '281341008300138', '2022-07-19', 'PILLA', 'GHEETA SRI', 'Female', '2014-12-26', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7842285739', 1, '2-7842285739@gmail.com', 132, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:15', NULL),
+(133, '281341008300158', '2021-09-20', 'BESETTI', 'INDUMATHI', 'Female', '2015-03-13', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7995129866', 1, '7995129866@gmail.com', 133, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:15', NULL),
+(134, '281341008300165', '2021-09-16', 'ADARI', 'HASWANTH', 'Male', '2015-01-06', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010627270', 1, '4-9010627270@gmail.com', 134, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:15', NULL),
+(135, '281341008300164', '2021-02-09', 'ADARI', 'LOKESH NAIDU', 'Male', '2015-09-30', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9492942285', 1, '2-9492942285@gmail.com', 135, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(136, '281341008300133', '2022-07-20', 'SUNDARAPU', 'RUTHVIK', 'Male', '2016-08-09', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9505741559', 1, '2-9505741559@gmail.com', 136, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(137, '281341008300160', '2022-08-27', 'BATTHINA', 'POORNACHANDU', 'Male', '2016-06-14', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9542968498', 1, '2-9542968498@gmail.com', 137, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(138, '281341008300132', '2022-07-11', 'SURISETTI', 'UDAY', 'Male', '2015-08-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652185635', 1, '2-9652185635@gmail.com', 138, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(139, '281341008300167', '2021-09-18', 'AAVUPATI', 'TULASI', 'Female', '2015-06-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652303920', 1, '9652303920@gmail.com', 139, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(140, '281341008300166', '2021-09-18', 'AAVUPATI', 'TULASI RAM', 'Male', '2015-06-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652303920', 1, '2-9652303920@gmail.com', 140, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(141, '281341008300145', '2021-09-17', 'KASIMKOTA', 'DEEKSHITHA', 'Female', '2015-06-10', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9676973727', 1, '2-9676973727@gmail.com', 141, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(142, '281341008300147', '2024-06-17', 'KARANAM', 'KUSUMANTH', 'Male', '2015-11-28', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9704603781', 1, '2-9704603781@gmail.com', 142, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(143, '281341008300154', '2022-07-23', 'CHEBROLU', 'TEJA SREE', 'Female', '2015-09-04', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9848154220', 1, '4-9848154220@gmail.com', 143, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(144, '281341008300141', '2021-09-28', 'PANCHADARLA', 'POOJA NAGARATNA SRI', 'Female', '2015-11-07', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9866046576', 1, '4-9866046576@gmail.com', 144, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:16', NULL),
+(145, '281341008300149', '2022-07-16', 'GOWTHU', 'JOHN PAUL', 'Male', '2016-09-14', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9154614328', 1, '2-9951142086@gmail.com', 145, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(146, '281341008300163', '2021-09-13', 'AGRAHARAPU', 'UMA VINAY SANKAR', 'Male', '2015-09-04', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951513766', 1, '2-9951513766@gmail.com', 146, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(147, '281341008300134', '2024-05-29', 'SIGIREDDI', 'PRASANTH KUMAR', 'Male', '2016-06-13', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9989629658', 1, '9989629658@gmail.com', 147, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(148, '281341008300130', '2021-09-21', 'VEESAM', 'THARUN SAI RAM', 'Male', '2015-02-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '6309519060', 1, '6309519060@gmail.com', 148, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(149, '281341008300139', '2021-04-08', 'PENAGANTI', 'DIVYA', 'Female', '2015-10-24', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7032508984', 1, '7032508984@gmail.com', 149, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(150, '281341008300155', '2021-09-16', 'BODDETI', 'BENITH SRI RAM', 'Male', '2015-07-03', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7032993032', 1, '7032993032@gmail.com', 150, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(151, '281341008300143', '2023-07-05', 'NAMMI', 'SRAVAN KUMAR', 'Male', '2015-08-28', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7287001353', 1, '7287001353@gmail.com', 151, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(152, '281341008300131', '2024-06-27', 'ULLI', 'GUNAVARDHAN', 'Male', '2015-09-25', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7396981268', 1, '7396981268@gmail.com', 152, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(153, '281341008300142', '2024-06-29', 'NANEPALLI', 'THANU SRI', 'Female', '2016-02-02', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '7799209077', 1, '7799209077@gmail.com', 153, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:17', NULL),
+(154, '281341008300148', '2022-08-16', 'KAKADA', 'CHANIKYA SAI CHAITANYA PRASAD', 'Male', '2015-09-28', 'Hindus', '2-SC', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '8106601774', 1, '8106601774@gmail.com', 154, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(155, '281341008300152', '2022-07-21', 'DULI', 'VINAY', 'Male', '2014-10-04', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8106757235', 1, '8106757235@gmail.com', 155, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(156, '281341008300135', '2023-07-20', 'SADARAM', 'JOSHITHA SAI NOOKAMBIKA', 'Female', '2016-04-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8121549919', 1, '8121549919@gmail.com', 156, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(157, '281341008300153', '2021-09-29', 'CHIPPADA', 'TARUN CHINNI SAI', 'Male', '2014-02-20', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010407313', 1, '9010407313@gmail.com', 157, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(158, '281341008300159', '2021-09-20', 'BESETTI', 'HEMALATHA', 'Female', '2015-01-06', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010969935', 1, '9010969935@gmail.com', 158, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(159, '281341008300144', '2022-07-25', 'KODIGUDDU', 'UHA SRI', 'Female', '2016-02-15', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9014439390', 1, '9014439390@gmail.com', 159, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(160, '281341008300156', '2024-07-28', 'BODDAPU', 'MOHITH', 'Male', '2015-04-30', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9030738322', 1, '9030738322@gmail.com', 160, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(161, '281341008300162', '2021-09-18', 'ATIKINASETTI', 'GANESH VENKAT', 'Male', '2015-05-11', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9104312185', 1, '9104312185@gmail.com', 161, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(162, '281341008300161', '2021-09-16', 'ATIKINASETTI', 'RISHMITHA', 'Female', '2014-11-19', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9177902989', 1, '9177902989@gmail.com', 162, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(163, '281341008300151', '2022-07-26', 'DUNGA', 'MOHIT', 'Male', '2015-01-10', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9298803775', 1, '9298803775@gmail.com', 163, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:18', NULL),
+(164, '281341008300146', '2021-09-06', 'KARRI', 'CHAITANYA', 'Male', '2014-11-06', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9542764524', 1, '9542764524@gmail.com', 164, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:19', NULL),
+(165, '281341008300140', '2021-09-20', 'PANDURI', 'ROHIT', 'Male', '2015-09-16', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9542781682', 1, '9542781682@gmail.com', 165, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:19', NULL),
+(166, '281341008300157', '2021-09-22', 'BHEMARASETTI', 'REVATI ROHINI', 'Female', '2014-10-24', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652042349', 1, '9652042349@gmail.com', 166, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:19', NULL),
+(167, '281341008300150', '2021-09-13', 'GEDELA', 'KIRAN', 'Male', '2016-01-21', 'Hindus', '4-OBC', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '9951371150', 1, '9951371150@gmail.com', 167, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:19', NULL),
+(168, '281341008300193', '2023-07-01', 'DUNGA', 'BHUVANA', 'Female', '2016-08-14', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7013597392', 1, '7013597392@gmail.com', 168, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:50', NULL),
+(169, '281341008300170', '2023-07-04', 'THOTA', 'SWATHI', 'Female', '2016-12-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7036167491', 1, '7036167491@gmail.com', 169, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:50', NULL),
+(170, '281341008300188', '2023-06-24', 'KOTHALANKA', 'YAMINI', 'Female', '2016-11-30', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7842106285', 1, '7842106285@gmail.com', 170, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:50', NULL),
+(171, '281341008300174', '2020-07-15', 'RAIVADA', 'PRAVEEN', 'Male', '2015-09-14', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7842986512', 1, '7842986512@gmail.com', 171, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:50', NULL),
+(172, '281341008300171', '2024-06-22', 'TANTAPUREDDI', 'BHARATH', 'Male', '2017-07-01', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8096178700', 1, '8096178700@gmail.com', 172, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:50', NULL),
+(173, '281341008300189', '2022-07-16', 'KORIBILLI', 'JEEVAN GOWRI', 'Female', '2016-04-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8374842246', 1, '2-8374842246@gmail.com', 173, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(174, '281341008300181', '2022-07-11', 'PANDURU', 'DILEEP KUMAR', 'Male', '2016-08-20', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8464952227', 1, '2-8464952227@gmail.com', 174, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(175, '281341008300197', '2022-07-19', 'ARIGELA', 'SUHAS PRINCE', 'Male', '2015-09-06', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8978409728', 1, '4-8978409728@gmail.com', 175, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(176, '281341008300178', '2022-07-01', 'PANDURU', 'PAVAN KUMAR', 'Male', '2016-09-03', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9010520776', 1, '2-9010520776@gmail.com', 176, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(177, '281341008300199', '2022-07-06', 'ADAPAKA', 'LOVA', 'Male', '2015-12-06', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9618813610', 1, '2-9618813610@gmail.com', 177, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(178, '281341008300182', '2022-07-05', 'PANDURU', 'DHANUSH', 'Male', '2016-06-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9640204300', 1, '9640204300@gmail.com', 178, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(179, '281341008300195', '2022-07-16', 'DULI', 'HARSHINI', 'Female', '2017-06-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9666984226', 1, '9666984226@gmail.com', 179, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(180, '281341008300194', '2023-06-19', 'DULI', 'HARSHITHA', 'Female', '2017-06-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9666984226', 1, '2-9666984226@gmail.com', 180, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(181, '281341008300168', '2022-07-23', 'YELLAPU', 'VENU VISHAL', 'Male', '2015-12-24', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9704909148', 1, '4-9704909148@gmail.com', 181, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:51', NULL),
+(182, '281341008300186', '2022-07-12', 'MADAKA', 'RAJUKUMAR', 'Male', '2016-06-22', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9705966886', 1, '2-9705966886@gmail.com', 182, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(183, '281341008300192', '2022-07-06', 'JAKKA', 'SUJAY NAGA SANDEEP', 'Male', '2016-07-23', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9948476424', 1, '9948476424@gmail.com', 183, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(184, '281341008300172', '2023-06-24', 'SANAPALA', 'ROSHAN', 'Male', '2016-08-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951394205', 1, '9951394205@gmail.com', 184, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(185, '281341008300176', '2023-07-06', 'PEELA', 'ESWAR CHARAN', 'Male', '2017-07-19', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951442954', 1, '2-9951442954@gmail.com', 185, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(186, '281341008300180', '2022-07-27', 'PANDURU', 'KARUN TEJA', 'Male', '2015-11-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '6301413478', 1, '6301413478@gmail.com', 186, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(187, '281341008300187', '2023-06-01', 'MADAKA', 'DEVI', 'Female', '2016-09-22', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7075308322', 1, '7075308322@gmail.com', 187, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(188, '281341008300198', '2022-07-04', 'ADARI', 'NIHARIKA', 'Female', '2016-05-22', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7416964199', 1, '7416964199@gmail.com', 188, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(189, '281341008300196', '2023-07-03', 'BODDAPU', 'TEJA', 'Male', '2015-08-21', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7842762133', 1, '7842762133@gmail.com', 189, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(190, '281341008300191', '2022-07-18', 'KALAVALAPALLI', 'KESAVA', 'Male', '2015-11-01', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '7997110833', 1, '7997110833@gmail.com', 190, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(191, '281341008300169', '2022-07-25', 'YARAKAM', 'CHARNJEETH', 'Male', '2016-06-01', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8333873443', 1, '8333873443@gmail.com', 191, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:52', NULL),
+(192, '281341008300190', '2022-07-06', 'KATTUMURI', 'NANSIPRIYA', 'Female', '2016-07-09', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8978876044', 1, '8978876044@gmail.com', 192, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(193, '281341008300173', '2022-07-02', 'RAPETI', 'SURYA SATHVIK', 'Male', '2016-02-10', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9299002230', 1, '9299002230@gmail.com', 193, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(194, '281341008300179', '2022-07-27', 'PANDURU', 'MANOJ', 'Male', '2014-02-15', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9362880287', 1, '9362880287@gmail.com', 194, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL);
+INSERT INTO `student` (`id`, `register_no`, `admission_date`, `first_name`, `last_name`, `gender`, `birthday`, `religion`, `caste`, `blood_group`, `mother_tongue`, `current_address`, `permanent_address`, `city`, `state`, `mobileno`, `category_id`, `email`, `parent_id`, `route_id`, `vehicle_id`, `hostel_id`, `room_id`, `previous_details`, `photo`, `created_at`, `updated_at`) VALUES
+(195, '281341008300177', '2022-07-06', 'PATNALA', 'RANJITH', 'Male', '2016-08-08', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9701489026', 1, '9701489026@gmail.com', 195, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(196, '281341008300175', '2022-07-14', 'PULI', 'ROHAN', 'male', '2016-04-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9704005713', 1, '9704005713@gmail.com', 196, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:08:53', NULL),
+(197, '281341008300183', '2022-07-02', 'PANDURI', 'PURNA MANI SEKHAR', 'Male', '2015-12-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9849839760', 1, '9849839760@gmail.com', 197, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(198, '281341008300184', '2023-07-05', 'NAMMI', 'MOHAN KARTHIK', 'Male', '2016-11-22', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9888111123', 1, '9888111123@gmail.com', 198, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(199, '281341008300185', '2022-07-14', 'MARISETTY', 'DINESH', 'Male', '2016-07-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9989847163', 1, '9989847163@gmail.com', 199, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:08:53', NULL),
+(200, '281341008300222', '2023-07-22', 'DHANALAKOTA', 'AMRUTHA', 'Female', '2017-02-14', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '6305002520', 1, '6305002520@gmail.com', 200, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:22', NULL),
+(201, '281341008300209', '2024-07-09', 'PILLA', 'YASHWANTH', 'Male', '2017-07-06', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7842285739', 1, '7842285739@gmail.com', 201, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:22', NULL),
+(202, '281341008300213', '2023-06-21', 'PANDURU', 'GOPI CHAND', 'Male', '2017-07-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8179317063', 1, '2-8179317063@gmail.com', 202, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:22', NULL),
+(203, '281341008300223', '2023-06-26', 'BUDHA', 'USHA SRI', 'Female', '2018-06-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8367021664', 1, '2-8367021664@gmail.com', 203, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:22', NULL),
+(204, '281341008300218', '2023-06-05', 'KORIBILLI', 'VAITHARANI', 'Female', '2017-08-17', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8374842246', 1, '8374842246@gmail.com', 204, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:22', NULL),
+(205, '281341008300211', '2023-06-06', 'PANDURU', 'YASWANTH', 'Male', '2018-04-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9010520776', 1, '9010520776@gmail.com', 205, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(206, '281341008300230', '2023-07-03', 'ADARI', 'SARIKA', 'Female', '2017-03-26', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010627270', 1, '9010627270@gmail.com', 206, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(207, '281341008300226', '2023-06-23', 'BAMMIDI', 'SHANMUKH', 'Male', '2016-10-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9030225143', 1, '9030225143@gmail.com', 207, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(208, '281341008300214', '2023-06-26', 'PANDURU', 'DURGA SRINUVASU', 'Male', '2017-02-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9160796620', 1, '2-9160796620@gmail.com', 208, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(209, '281341008300229', '2023-06-01', 'ADARI', 'VASIVI', 'Female', '2017-05-26', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9391677571', 1, '9391677571@gmail.com', 209, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(210, '281341008300215', '2024-09-25', 'PALAVALASA', 'NIHAL NANDHAN', 'Male', '2018-08-19', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9505055278', 1, '9505055278@gmail.com', 210, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(211, '281341008300219', '2023-07-10', 'KARANAM', 'MANASA', 'Female', '2018-03-29', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9704603781', 1, '9704603781@gmail.com', 211, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(212, '281341008300210', '2023-06-21', 'PEDAPUDI', 'YOGEESHWAR', 'Male', '2017-10-24', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848732892', 1, '2-9848732892@gmail.com', 212, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(213, '281341008300203', '2023-07-04', 'SURAKASULA', 'HARSHIN', 'Male', '2016-10-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9849647308', 1, '4-9849647308@gmail.com', 213, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:23', NULL),
+(214, '281341008300202', '2023-03-26', 'SURISETTI', 'DINNU HARSHITH', 'Male', '2017-08-21', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9948795459', 1, '2-9948795459@gmail.com', 214, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(215, '281341008300228', '2023-06-24', 'AGRAHARAPU', 'TEJA RAM', 'Male', '2017-05-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951513766', 1, '9951513766@gmail.com', 215, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(216, '281341008300220', '2023-06-22', 'GEDELA', 'SRAVAN KUMAR', 'Male', '2017-06-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '7013861706', 1, '7013861706@gmail.com', 216, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(217, '281341008300216', '2023-07-06', 'MANDA', 'HEMA RITHIK', 'Male', '2016-03-19', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7093694116', 1, '7093694116@gmail.com', 217, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(218, '281341008300217', '2023-06-26', 'KORUKONDA', 'CHARVIK', 'Male', '2017-11-30', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '8008670182', 1, '8008670182@gmail.com', 218, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(219, '281341008300201', '2023-06-23', 'THANAKALA', 'CHARANYA SRI', 'Female', '2016-11-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8008832559', 1, '8008832559@gmail.com', 219, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(220, '281341008300200', '2023-07-04', 'VAIDARSHI', 'LOHITH KUMAR', 'Male', '2017-12-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8309137734', 1, '8309137734@gmail.com', 220, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(221, '281341008300212', '2024-07-27', 'PANDURU', 'SINDHU SRI', 'Female', '2017-07-13', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9010503244', 1, '9010503244@gmail.com', 221, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(222, '281341008300224', '2023-07-03', 'BODDETI', 'SYAM KISHORE', 'Male', '2017-07-15', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9177491444', 1, '9177491444@gmail.com', 222, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(223, '281341008300208', '2024-06-16', 'PILLI', 'PAVAN', 'Male', '2016-09-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9347609083', 1, '9347609083@gmail.com', 223, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:24', NULL),
+(224, '281341008300227', '2023-07-03', 'ATIKINASETTI', 'varshitha', 'Female', '2017-04-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9390570920', 1, '9390570920@gmail.com', 224, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(225, '281341008300206', '2023-07-22', 'RANDI', 'APPALA BHASKAR', 'Male', '2016-12-02', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '9398992438', 1, '9398992438@gmail.com', 225, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(226, '281341008300225', '2023-06-26', 'BANDAM', 'HEMA ADITHYA', 'Male', '2016-07-06', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9542230029', 1, '9542230029@gmail.com', 226, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(227, '281341008300205', '2023-06-14', 'SENAPATHI', 'PARNIKA', 'Female', '2017-11-14', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9666994419', 1, '9666994419@gmail.com', 227, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(228, '281341008300221', '2023-06-26', 'DWARAPUREDDY', 'VENKATA SIVA NAGA MANI', 'Female', '2016-12-21', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9912442434', 1, '9912442434@gmail.com', 228, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(229, '281341008300204', '2023-06-23', 'SOMALA', 'UHA SRI', 'Female', '2017-04-28', 'Hindus', '2-SC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9963284086', 1, '9963284086@gmail.com', 229, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(230, '281341008300207', '2023-06-01', 'PYDADA', 'HIMESH SAI', 'Male', '2017-05-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9985438236', 1, '4-9985438236@gmail.com', 230, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:25', NULL),
+(231, '281341008300247', '2024-06-28', 'MALLA', 'JAYA SRI DURGA', 'female', '2018-09-20', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7680814766', 1, '2-7680814766@gmail.com', 231, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(232, '281341008300242', '2024-07-08', 'PANDURU', 'JHANSI SRI', 'female', '2018-09-05', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8464952227', 1, '8464952227@gmail.com', 232, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(233, '281341008300267', '2024-06-20', 'BANDI', 'VEDANT', 'Male', '2018-12-22', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8688060350', 1, '8688060350@gmail.com', 233, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(234, '281341008300233', '2024-07-26', 'TANTAPUREDDI', 'MOUNISA', 'female', '2017-12-09', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8919848921', 1, '8919848921@gmail.com', 234, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(235, '281341008300254', '2024-06-27', 'KADIMI', 'HARSHA', 'male', '2018-07-14', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8978034400', 1, '4-8978034400@gmail.com', 235, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(236, '281341008300240', '2024-06-24', 'POLLAROUTHU', 'LOHITH', 'male', '2018-07-08', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9052938337', 1, '9052938337@gmail.com', 236, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(237, '281341008300266', '2024-07-09', 'BANDI', 'YASHVIN', 'Male', '2018-06-26', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9177930668', 1, '9177930668@gmail.com', 237, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(238, '281341008300235', '2024-07-26', 'SUNDARAPU', 'BHAVISHYA', 'female', '2018-11-12', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9505741559', 1, '9505741559@gmail.com', 238, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(239, '281341008300270', '2024-07-23', 'ADIDAM', 'DURGA PRASAD', 'Male', '2017-03-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9553424007', 1, '9553424007@gmail.com', 239, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:53', NULL),
+(240, '281341008300272', '2024-06-27', 'ADAPAKA', 'UMA SHANKAR', 'Male', '2017-12-30', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9618813610', 1, '9618813610@gmail.com', 240, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(241, '281341008300234', '2024-07-08', 'SURISETTI', 'GRESHMITHA', 'female', '2018-07-30', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9652185635', 1, '9652185635@gmail.com', 241, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(242, '281341008300252', '2024-07-10', 'KASIMKOTA', 'ROHINI', 'female', '2017-12-14', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9676973727', 1, '9676973727@gmail.com', 242, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(243, '281341008300248', '2024-07-25', 'MADAKA', 'RAJESH', 'male', '2017-11-11', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9705966886', 1, '9705966886@gmail.com', 243, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(244, '281341008300268', '2024-06-26', 'ATIKINASETTY', 'DHANUSH', 'Male', '2018-10-16', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848839769', 1, '9848839769@gmail.com', 244, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(245, '281341008300236', '2024-06-17', 'SHAIK', 'RUHE THASHNIN', 'female', '2017-09-21', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9908259785', 1, '4-9908259785@gmail.com', 245, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(246, '281341008300269', '2024-06-26', 'APPIKONDA', 'UPENDRA CHANIKYA', 'Male', '2018-10-24', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9908676042', 1, '9908676042@gmail.com', 246, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(247, '281341008300255', '2024-07-09', 'GOUTHU', 'KIRAN PAUL', 'male', '2018-09-16', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9951142086', 1, '9951142086@gmail.com', 247, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(248, '281341008300241', '2024-06-24', 'PATALA', 'YESASWANI', 'female', '2017-11-21', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7416693542', 1, '7416693542@gmail.com', 248, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(249, '281341008300257', '2024-06-28', 'GANTLA', 'RAHUL KUMAR', 'male', '2018-08-15', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '7569129569', 1, '7569129569@gmail.com', 249, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:54', NULL),
+(250, '281341008300264', '2024-07-23', 'BODDAPU', 'PUNITH', 'Male', '2018-03-31', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7993672897', 1, '7993672897@gmail.com', 250, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(251, '281341008300260', '2024-07-11', 'DADI', 'KIRANMAI', 'female', '2019-07-29', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8008775550', 1, '8008775550@gmail.com', 251, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(252, '281341008300231', '2024-06-29', 'VEMAVARAPU', 'SHARANYA', 'female', '2018-09-25', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8096488808', 1, '8096488808@gmail.com', 252, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(253, '281341008300243', '2024-06-14', 'PANDURI', 'PAVANI', 'female', '2017-12-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8106682547', 1, '8106682547@gmail.com', 253, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(254, '281341008300250', '2024-07-10', 'KONA', 'YASHWANTH', 'male', '2017-12-30', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '8121445618', 1, '8121445618@gmail.com', 254, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(255, '281341008300246', '2024-07-10', 'MARISA', 'KUSHVANTH KUMAR', 'male', '2018-07-12', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8179569465', 1, '8179569465@gmail.com', 255, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(256, '281341008300244', '2024-05-06', 'ADARI', 'NISHIKANTH', 'male', '2018-09-15', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8247342691', 1, '8247342691@gmail.com', 256, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(257, '281341008300237', '2024-06-28', 'SANAPATHI', 'THUSHAR', 'male', '2019-01-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9000157419', 1, '9000157419@gmail.com', 257, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(258, '281341008300263', '2024-06-15', 'BODDAPU', 'SAI PRANATHI', 'female', '2018-07-18', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9063585973', 1, '9063585973@gmail.com', 258, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(259, '281341008300265', '2024-07-11', 'BODDAPU', 'LOKESH', 'Male', '2018-02-22', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9121686237', 1, '9121686237@gmail.com', 259, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:55', NULL),
+(260, '281341008300256', '2024-06-26', 'GORLI', 'PALLAVI', 'female', '2018-07-17', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9177830463', 1, '9177830463@gmail.com', 260, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(261, '281341008300238', '2024-06-26', 'SANAPATHI', 'SATHWIK', 'male', '2018-10-20', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9247323361', 1, '9247323361@gmail.com', 261, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(262, '281341008300262', '2024-07-23', 'BODDAPU', 'SHALINI', 'female', '2018-03-31', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9290965143', 1, '9290965143@gmail.com', 262, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(263, '281341008300253', '2024-06-10', 'KARANAM', 'HEMGOWTHAM', 'male', '2018-09-07', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9550828878', 1, '9550828878@gmail.com', 263, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(264, '281341008300239', '2024-06-26', 'RAPETI', 'HARSHA VARDHAN', 'male', '2018-05-20', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9553690572', 1, '9553690572@gmail.com', 264, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(265, '281341008300261', '2024-06-16', 'CHALAPAKA', 'RISHIKA', 'female', '2018-01-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9640001399', 1, '9640001399@gmail.com', 265, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(266, '281341008300245', '2024-06-29', 'NANEPALLI', 'THARUN SAI', 'male', '2017-10-21', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9652821517', 1, '9652821517@gmail.com', 266, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(267, '281341008300249', '2024-07-26', 'KOTNI', 'ROOPA DEVI', 'female', '2017-08-20', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9666641034', 1, '9666641034@gmail.com', 267, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(268, '281341008300259', '2024-06-13', 'DULI', 'VARNIKA', 'female', '2018-10-27', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9701218794', 1, '9701218794@gmail.com', 268, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:56', NULL),
+(269, '281341008300232', '2024-06-29', 'THANAKALA', 'NOVICK', 'male', '2018-05-03', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9704725823', 1, '9704725823@gmail.com', 269, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:57', NULL),
+(270, '281341008300258', '2024-07-09', 'GALLA', 'YOGITHA', 'female', '2017-09-01', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9848421818', 1, '9848421818@gmail.com', 270, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:57', NULL),
+(271, '281341008300251', '2024-07-11', 'KATTUBOINA', 'AADYA', 'female', '2018-07-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9887832293', 1, '9887832293@gmail.com', 271, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:57', NULL),
+(272, '281341008300271', '2024-06-06', 'ADARI', 'UDAY', 'Male', '2018-09-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9966334199', 1, '9966334199@gmail.com', 272, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:09:57', NULL),
+(273, '281341008300285', '2024-06-24', 'GEDALA', 'DHANUSH', 'Male', '2018-11-12', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', 'kalavalapalli', 'kalavalapalli', 'A.P', '7330963256', 1, '7330963256@gmail.com', 273, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:38', NULL),
+(274, '281341008300294', '2023-06-24', 'ADARI', 'GEETHIKA NANDINI', 'female', '2019-01-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7893093762', 1, '7893093762@gmail.com', 274, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:38', NULL),
+(275, '281341008300281', '2024-06-21', 'PANDURU', 'CHARAN', 'Male', '2019-10-14', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8179317063', 1, '8179317063@gmail.com', 275, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:38', NULL),
+(276, '281341008300288', '2024-06-14', 'BUDHA', 'SUMA SRI', 'female', '2019-09-12', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8367021664', 1, '8367021664@gmail.com', 276, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:38', NULL),
+(277, '281341008300292', '2022-07-07', 'ARIGELA', 'JESSY', 'female', '2018-10-18', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8978409728', 1, '8978409728@gmail.com', 277, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(278, '281341008300275', '2023-07-12', 'SUNKARA', 'SHANMUKHA PRANITHA', 'female', '2019-01-26', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8978990532', 1, '8978990532@gmail.com', 278, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(279, '281341008300280', '2022-07-30', 'PANDURU', 'PRUDHVI RAJ', 'Male', '2018-12-29', 'Hindus', '4-OBC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9160796620', 1, '9160796620@gmail.com', 279, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(280, '281341008300289', '2022-07-06', 'BODDAPU', 'THANISH', 'Male', '2018-10-12', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9494182143', 1, '9494182143@gmail.com', 280, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(281, '281341008300290', '2022-07-07', 'BATTINA', 'JAYA RAJU', 'Male', '2018-03-13', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9542968498', 1, '9542968498@gmail.com', 281, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(282, '281341008300273', '2024-06-15', 'YELLAPU', 'DHARANI SATYAVATHI', 'female', '2019-02-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9704909148', 1, '9704909148@gmail.com', 282, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(283, '281341008300279', '2024-06-23', 'PEDAPUDI', 'BHAVYA SRI', 'female', '2019-02-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848732892', 1, '9848732892@gmail.com', 283, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(284, '281341008300274', '2022-07-06', 'SURISETTI', 'SRIRAM VARSHITH', 'Male', '2019-06-03', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9948795459', 1, '9948795459@gmail.com', 284, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(285, '281341008300277', '2024-07-10', 'PEELA', 'USHASRI', 'female', '2019-07-27', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9951442954', 1, '9951442954@gmail.com', 285, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:39', NULL),
+(286, '281341008300293', '2023-07-12', 'ADARI', 'VENU VARDHAN', 'Male', '2019-04-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7075599876', 1, '7075599876@gmail.com', 286, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(287, '281341008300286', '2023-07-11', 'DWARAPUDI', 'RANVITHA BLESSY', 'female', '2019-02-23', 'Hindus', '4-OBC', '', 'Telugu', 'kothapallem', 'kothapallem', 'Kothapallem', 'A.P', '7093707052', 1, '7093707052@gmail.com', 287, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(288, '281341008300284', '2024-06-16', 'KODUGUDDU', 'SOMESH KARTHIK', 'Male', '2019-10-11', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8121410125', 1, '8121410125@gmail.com', 288, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(289, '281341008300278', '2024-06-14', 'PEDAPUDI', 'SAHITHI', 'female', '2019-02-06', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '8555934623', 1, '8555934623@gmail.com', 289, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(290, '281341008300291', '2024-06-14', 'BANGARI', 'NIKHILESWARI', 'female', '2019-10-30', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9247327037', 1, '9247327037@gmail.com', 290, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(291, '281341008300287', '2024-06-15', 'DANTLA', 'YASHASWINI', 'female', '2019-04-23', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9247908729', 1, '9247908729@gmail.com', 291, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(292, '281341008300276', '2024-06-10', 'SADI', 'REVATHI', 'female', '2019-02-10', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '9293244365', 1, '9293244365@gmail.com', 292, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(293, '281341008300282', '2024-06-22', 'MOTUKURI', 'SAKETH KUMAR', 'Male', '2018-02-14', 'Hindus', '2-SC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9398399551', 1, '9398399551@gmail.com', 293, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(294, '281341008300295', '2023-07-12', 'ADARI', 'DHARSHAK', 'Male', '2019-02-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9666062613', 1, '9666062613@gmail.com', 294, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(295, '281341008300283', '2024-07-13', 'MONDETI', 'DHEERAJ KUMAR', 'Male', '2019-08-18', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9666533748', 1, '9666533748@gmail.com', 295, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:10:40', NULL),
+(296, '281341008300301', '2023-07-20', 'MALLA', 'VENKATA SATYA SHIVA GANESH', 'Male', '2020-03-07', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7680814766', 1, '7680814766@gmail.com', 296, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(297, '281341008300303', '2024-08-22', 'KADIMI', 'SRI NIDHI', 'female', '2020-02-09', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8978034400', 1, '8978034400@gmail.com', 297, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(298, '281341008300306', '2023-09-07', 'ADARI', 'YODHAKSHI', 'female', '2020-03-16', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9492942285', 1, '9492942285@gmail.com', 298, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(299, '281341008300298', '2024-09-11', 'POTHALA', 'NAMRATHA', 'female', '2019-05-19', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '6309036762', 1, '6309036762@gmail.com', 299, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(300, '281341008300308', '2023-09-10', 'ADARI', 'BALAJI', 'Male', '2020-09-24', 'Hindus', '4-OBC', 'A', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7032481088', 1, '7032481088@gmail.com', 300, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(301, '281341008300297', '2023-06-14', 'YELLAPU', 'AVINASH', 'Male', '2020-02-02', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '7995394584', 1, '7995394584@gmail.com', 301, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(302, '281341008300304', '2024-09-11', 'GANISETTI', 'LASYASRI', 'female', '2020-10-03', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'A.P', '8003707126', 1, '8003707126@gmail.com', 302, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(303, '281341008300307', '2023-06-19', 'ADARI', 'SHANMUKHA PRIYA', 'female', '2019-11-22', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9010233960', 1, '9010233960@gmail.com', 303, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(304, '281341008300305', '2023-09-09', 'CHODAVARAPU', 'LEELAVATHI', 'female', '2019-09-21', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9346504905', 1, '9346504905@gmail.com', 304, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:21', NULL),
+(305, '281341008300300', '2024-09-10', 'MANDALA', 'ROHIT DURGA JAYA KRISHNA', 'Male', '2020-07-28', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9603869696', 1, '9603869696@gmail.com', 305, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:22', NULL),
+(306, '281341008300299', '2023-09-09', 'PONNAGANTI', 'SATYA KIRAN', 'Male', '2020-10-05', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9701753256', 1, '9701753256@gmail.com', 306, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:22', NULL),
+(307, '281341008300296', '2023-09-07', 'YELLAPU', 'CHAVIKSHA', 'female', '2020-06-15', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9848424861', 1, '9848424861@gmail.com', 307, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:22', NULL),
+(308, '281341008300302', '2024-09-11', 'KARRI', 'SUVARNA', 'female', '2020-05-16', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', 'yelamanchili', 'Yelamanchili', 'A.P', '9989495494', 1, '9989495494@gmail.com', 308, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:11:22', NULL),
+(309, '281341008300323', '2024-06-21', 'BANDI', 'HENITHA', 'male', '2021-01-28', 'Hindus', 'OC', '', '', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '8688060350', 1, '2-8688060350@gmail.com', 309, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:07', NULL),
+(310, '281341008300310', '2024-06-24', 'POLAROUTHU', 'GUNA VARSHINI', 'male', '2020-09-28', 'Hindus', 'OC', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '9052938337', 1, '2-9052938337@gmail.com', 310, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:07', NULL),
+(311, '281341008300337', '2024-06-10', 'BANDI', 'HARSHA VARDHAN', 'MALE', '2020-06-22', 'Hindus', 'OC', '', 'Telugu', 'kattupalem', 'kattupalem', 'kattupalem', 'A.P', '9177930668', 1, '2-9177930668@gmail.com', 311, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:07', NULL),
+(312, '281341008300309', '2024-09-25', 'PALAVALASA', 'YASVITHA', 'FEMALE', '2020-10-21', 'Hindus', 'BC-B', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '9505055278', 1, '2-9505055278@gmail.com', 312, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:07', NULL),
+(313, '281341008300318', '2024-06-20', 'BATTHINA', 'DHARANI', 'male', '2019-07-16', 'Hindus', 'BC-D', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '9542968498', 1, '3-9542968498@gmail.com', 313, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:07', NULL),
+(314, '281341008300319', '2024-06-26', 'ATIKINASETTY', 'RESHMIKA', 'FEMALE', '2020-11-14', 'Hindus', 'BC-D', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '9848839769', 1, '2-9848839769@gmail.com', 314, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:07', NULL),
+(315, '281341008300335', '2024-06-13', 'APPIKONDA', 'LITHIK', 'male', '2020-10-04', 'Hindus', 'OC', '', 'Telugu', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '9908676042', 1, '2-9908676042@gmail.com', 315, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:07', NULL),
+(316, '281341008300312', '2024-07-14', 'PRAGADA', 'RUTHVIK DURGA', 'MALE', '2020-10-17', 'Hindus', 'OC', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '6300306871', 1, '6300306871@gmail.com', 316, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:07', NULL),
+(317, '281341008300311', '2024-08-21', 'G DHANA', 'DHANA SEKHAR', 'MALE', '2020-11-24', 'Hindus', 'OC', '', '', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '7036509148', 1, '7036509148@gmail.com', 317, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:07', NULL),
+(318, '281341008300330', '2024-06-18', 'GOPISETTI', 'HARSHA', 'male', '2020-08-16', 'Hindus', 'OC', '', 'Telugu', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '7036713810', 1, '7036713810@gmail.com', 318, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:08', NULL),
+(319, '281341008300325', '2024-06-19', 'SUNDARAPU', 'HARSHITH', 'FEMALE', '2020-08-17', 'Hindus', 'OC', '', '', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '7672064057', 1, '7672064057@gmail.com', 319, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:08', NULL),
+(320, '281341008300315', '2024-06-24', 'KOTTALA', 'BHAVYA SRI', 'MALE', '2021-02-08', 'Hindus', 'BC', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '7995479476', 1, '7995479476@gmail.com', 320, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:08', NULL),
+(321, '281341008300317', '2024-06-26', 'MEDISETTI', 'NIKHILESWAR', 'FEMALE', '2020-07-02', 'Hindus', 'BC-A', '', '', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '7997138125', 1, '7997138125@gmail.com', 321, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:08', NULL),
+(322, '281341008300322', '2024-07-18', 'GEDELA', 'SATHWIK', 'male', '2020-09-02', 'Hindus', 'OC', '', '', 'KALAVALAPALLI', 'KALAVALAPALLI', 'kalavalapalli', 'A.P', '8179009425', 1, '8179009425@gmail.com', 322, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:08', NULL),
+(323, '281341008300313', '2024-07-14', 'GANNAVARAPU', 'CHARITH LOCHAN', 'FEMALE', '2021-09-06', 'Hindus', 'BC-B', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '8367682812', 1, '8367682812@gmail.com', 323, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:08', NULL),
+(324, '281341008300332', '2024-06-12', 'UNDURU', 'RAVI KISHORE', 'male', '2019-09-30', 'Hindus', 'OC', '', 'Telugu', 'JANGULURU', 'JANGULURU', 'JANGULURU', 'A.P', '9000970293', 1, '9000970293@gmail.com', 324, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:08', NULL),
+(325, '281341008300321', '2024-06-21', 'NIMMADALA', 'UDAYA', 'male', '2020-09-08', 'Hindus', 'OC', '', '', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '9110584406', 1, '9110584406@gmail.com', 325, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:08', NULL),
+(326, '281341008300336', '2024-07-13', 'KARANAM', 'KNIKITHA', 'MALE', '2020-04-11', 'Hindus', 'OC', '', 'Telugu', 'YELAMANCHILLI', 'YELAMANCHILLI', 'Yelamanchili', 'A.P', '9177676967', 1, '9177676967@gmail.com', 326, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:08', NULL),
+(327, '281341008300329', '2024-06-15', 'ATTAMURI', 'SURENDRA', 'MALE', '2019-12-04', 'Hindus', 'OC', '', 'Telugu', 'YELAMANCHILLI', 'YELAMANCHILLI', '', 'A.P', '9398377698', 1, '9398377698@gmail.com', 327, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(328, '281341008300324', '2024-06-19', 'BARNIKALA', 'THANUSH', 'MALE', '2020-12-12', 'Hindus', 'BC-A', '', '', 'YELLAMANCHILI', 'YELLAMANCHILI', 'Yelamanchili', 'A.P', '9493637429', 1, '9493637429@gmail.com', 328, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(329, '281341008300334', '2024-06-14', 'ARLA', 'DRUVA', 'male', '2020-10-01', 'Hindus', 'BC-D', '', 'Telugu', 'SOMALINGAPALAM', 'SOMALINGAPALAM', 'SOMALINGAPALAM', 'A.P', '9542612266', 1, '9542612266@gmail.com', 329, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-06 20:12:09', NULL),
+(330, '281341008300333', '2024-06-12', 'MUCHAKORLA', 'NETRA', 'MALE', '2021-04-29', 'Hindus', 'OC', '', 'Telugu', 'PEDAPALLI', 'PEDAPALLI', 'pedapalli', 'A.P', '9550589819', 1, '9550589819@gmail.com', 330, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(331, '281341008300327', '2024-06-17', 'PANDURI', 'LIKSHITHA', 'FEMALE', '2021-12-18', 'Hindus', 'OC', '', 'Telugu', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '9618497312', 1, '9618497312@gmail.com', 331, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(332, '281341008300314', '2024-07-15', 'TANTAPUREDDY', 'AKSHAYA LEETHIKA', 'FEMALE', '2021-04-14', 'Hindus', 'BC-D', '', '', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '9652692183', 1, '9652692183@gmail.com', 332, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(333, '281341008300328', '2024-06-17', 'PANDURI', 'SRAVANI', 'MALE', '2020-12-18', 'Hindus', 'OC', '', 'Telugu', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '9701247031', 1, '9701247031@gmail.com', 333, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(334, '281341008300320', '2024-06-26', 'BANDI', 'DRUTHI', 'FEMALE', '2021-09-15', 'Hindus', 'OC', '', '', 'KATTUPALEM', 'KATTUPALEM', 'kattupalem', 'A.P', '9959881036', 1, '9959881036@gmail.com', 334, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(335, '281341008300331', '2024-06-13', 'DULI', 'TEJ VARDHAN', 'MALE', '2021-06-21', 'Hindus', 'BC-D', '', 'Telugu', 'YELAMANCHILLI', 'YELAMANCHILLI', 'Yelamanchili', 'A.P', '9963473745', 1, '9963473745@gmail.com', 335, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-06 20:12:09', NULL),
+(336, '281341008300018', '2023-06-23', 'AGRAHARAPU', 'DURGA PRASAD', 'Male', '2001-07-10', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', '', 'pedapalli', 'A.P', '7095100817', 0, '@gmail.com', 5, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:56:59', NULL),
+(337, '281341008300017', '2026-05-15', 'DADI', 'HEMA VINAY', 'Male', '2015-06-10', 'Hindus', '4-OBC', '', 'Telugu', 'kottapalam', '', 'kottapalam', 'A.P', '7036228968', 0, '@gmail.com', 4, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:56:59', NULL),
+(338, '281341008300016', '2025-03-21', 'DUNGA', 'GIRISH', 'Male', '2023-04-09', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', '', 'pedapalli', 'A.P', '9866093056', 0, '@gmail.com', 16, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:56:59', NULL),
+(339, '281341008300015', '2013-08-22', 'ESARAPU', 'MOHAN', 'Male', '2011-11-09', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', '', 'pedapalli', 'A.P', '9550899973', 0, '@gmail.com', 13, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:56:59', NULL),
+(340, '281341008300014', '2006-02-21', 'GAGANAM', 'HARSHITH', 'Male', '1970-01-01', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '9912498865', 0, '@gmail.com', 17, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:56:59', NULL),
+(341, '281341008300013', '2002-09-21', 'KALAVALAPALLI', 'ASWANI LASYA', 'Female', '2013-01-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'kalavalapalli', '', 'kalavalapalli', 'A.P', '9951493545', 0, '@gmail.com', 18, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(342, '281341008300012', '2002-08-22', 'KALIGATLA', 'VARUN', 'Male', '2015-05-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '9912196313', 0, '@gmail.com', 3, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(343, '281341008300011', '2023-06-16', 'KONA', 'KALYAN KRISHNA', 'Male', '2027-01-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '9390930960', 0, '@gmail.com', 11, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(344, '281341008300010', '2007-06-18', 'KONDAKANCHILI', 'BANU PRASAD', 'Male', '2001-01-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '7893758101', 0, '@gmail.com', 7, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(345, '281341008300009', '2021-06-17', 'KORIBILLI', 'LAKSHMI NARAYANA', 'Male', '2029-08-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '7416868166', 0, '@gmail.com', 6, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(346, '281341008300008', '2016-06-16', 'POLAROUTHU', 'LIKITHA', 'Female', '2023-01-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '9603966068', 0, '@gmail.com', 14, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(347, '281341008300007', '2024-06-16', 'RANGA', 'BHAVANI LAXMI VARA PRASAD', 'Male', '2027-02-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '8142120251', 0, '@gmail.com', 9, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(348, '281341008300006', '2023-06-23', 'SENAPATHI', 'KUMAR SWAMI', 'Male', '2015-08-09', 'Hindus', '1-GENERAL', '', 'Telugu', 'pedapalli', '', 'pedapalli', 'A.P', '9133755019', 0, '@gmail.com', 10, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(349, '281341008300005', '2018-06-16', 'SETTIBILLI', 'DURGA TEJASH', 'Male', '2029-04-10', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', '', 'kattupalem', 'A.P', '9849647308', 0, '@gmail.com', 1, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:00', NULL),
+(350, '281341008300004', '2020-09-21', 'SETTIBILLI', 'GIRI PRASAD', 'Male', '2004-02-11', 'Hindus', '1-GENERAL', '', 'Telugu', 'kattupalem', '', 'kattupalem', 'A.P', '9652804920', 0, '@gmail.com', 15, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:01', NULL),
+(351, '281341008300003', '2008-09-21', 'SHAIK', 'AMEER SOHEL KASIM', 'Male', '2002-06-10', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '9908259785', 0, '@gmail.com', 2, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:01', NULL),
+(352, '281341008300002', '2015-06-23', 'SUNDARAPU', 'JOGA SIDDU', 'Male', '2016-01-10', 'Hindus', '4-OBC', '', 'Telugu', 'pedapalli', '', 'pedapalli', 'A.P', '9441474510', 0, '@gmail.com', 12, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:01', NULL),
+(353, '281341008300001', '2014-06-16', 'YELLAPU', 'DEVA HARSHA', 'Male', '2014-05-09', 'Hindus', '4-OBC', '', 'Telugu', 'yelamanchili', '', 'Yelamanchili', 'A.P', '7997759706', 0, '@gmail.com', 8, 0, 0, 0, 0, NULL, 'defualt.png', '2025-06-08 17:57:01', NULL),
+(355, '2813410083000354', '2025-06-10', 'KATTUMURI', 'SATHWIK JOY', 'male', '2015-01-09', 'HINDU', 'SC', '', 'TELUGU', 'DIMILI ROAD,YELLAMANCHILI', 'DIMILI ROAD,YELLAMANCHILI', 'YELLAMANCHILI', 'AP', '8978876044', 1, '', 355, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-10 12:36:10', NULL),
+(356, '2813410083000356', '2025-06-11', 'CHIPPADA', 'KOMALI MANISIRISHA', 'female', '1970-01-01', 'HINDU', 'BC-B', '', 'TELUGU', 'DIMILI ROAD ,YELLAMANCHILI', 'DIMILI ROAD ,YELLAMANCHILI', 'YELLAMANCHILI', 'AP', '9010407313', 1, '', 157, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 04:36:02', NULL),
+(358, '2813410083000358', '2025-06-11', 'ADARI', 'SHASHANK', 'male', '1970-01-01', 'HINDU', '4-OBC', '', 'TELUGU', 'DIMILI ROAD,YELLAMANCHILI', 'DIMILI ROAD,YELLAMANCHILI', 'YELLAMANCHILI', 'AP', '9391677571', 1, '', 209, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 05:00:02', NULL),
+(359, '2813410083000359', '2025-06-11', 'MARISA', 'KUSHVARDAN', 'male', '1970-01-01', '', '', '', '', 'PEDAPALLI', 'PEDAPALLI', '', '', '8171569465', 1, '', 255, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 05:46:07', NULL),
+(360, '2813410083000360', '2025-06-11', 'Muppini', 'Jithin', 'male', '2021-02-10', 'Hindu', '', '', 'Telugu ', 'Pedapalli', 'Pedapalli', 'Pedapalli', 'Ap', '7036508729', 1, 'Srinu@gmail.com', 356, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 07:58:55', NULL),
+(361, '2813410083000361', '2025-06-11', 'muppini', 'renuka', 'female', '2018-01-10', 'hindu', '', '', 'telugu', 'pedapalli', 'pedapalli', 'pedapalli', 'ap', '7036508729', 1, '', 357, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 08:08:50', NULL),
+(362, '2813410083000362', '2025-06-11', 'ARLA', 'KARTHIK', 'male', '2017-11-07', 'HINDU', 'BC-D', '', 'TELUGU', 'Somalingapalem', 'Somalingapalem', 'Somalingapalem', 'AP', '954261266', 1, 'vital prasad@gmail.com', 329, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 09:53:38', NULL),
+(363, '2813410083000363', '2025-06-11', 'BODDAPU', 'KUSHAL VARDHAN', 'male', '2021-01-26', 'HINDU', '', '', 'TELUGU', 'PEDAPALLI', 'PEDAPALLI', 'PEDAPALLI', 'AP', '9603237450', 1, '', 358, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 10:59:50', NULL),
+(364, '2813410083000364', '2025-06-11', 'TUMPALA', 'HARI MAHENDRA', 'male', '2018-03-27', 'HINDU', 'OC', '', 'TELUGU', 'YELLAMANCHILLI', 'YELLAMANCHILLI', 'YELLAMANCHILLI', 'AP', '9948866702', 1, 'SURESH@GMAIL.COM', 359, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 11:50:30', NULL),
+(365, '2813410083000365', '2025-06-11', 'TUMPALA', 'DURGA PRADEEP', 'male', '2021-10-05', 'HINDU', 'OC', '', 'TELUGU', 'YELLAMANCHILLI', 'YELLAMANCHILLI', 'YELLAMANCHILLI', 'AP', '9948866702', 1, 'SURESH@GMAIL.COM', 359, 0, 0, 0, 0, '{\"school_name\":\"\",\"qualification\":\"\",\"remarks\":\"\"}', 'defualt.png', '2025-06-11 12:10:05', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -4601,6 +8176,14 @@ CREATE TABLE `student_attendance` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `student_attendance`
+--
+
+INSERT INTO `student_attendance` (`id`, `student_id`, `date`, `status`, `remark`, `branch_id`, `created_at`, `updated_at`) VALUES
+(1, 1, '2025-06-03', 'L', 'No proper uniform ', 1, '2025-06-02 18:54:07', NULL),
+(2, 2, '2025-06-03', '', '', 1, '2025-06-02 18:54:07', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -4612,6 +8195,13 @@ CREATE TABLE `student_category` (
   `branch_id` int(11) NOT NULL DEFAULT 0,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `student_category`
+--
+
+INSERT INTO `student_category` (`id`, `branch_id`, `name`) VALUES
+(1, 1, 'Regular');
 
 -- --------------------------------------------------------
 
@@ -4714,6 +8304,24 @@ CREATE TABLE `subject` (
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `subject`
+--
+
+INSERT INTO `subject` (`id`, `name`, `subject_code`, `subject_type`, `subject_author`, `branch_id`) VALUES
+(1, 'TELUGU', 'TEL', 'Theory', '', 1),
+(2, 'ENGLISH', 'ENG', 'Theory', '', 1),
+(3, 'MATHEMATICS', 'MAT', 'Theory', '', 1),
+(4, 'HINDI', 'HIN', 'Theory', '', 1),
+(5, 'SCIENCE', 'SCI', 'Theory', '', 1),
+(6, 'SOCIAL STUDIES', 'SOC', 'Theory', '', 1),
+(7, 'Biology', 'N.S', 'Theory', '', 1),
+(8, 'Physcial science', 'P.S', 'Theory', '', 1),
+(9, 'ENVIRONIMENTAL SCIENCE', 'E.V.S', 'Theory', '', 1),
+(10, 'COMPUTER', 'COMP', 'Theory', '', 1),
+(11, 'ABACUS', 'ABA', 'Theory', '', 1),
+(12, 'Vedic maths', 'vedic', 'Theory', '', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -4732,6 +8340,94 @@ CREATE TABLE `subject_assign` (
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `subject_assign`
+--
+
+INSERT INTO `subject_assign` (`id`, `class_id`, `section_id`, `subject_id`, `teacher_id`, `branch_id`, `session_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '1', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(2, 1, 1, '2', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(3, 1, 1, '3', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(4, 1, 1, '4', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(5, 1, 1, '9', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(6, 1, 1, '10', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(7, 1, 1, '11', 0, 1, 9, '2025-06-02 14:55:06', NULL),
+(8, 11, 1, '1', 0, 1, 9, '2025-06-02 14:55:34', NULL),
+(9, 11, 1, '2', 0, 1, 9, '2025-06-02 14:55:34', NULL),
+(10, 11, 1, '3', 0, 1, 9, '2025-06-02 14:55:34', NULL),
+(11, 2, 1, '1', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(12, 2, 1, '2', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(13, 2, 1, '3', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(14, 2, 1, '4', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(15, 2, 1, '9', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(16, 2, 1, '10', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(17, 2, 1, '11', 0, 1, 9, '2025-06-02 14:56:47', NULL),
+(18, 3, 1, '1', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(19, 3, 1, '2', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(20, 3, 1, '3', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(21, 3, 1, '4', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(22, 3, 1, '9', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(23, 3, 1, '10', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(24, 3, 1, '11', 0, 1, 9, '2025-06-02 14:57:30', NULL),
+(25, 4, 1, '1', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(26, 4, 1, '2', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(27, 4, 1, '3', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(28, 4, 1, '4', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(29, 4, 1, '9', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(30, 4, 1, '10', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(31, 4, 1, '11', 0, 1, 9, '2025-06-02 14:58:11', NULL),
+(32, 5, 1, '1', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(33, 5, 1, '2', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(34, 5, 1, '3', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(35, 5, 1, '4', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(36, 5, 1, '9', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(37, 5, 1, '10', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(38, 5, 1, '11', 0, 1, 9, '2025-06-02 14:58:54', NULL),
+(39, 6, 1, '1', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(40, 6, 1, '2', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(41, 6, 1, '3', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(42, 6, 1, '4', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(43, 6, 1, '5', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(44, 6, 1, '12', 0, 1, 9, '2025-06-02 15:00:41', NULL),
+(45, 7, 1, '1', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(46, 7, 1, '2', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(47, 7, 1, '3', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(48, 7, 1, '4', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(49, 7, 1, '5', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(50, 7, 1, '6', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(51, 7, 1, '12', 0, 1, 9, '2025-06-02 15:02:00', NULL),
+(52, 8, 1, '1', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(53, 8, 1, '2', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(54, 8, 1, '3', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(55, 8, 1, '4', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(56, 8, 1, '6', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(57, 8, 1, '7', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(58, 8, 1, '8', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(59, 8, 1, '12', 0, 1, 9, '2025-06-02 15:04:21', NULL),
+(60, 6, 1, '6', 0, 1, 9, '2025-06-02 16:55:39', NULL),
+(61, 9, 1, '1', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(62, 9, 1, '2', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(63, 9, 1, '3', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(64, 9, 1, '4', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(65, 9, 1, '6', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(66, 9, 1, '7', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(67, 9, 1, '8', 0, 1, 9, '2025-06-02 16:56:27', NULL),
+(68, 10, 1, '1', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(69, 10, 1, '2', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(70, 10, 1, '3', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(71, 10, 1, '4', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(72, 10, 1, '6', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(73, 10, 1, '7', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(74, 10, 1, '8', 0, 1, 9, '2025-06-02 16:57:22', NULL),
+(75, 12, 1, '1', 0, 1, 9, '2025-06-02 16:57:58', NULL),
+(76, 12, 1, '2', 0, 1, 9, '2025-06-02 16:57:58', NULL),
+(77, 12, 1, '3', 0, 1, 9, '2025-06-02 16:57:58', NULL),
+(78, 12, 1, '9', 0, 1, 9, '2025-06-02 16:57:58', NULL),
+(79, 13, 1, '1', 0, 1, 9, '2025-06-02 16:58:21', NULL),
+(80, 13, 1, '2', 0, 1, 9, '2025-06-02 16:58:21', NULL),
+(81, 13, 1, '3', 0, 1, 9, '2025-06-02 16:58:21', NULL),
+(82, 13, 1, '9', 0, 1, 9, '2025-06-02 16:58:21', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -4746,6 +8442,14 @@ CREATE TABLE `teacher_allocation` (
   `session_id` int(11) NOT NULL,
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `teacher_allocation`
+--
+
+INSERT INTO `teacher_allocation` (`id`, `class_id`, `section_id`, `teacher_id`, `session_id`, `branch_id`) VALUES
+(1, 1, 1, 4, 9, 1),
+(2, 11, 1, 17, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -4778,15 +8482,17 @@ CREATE TABLE `theme_settings` (
   `border_mode` varchar(200) NOT NULL,
   `dark_skin` varchar(200) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL
+  `updated_at` datetime DEFAULT NULL,
+  `branch_id` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `theme_settings`
 --
 
-INSERT INTO `theme_settings` (`id`, `border_mode`, `dark_skin`, `created_at`, `updated_at`) VALUES
-(1, 'true', 'false', '2018-10-23 16:59:38', '2020-05-10 14:08:47');
+INSERT INTO `theme_settings` (`id`, `border_mode`, `dark_skin`, `created_at`, `updated_at`, `branch_id`) VALUES
+(1, 'true', 'false', '2018-10-23 16:59:38', '2020-05-10 14:08:47', 1),
+(2, 'true', 'false', '2025-06-10 13:04:47', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -4808,6 +8514,13 @@ CREATE TABLE `timetable_class` (
   `session_id` int(11) NOT NULL,
   `branch_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `timetable_class`
+--
+
+INSERT INTO `timetable_class` (`id`, `class_id`, `section_id`, `break`, `subject_id`, `teacher_id`, `class_room`, `time_start`, `time_end`, `day`, `session_id`, `branch_id`) VALUES
+(1, 11, 1, '1', 0, 0, '1', '10:00:00', '11:00:00', 'monday', 9, 1);
 
 -- --------------------------------------------------------
 
@@ -4858,6 +8571,15 @@ CREATE TABLE `transactions` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `account_id`, `voucher_head_id`, `type`, `category`, `ref`, `amount`, `dr`, `cr`, `bal`, `date`, `pay_via`, `description`, `attachments`, `branch_id`, `system`, `created_at`, `updated_at`) VALUES
+(1, '1', 0, 'deposit', '', '', 150000.00, 0.00, 150000.00, 150000.00, '2025-06-02', '', 'Opening Balance', '', 0, 0, '2025-06-02 18:18:41', NULL),
+(2, '1', 2, 'expense', '', '', 12034.00, 12034.00, 0.00, 137966.00, '2025-06-02', '1', '', '', 1, 0, '2025-06-02 18:20:14', NULL),
+(3, '1', 1, 'deposit', '', '', 250000.00, 0.00, 250000.00, 387966.00, '2025-06-02', '1', '', '', 1, 0, '2025-06-02 18:21:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -4940,6 +8662,47 @@ CREATE TABLE `transport_vehicle` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `first_name` varchar(255) NOT NULL,
+  `last_name` varchar(255) NOT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `whatsapp_number` varchar(255) DEFAULT NULL,
+  `date_of_birth` datetime DEFAULT NULL,
+  `gender` enum('Male','Female','Other') DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `role_id` int(11) NOT NULL,
+  `branch_id` int(11) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT 1,
+  `last_login` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_roles`
+--
+
+CREATE TABLE `user_roles` (
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `roleId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `voucher_head`
 --
 
@@ -4950,6 +8713,14 @@ CREATE TABLE `voucher_head` (
   `system` tinyint(1) DEFAULT 0,
   `branch_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `voucher_head`
+--
+
+INSERT INTO `voucher_head` (`id`, `name`, `type`, `system`, `branch_id`) VALUES
+(1, 'ALI', 'income', 0, 1),
+(2, 'ALL', 'expense', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -5068,6 +8839,15 @@ ALTER TABLE `book_issues`
 --
 ALTER TABLE `branch`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `role_group_id` (`role_group_id`);
+
+--
+-- Indexes for table `branches`
+--
+ALTER TABLE `branches`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`),
+  ADD UNIQUE KEY `branches_code` (`code`),
   ADD KEY `master_admin_id` (`master_admin_id`);
 
 --
@@ -5099,6 +8879,14 @@ ALTER TABLE `certificates_templete`
 --
 ALTER TABLE `class`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `classes`
+--
+ALTER TABLE `classes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `classes_name_branch_id` (`name`,`branch_id`),
+  ADD KEY `classes_branch_id` (`branch_id`);
 
 --
 -- Indexes for table `custom_field`
@@ -5189,6 +8977,16 @@ ALTER TABLE `exam_term`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `fees`
+--
+ALTER TABLE `fees`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `fee_type_id` (`fee_type_id`),
+  ADD KEY `branch_id` (`branch_id`),
+  ADD KEY `created_by` (`created_by`);
+
+--
 -- Indexes for table `fees_reminder`
 --
 ALTER TABLE `fees_reminder`
@@ -5229,6 +9027,21 @@ ALTER TABLE `fee_groups_details`
 --
 ALTER TABLE `fee_payment_history`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `fee_types`
+--
+ALTER TABLE `fee_types`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `branch_id` (`branch_id`);
+
+--
+-- Indexes for table `footer_menu_config`
+--
+ALTER TABLE `footer_menu_config`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role_id` (`role_id`);
 
 --
 -- Indexes for table `front_cms_about`
@@ -5462,7 +9275,8 @@ ALTER TABLE `live_class_reports`
 -- Indexes for table `login_credential`
 --
 ALTER TABLE `login_credential`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_login_credential_branch_id` (`branch_id`);
 
 --
 -- Indexes for table `mark`
@@ -5533,6 +9347,15 @@ ALTER TABLE `parent`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fee_id` (`fee_id`),
+  ADD KEY `collected_by` (`collected_by`),
+  ADD KEY `branch_id` (`branch_id`);
+
+--
 -- Indexes for table `payment_config`
 --
 ALTER TABLE `payment_config`
@@ -5566,7 +9389,9 @@ ALTER TABLE `payslip_details`
 -- Indexes for table `permission`
 --
 ALTER TABLE `permission`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_permission_name` (`name`),
+  ADD KEY `idx_permission_module_id` (`module_id`);
 
 --
 -- Indexes for table `permission_modules`
@@ -5602,6 +9427,14 @@ ALTER TABLE `question_group`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `refresh_tokens`
+--
+ALTER TABLE `refresh_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- Indexes for table `rm_sessions`
 --
 ALTER TABLE `rm_sessions`
@@ -5609,10 +9442,40 @@ ALTER TABLE `rm_sessions`
   ADD KEY `ci_sessions_timestamp` (`timestamp`);
 
 --
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `role_code` (`role_code`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_roles_name` (`name`),
+  ADD KEY `idx_roles_is_system` (`is_system`);
+
+--
+-- Indexes for table `role_groups`
+--
+ALTER TABLE `role_groups`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `role_group_roles`
+--
+ALTER TABLE `role_group_roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role_group_id` (`role_group_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
+-- Indexes for table `role_permissions`
+--
+ALTER TABLE `role_permissions`
+  ADD PRIMARY KEY (`permissionId`,`roleId`),
+  ADD KEY `roleId` (`roleId`);
 
 --
 -- Indexes for table `salary_template`
@@ -5633,27 +9496,20 @@ ALTER TABLE `schoolyear`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `school_roles`
---
-ALTER TABLE `school_roles`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `school_id` (`school_id`),
-  ADD KEY `created_by` (`created_by`);
-
---
--- Indexes for table `school_users`
---
-ALTER TABLE `school_users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `school_id` (`school_id`),
-  ADD KEY `role_id` (`role_id`),
-  ADD KEY `created_by` (`created_by`);
-
---
 -- Indexes for table `section`
 --
 ALTER TABLE `section`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sections`
+--
+ALTER TABLE `sections`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `sections_name_class_id_branch_id` (`name`,`class_id`,`branch_id`),
+  ADD KEY `sections_class_id` (`class_id`),
+  ADD KEY `sections_branch_id` (`branch_id`),
+  ADD KEY `sections_teacher_id` (`teacher_id`);
 
 --
 -- Indexes for table `sections_allocation`
@@ -5732,7 +9588,11 @@ ALTER TABLE `staff_documents`
 -- Indexes for table `staff_privileges`
 --
 ALTER TABLE `staff_privileges`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_staff_privileges_role_id` (`role_id`),
+  ADD KEY `idx_staff_privileges_permission_id` (`permission_id`),
+  ADD KEY `idx_staff_privileges_role_permission` (`role_id`,`permission_id`),
+  ADD KEY `idx_staff_privileges_permissions` (`role_id`,`is_view`,`is_add`,`is_edit`,`is_delete`);
 
 --
 -- Indexes for table `student`
@@ -5855,6 +9715,22 @@ ALTER TABLE `transport_vehicle`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD PRIMARY KEY (`roleId`,`userId`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- Indexes for table `voucher_head`
 --
 ALTER TABLE `voucher_head`
@@ -5886,7 +9762,7 @@ ALTER TABLE `zoom_own_api`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `advance_salary`
@@ -5934,7 +9810,13 @@ ALTER TABLE `book_issues`
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `branches`
+--
+ALTER TABLE `branches`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bulk_msg_category`
@@ -5952,7 +9834,7 @@ ALTER TABLE `bulk_sms_email`
 -- AUTO_INCREMENT for table `card_templete`
 --
 ALTER TABLE `card_templete`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `certificates_templete`
@@ -5964,13 +9846,19 @@ ALTER TABLE `certificates_templete`
 -- AUTO_INCREMENT for table `class`
 --
 ALTER TABLE `class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `classes`
+--
+ALTER TABLE `classes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `custom_field`
 --
 ALTER TABLE `custom_field`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `custom_fields_online_values`
@@ -5982,7 +9870,7 @@ ALTER TABLE `custom_fields_online_values`
 -- AUTO_INCREMENT for table `custom_fields_values`
 --
 ALTER TABLE `custom_fields_values`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=366;
 
 --
 -- AUTO_INCREMENT for table `email_config`
@@ -6006,7 +9894,7 @@ ALTER TABLE `email_templates_details`
 -- AUTO_INCREMENT for table `enroll`
 --
 ALTER TABLE `enroll`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=721;
 
 --
 -- AUTO_INCREMENT for table `event`
@@ -6036,18 +9924,24 @@ ALTER TABLE `exam_attendance`
 -- AUTO_INCREMENT for table `exam_hall`
 --
 ALTER TABLE `exam_hall`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `exam_mark_distribution`
 --
 ALTER TABLE `exam_mark_distribution`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `exam_term`
 --
 ALTER TABLE `exam_term`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `fees`
+--
+ALTER TABLE `fees`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -6060,13 +9954,13 @@ ALTER TABLE `fees_reminder`
 -- AUTO_INCREMENT for table `fees_type`
 --
 ALTER TABLE `fees_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `fee_allocation`
 --
 ALTER TABLE `fee_allocation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
 
 --
 -- AUTO_INCREMENT for table `fee_fine`
@@ -6078,18 +9972,30 @@ ALTER TABLE `fee_fine`
 -- AUTO_INCREMENT for table `fee_groups`
 --
 ALTER TABLE `fee_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `fee_groups_details`
 --
 ALTER TABLE `fee_groups_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `fee_payment_history`
 --
 ALTER TABLE `fee_payment_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `fee_types`
+--
+ALTER TABLE `fee_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `footer_menu_config`
+--
+ALTER TABLE `footer_menu_config`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -6156,19 +10062,19 @@ ALTER TABLE `front_cms_gallery`
 -- AUTO_INCREMENT for table `front_cms_gallery_category`
 --
 ALTER TABLE `front_cms_gallery_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `front_cms_gallery_content`
 --
 ALTER TABLE `front_cms_gallery_content`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `front_cms_home`
 --
 ALTER TABLE `front_cms_home`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `front_cms_home_seo`
@@ -6186,7 +10092,7 @@ ALTER TABLE `front_cms_menu`
 -- AUTO_INCREMENT for table `front_cms_menu_visible`
 --
 ALTER TABLE `front_cms_menu_visible`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `front_cms_pages`
@@ -6210,7 +10116,7 @@ ALTER TABLE `front_cms_services_list`
 -- AUTO_INCREMENT for table `front_cms_setting`
 --
 ALTER TABLE `front_cms_setting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `front_cms_teachers`
@@ -6228,7 +10134,7 @@ ALTER TABLE `front_cms_testimonial`
 -- AUTO_INCREMENT for table `global_settings`
 --
 ALTER TABLE `global_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `grade`
@@ -6246,13 +10152,13 @@ ALTER TABLE `hall_allocation`
 -- AUTO_INCREMENT for table `homework`
 --
 ALTER TABLE `homework`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `homework_evaluation`
 --
 ALTER TABLE `homework_evaluation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `homework_submit`
@@ -6282,7 +10188,7 @@ ALTER TABLE `hostel_room`
 -- AUTO_INCREMENT for table `languages`
 --
 ALTER TABLE `languages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1146;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1253;
 
 --
 -- AUTO_INCREMENT for table `language_list`
@@ -6324,7 +10230,7 @@ ALTER TABLE `live_class_reports`
 -- AUTO_INCREMENT for table `login_credential`
 --
 ALTER TABLE `login_credential`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `mark`
@@ -6342,7 +10248,7 @@ ALTER TABLE `master_admins`
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `message_reply`
@@ -6390,6 +10296,12 @@ ALTER TABLE `online_exam_submitted`
 -- AUTO_INCREMENT for table `parent`
 --
 ALTER TABLE `parent`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -6426,19 +10338,19 @@ ALTER TABLE `payslip_details`
 -- AUTO_INCREMENT for table `permission`
 --
 ALTER TABLE `permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `permission_modules`
 --
 ALTER TABLE `permission_modules`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `promotion_history`
 --
 ALTER TABLE `promotion_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=360;
 
 --
 -- AUTO_INCREMENT for table `questions`
@@ -6459,10 +10371,34 @@ ALTER TABLE `question_group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `refresh_tokens`
+--
+ALTER TABLE `refresh_tokens`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `role_groups`
+--
+ALTER TABLE `role_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `role_group_roles`
+--
+ALTER TABLE `role_group_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `salary_template`
@@ -6483,28 +10419,22 @@ ALTER TABLE `schoolyear`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `school_roles`
---
-ALTER TABLE `school_roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `school_users`
---
-ALTER TABLE `school_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `section`
 --
 ALTER TABLE `section`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `sections`
+--
+ALTER TABLE `sections`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `sections_allocation`
 --
 ALTER TABLE `sections_allocation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `service_providers`
@@ -6540,7 +10470,7 @@ ALTER TABLE `sms_template_details`
 -- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `staff_attendance`
@@ -6558,13 +10488,13 @@ ALTER TABLE `staff_bank_account`
 -- AUTO_INCREMENT for table `staff_department`
 --
 ALTER TABLE `staff_department`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `staff_designation`
 --
 ALTER TABLE `staff_designation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `staff_documents`
@@ -6576,13 +10506,13 @@ ALTER TABLE `staff_documents`
 -- AUTO_INCREMENT for table `staff_privileges`
 --
 ALTER TABLE `staff_privileges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=627;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1167;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=366;
 
 --
 -- AUTO_INCREMENT for table `student_admission_fields`
@@ -6594,13 +10524,13 @@ ALTER TABLE `student_admission_fields`
 -- AUTO_INCREMENT for table `student_attendance`
 --
 ALTER TABLE `student_attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `student_category`
 --
 ALTER TABLE `student_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `student_documents`
@@ -6624,19 +10554,19 @@ ALTER TABLE `student_profile_fields`
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `subject_assign`
 --
 ALTER TABLE `subject_assign`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `teacher_allocation`
 --
 ALTER TABLE `teacher_allocation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `teacher_note`
@@ -6648,13 +10578,13 @@ ALTER TABLE `teacher_note`
 -- AUTO_INCREMENT for table `theme_settings`
 --
 ALTER TABLE `theme_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `timetable_class`
 --
 ALTER TABLE `timetable_class`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `timetable_exam`
@@ -6666,7 +10596,7 @@ ALTER TABLE `timetable_exam`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transactions_links`
@@ -6699,10 +10629,16 @@ ALTER TABLE `transport_vehicle`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `voucher_head`
 --
 ALTER TABLE `voucher_head`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `whatsapp_agent`
@@ -6730,22 +10666,84 @@ ALTER TABLE `zoom_own_api`
 -- Constraints for table `branch`
 --
 ALTER TABLE `branch`
-  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`master_admin_id`) REFERENCES `master_admins` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `branch_ibfk_1` FOREIGN KEY (`role_group_id`) REFERENCES `role_groups` (`id`) ON DELETE SET NULL;
 
 --
--- Constraints for table `school_roles`
+-- Constraints for table `branches`
 --
-ALTER TABLE `school_roles`
-  ADD CONSTRAINT `school_roles_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `branch` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `school_roles_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `master_admins` (`id`) ON DELETE CASCADE;
+ALTER TABLE `branches`
+  ADD CONSTRAINT `branches_ibfk_1` FOREIGN KEY (`master_admin_id`) REFERENCES `master_admins` (`id`);
 
 --
--- Constraints for table `school_users`
+-- Constraints for table `classes`
 --
-ALTER TABLE `school_users`
-  ADD CONSTRAINT `school_users_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `branch` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `school_users_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `school_roles` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `school_users_ibfk_3` FOREIGN KEY (`created_by`) REFERENCES `master_admins` (`id`) ON DELETE CASCADE;
+ALTER TABLE `classes`
+  ADD CONSTRAINT `classes_ibfk_1` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `fees`
+--
+ALTER TABLE `fees`
+  ADD CONSTRAINT `fees_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fees_ibfk_2` FOREIGN KEY (`fee_type_id`) REFERENCES `fee_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fees_ibfk_3` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fees_ibfk_4` FOREIGN KEY (`created_by`) REFERENCES `master_admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `fee_types`
+--
+ALTER TABLE `fee_types`
+  ADD CONSTRAINT `fee_types_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fee_types_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `login_credential`
+--
+ALTER TABLE `login_credential`
+  ADD CONSTRAINT `fk_login_credential_branch_id` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`fee_id`) REFERENCES `fees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`collected_by`) REFERENCES `master_admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payments_ibfk_3` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `refresh_tokens`
+--
+ALTER TABLE `refresh_tokens`
+  ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `master_admins` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `role_group_roles`
+--
+ALTER TABLE `role_group_roles`
+  ADD CONSTRAINT `role_group_roles_ibfk_1` FOREIGN KEY (`role_group_id`) REFERENCES `role_groups` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_group_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `role_permissions`
+--
+ALTER TABLE `role_permissions`
+  ADD CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`permissionId`) REFERENCES `permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `sections`
+--
+ALTER TABLE `sections`
+  ADD CONSTRAINT `sections_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sections_ibfk_2` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `sections_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `master_admins` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `master_admins` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

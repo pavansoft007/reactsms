@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Paper,
@@ -13,25 +13,25 @@ import {
   Badge,
   Stack,
   Text,
-  LoadingOverlay,
   Select,
   Avatar,
   Card,
-  SimpleGrid
-} from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
-import { 
-  IconUsers, 
-  IconEdit, 
-  IconTrash, 
-  IconPlus, 
+  SimpleGrid,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+import { notifications } from "@mantine/notifications";
+import {
+  IconUsers,
+  IconEdit,
+  IconTrash,
+  IconPlus,
   IconPhone,
   IconMail,
-  IconUser
-} from '@tabler/icons-react';
-import axios from 'axios';
+  IconUser,
+} from "@tabler/icons-react";
+import axios from "axios";
+import { UltraLoader } from "../components/ui";
 
 interface Parent {
   id: number;
@@ -45,7 +45,7 @@ interface Parent {
   created_at: string;
 }
 
-const ParentsPage: React.FC = () => {
+const ParentsPage = () => {
   const [parents, setParents] = useState<Parent[]>([]);
   const [loading, setLoading] = useState(false);
   const [opened, { open, close }] = useDisclosure(false);
@@ -53,12 +53,12 @@ const ParentsPage: React.FC = () => {
 
   const form = useForm({
     initialValues: {
-      name: '',
-      email: '',
-      phone: '',
-      address: '',
-      occupation: '',
-      status: 'active',
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      occupation: "",
+      status: "active",
     },
   });
 
@@ -69,38 +69,38 @@ const ParentsPage: React.FC = () => {
   const fetchParents = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      
+      const token = localStorage.getItem("token");
+
       // Mock data - replace with actual API call
       setParents([
-        { 
-          id: 1, 
-          name: 'John Smith', 
-          email: 'john.smith@email.com', 
-          phone: '+1-555-123-4567',
-          address: '123 Main St, City',
-          occupation: 'Engineer',
-          status: 'active',
+        {
+          id: 1,
+          name: "John Smith",
+          email: "john.smith@email.com",
+          phone: "+1-555-123-4567",
+          address: "123 Main St, City",
+          occupation: "Engineer",
+          status: "active",
           children_count: 2,
-          created_at: '2024-01-15'
+          created_at: "2024-01-15",
         },
-        { 
-          id: 2, 
-          name: 'Sarah Johnson', 
-          email: 'sarah.j@email.com', 
-          phone: '+1-555-987-6543',
-          address: '456 Oak Ave, City',
-          occupation: 'Teacher',
-          status: 'active',
+        {
+          id: 2,
+          name: "Sarah Johnson",
+          email: "sarah.j@email.com",
+          phone: "+1-555-987-6543",
+          address: "456 Oak Ave, City",
+          occupation: "Teacher",
+          status: "active",
           children_count: 1,
-          created_at: '2024-02-01'
+          created_at: "2024-02-01",
         },
       ]);
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to fetch parents',
-        color: 'red',
+        title: "Error",
+        message: "Failed to fetch parents",
+        color: "red",
       });
     } finally {
       setLoading(false);
@@ -109,25 +109,25 @@ const ParentsPage: React.FC = () => {
 
   const handleSubmit = async (values: typeof form.values) => {
     try {
-      const token = localStorage.getItem('token');
-      
+      const token = localStorage.getItem("token");
+
       if (editingParent) {
         await axios.put(`/api/parents/${editingParent.id}`, values, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         notifications.show({
-          title: 'Success',
-          message: 'Parent updated successfully',
-          color: 'green',
+          title: "Success",
+          message: "Parent updated successfully",
+          color: "green",
         });
       } else {
-        await axios.post('/api/parents', values, {
-          headers: { Authorization: `Bearer ${token}` }
+        await axios.post("/api/parents", values, {
+          headers: { Authorization: `Bearer ${token}` },
         });
         notifications.show({
-          title: 'Success',
-          message: 'Parent created successfully',
-          color: 'green',
+          title: "Success",
+          message: "Parent created successfully",
+          color: "green",
         });
       }
 
@@ -137,9 +137,9 @@ const ParentsPage: React.FC = () => {
       fetchParents();
     } catch (error: any) {
       notifications.show({
-        title: 'Error',
-        message: error.response?.data?.message || 'Failed to save parent',
-        color: 'red',
+        title: "Error",
+        message: error.response?.data?.message || "Failed to save parent",
+        color: "red",
       });
     }
   };
@@ -149,33 +149,38 @@ const ParentsPage: React.FC = () => {
     form.setValues({
       name: parent.name,
       email: parent.email,
-      phone: parent.phone || '',
-      address: parent.address || '',
-      occupation: parent.occupation || '',
+      phone: parent.phone || "",
+      address: parent.address || "",
+      occupation: parent.occupation || "",
       status: parent.status,
     });
     open();
   };
 
   const handleDelete = async (id: number) => {
-    if (!window.confirm('Are you sure you want to delete this parent? This action cannot be undone.')) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this parent? This action cannot be undone."
+      )
+    )
+      return;
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await axios.delete(`/api/parents/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       notifications.show({
-        title: 'Success',
-        message: 'Parent deleted successfully',
-        color: 'green',
+        title: "Success",
+        message: "Parent deleted successfully",
+        color: "green",
       });
       fetchParents();
     } catch (error) {
       notifications.show({
-        title: 'Error',
-        message: 'Failed to delete parent',
-        color: 'red',
+        title: "Error",
+        message: "Failed to delete parent",
+        color: "red",
       });
     }
   };
@@ -197,10 +202,16 @@ const ParentsPage: React.FC = () => {
           <Button leftSection={<IconPlus size={16} />} onClick={open}>
             Add Parent
           </Button>
-        </Group>
-
-        <div style={{ position: 'relative' }}>
-          <LoadingOverlay visible={loading} />
+        </Group>{" "}
+        <div style={{ position: "relative" }}>
+          {loading && (
+            <UltraLoader
+              fullscreen
+              size="lg"
+              message="Loading parents..."
+              variant="detailed"
+            />
+          )}
 
           {/* Parent Cards Grid */}
           <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} mb="xl">
@@ -213,10 +224,12 @@ const ParentsPage: React.FC = () => {
                     </Avatar>
                     <div>
                       <Text fw={500}>{parent.name}</Text>
-                      <Text size="sm" c="dimmed">{parent.occupation}</Text>
+                      <Text size="sm" c="dimmed">
+                        {parent.occupation}
+                      </Text>
                     </div>
                   </Group>
-                  <Badge color={parent.status === 'active' ? 'green' : 'red'}>
+                  <Badge color={parent.status === "active" ? "green" : "red"}>
                     {parent.status}
                   </Badge>
                 </Group>
@@ -238,15 +251,15 @@ const ParentsPage: React.FC = () => {
                 </Stack>
 
                 <Group justify="flex-end">
-                  <ActionIcon 
-                    variant="subtle" 
+                  <ActionIcon
+                    variant="subtle"
                     color="blue"
                     onClick={() => handleEdit(parent)}
                   >
                     <IconEdit size={16} />
                   </ActionIcon>
-                  <ActionIcon 
-                    variant="subtle" 
+                  <ActionIcon
+                    variant="subtle"
                     color="red"
                     onClick={() => handleDelete(parent.id)}
                   >
@@ -259,7 +272,9 @@ const ParentsPage: React.FC = () => {
 
           {/* Parent Table */}
           <Paper shadow="xs" p="md" withBorder>
-            <Title order={3} mb="md">Parent Details</Title>
+            <Title order={3} mb="md">
+              Parent Details
+            </Title>
             <Table striped highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
@@ -284,29 +299,31 @@ const ParentsPage: React.FC = () => {
                       </Group>
                     </Table.Td>
                     <Table.Td>{parent.email}</Table.Td>
-                    <Table.Td>{parent.phone || 'N/A'}</Table.Td>
-                    <Table.Td>{parent.occupation || 'N/A'}</Table.Td>
+                    <Table.Td>{parent.phone || "N/A"}</Table.Td>
+                    <Table.Td>{parent.occupation || "N/A"}</Table.Td>
                     <Table.Td>
                       <Badge variant="light" color="blue">
                         {parent.children_count || 0}
                       </Badge>
                     </Table.Td>
                     <Table.Td>
-                      <Badge color={parent.status === 'active' ? 'green' : 'red'}>
+                      <Badge
+                        color={parent.status === "active" ? "green" : "red"}
+                      >
                         {parent.status}
                       </Badge>
                     </Table.Td>
                     <Table.Td>
                       <Group gap="xs">
-                        <ActionIcon 
-                          variant="subtle" 
+                        <ActionIcon
+                          variant="subtle"
                           color="blue"
                           onClick={() => handleEdit(parent)}
                         >
                           <IconEdit size={16} />
                         </ActionIcon>
-                        <ActionIcon 
-                          variant="subtle" 
+                        <ActionIcon
+                          variant="subtle"
                           color="red"
                           onClick={() => handleDelete(parent.id)}
                         >
@@ -321,7 +338,8 @@ const ParentsPage: React.FC = () => {
 
             {parents.length === 0 && !loading && (
               <Text ta="center" py="xl" c="dimmed">
-                No parents found. Click "Add Parent" to create your first parent record.
+                No parents found. Click "Add Parent" to create your first parent
+                record.
               </Text>
             )}
           </Paper>
@@ -340,42 +358,42 @@ const ParentsPage: React.FC = () => {
               label="Full Name"
               placeholder="Enter parent's full name"
               required
-              {...form.getInputProps('name')}
+              {...form.getInputProps("name")}
             />
 
             <TextInput
               label="Email"
               placeholder="Enter email address"
               required
-              {...form.getInputProps('email')}
+              {...form.getInputProps("email")}
             />
 
             <TextInput
               label="Phone"
               placeholder="Enter phone number"
-              {...form.getInputProps('phone')}
+              {...form.getInputProps("phone")}
             />
 
             <Textarea
               label="Address"
               placeholder="Enter address"
               rows={3}
-              {...form.getInputProps('address')}
+              {...form.getInputProps("address")}
             />
 
             <TextInput
               label="Occupation"
               placeholder="Enter occupation"
-              {...form.getInputProps('occupation')}
+              {...form.getInputProps("occupation")}
             />
 
             <Select
               label="Status"
               data={[
-                { value: 'active', label: 'Active' },
-                { value: 'inactive', label: 'Inactive' },
+                { value: "active", label: "Active" },
+                { value: "inactive", label: "Inactive" },
               ]}
-              {...form.getInputProps('status')}
+              {...form.getInputProps("status")}
             />
 
             <Group justify="flex-end" mt="md">
@@ -383,7 +401,7 @@ const ParentsPage: React.FC = () => {
                 Cancel
               </Button>
               <Button type="submit">
-                {editingParent ? 'Update' : 'Create'}
+                {editingParent ? "Update" : "Create"}
               </Button>
             </Group>
           </Stack>

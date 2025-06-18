@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   Container,
   Title,
@@ -26,6 +26,7 @@ import {
   UltraTable,
   UltraTableActions,
   UltraModal,
+  LoadingTableRows,
 } from "../components/ui";
 import api from "../api/config";
 import { useTheme } from "../context/ThemeContext";
@@ -47,7 +48,7 @@ interface Branch {
   name: string;
 }
 
-const SubjectsPageUltra: React.FC = () => {
+const SubjectsPageUltra = () => {
   const { theme } = useTheme();
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
@@ -212,14 +213,15 @@ const SubjectsPageUltra: React.FC = () => {
 
   return (
     <Container size="xl" className="ultra-container">
+      {" "}
       {/* Header */}
-      <UltraCard className="mb-6">
+      <UltraCard className="mb-4">
         <Group justify="space-between" align="flex-start">
           <div>
             <Title
               order={2}
               className="ultra-gradient-text"
-              style={{ fontSize: "2rem", fontWeight: 700 }}
+              style={{ fontSize: "1.75rem", fontWeight: 700 }}
             >
               Subjects Management
             </Title>
@@ -236,10 +238,9 @@ const SubjectsPageUltra: React.FC = () => {
             Add Subject
           </UltraButton>
         </Group>
-      </UltraCard>
-
+      </UltraCard>{" "}
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <UltraCard className="text-center">
           <div className="ultra-stat-icon bg-blue-500/20 text-blue-400 mb-4">
             <IconBook size={32} />
@@ -287,10 +288,9 @@ const SubjectsPageUltra: React.FC = () => {
             Authors
           </Text>
         </UltraCard>
-      </div>
-
+      </div>{" "}
       {/* Filters */}
-      <UltraCard className="mb-6">
+      <UltraCard className="mb-4">
         <Group gap="md">
           <UltraInput
             placeholder="Search subjects..."
@@ -327,7 +327,6 @@ const SubjectsPageUltra: React.FC = () => {
           />
         </Group>
       </UltraCard>
-
       {/* Subjects Table */}
       <UltraCard>
         {loading ? (
@@ -345,73 +344,80 @@ const SubjectsPageUltra: React.FC = () => {
                 <th>Branch</th>
                 <th>Actions</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
-              {filteredSubjects.map((subject) => (
-                <tr key={subject.id}>
-                  <td>
-                    <Group gap="sm">
-                      <Avatar
-                        radius="xl"
-                        size="md"
-                        style={{
-                          border: `2px solid ${theme.colors.primary}22`,
-                        }}
-                      >
-                        {subject.subject_code?.charAt(0)?.toUpperCase()}
-                      </Avatar>
-                      <Stack gap={2}>
-                        <Text fw={500} c={theme.text.primary}>
-                          {subject.subject_code}
-                        </Text>
-                      </Stack>
-                    </Group>
-                  </td>
-                  <td>
-                    <Text fw={500} c={theme.text.primary}>
-                      {subject.name}
-                    </Text>
-                  </td>
-                  <td>
-                    <Badge variant="light" color="blue" size="sm">
-                      {subject.subject_type}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {subject.subject_author}
-                    </Text>
-                  </td>
-                  <td>
-                    <Text size="sm" c={theme.text.primary}>
-                      {subject.branch_name || "N/A"}
-                    </Text>
-                  </td>
-                  <td>
-                    <UltraTableActions>
-                      <UltraButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(subject)}
-                      >
-                        <IconEdit size={16} />
-                      </UltraButton>
-                      <UltraButton
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleDelete(subject.id)}
-                      >
-                        <IconBook size={16} />
-                      </UltraButton>
-                    </UltraTableActions>
-                  </td>
-                </tr>
-              ))}
+              <LoadingTableRows
+                loading={loading}
+                itemCount={filteredSubjects.length}
+                colspan={6}
+                loadingMessage="Loading subjects..."
+                emptyMessage="No subjects found"
+              >
+                {filteredSubjects.map((subject) => (
+                  <tr key={subject.id}>
+                    <td>
+                      <Group gap="sm">
+                        <Avatar
+                          radius="xl"
+                          size="md"
+                          style={{
+                            border: `2px solid ${theme.colors.primary}22`,
+                          }}
+                        >
+                          {subject.subject_code?.charAt(0)?.toUpperCase()}
+                        </Avatar>
+                        <Stack gap={2}>
+                          <Text fw={500} c={theme.text.primary}>
+                            {subject.subject_code}
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </td>
+                    <td>
+                      <Text fw={500} c={theme.text.primary}>
+                        {subject.name}
+                      </Text>
+                    </td>
+                    <td>
+                      <Badge variant="light" color="blue" size="sm">
+                        {subject.subject_type}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {subject.subject_author}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text size="sm" c={theme.text.primary}>
+                        {subject.branch_name || "N/A"}
+                      </Text>
+                    </td>
+                    <td>
+                      <UltraTableActions>
+                        <UltraButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(subject)}
+                        >
+                          <IconEdit size={16} />
+                        </UltraButton>
+                        <UltraButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => handleDelete(subject.id)}
+                        >
+                          <IconBook size={16} />
+                        </UltraButton>
+                      </UltraTableActions>
+                    </td>
+                  </tr>
+                ))}
+              </LoadingTableRows>
             </tbody>
           </UltraTable>
         )}
       </UltraCard>
-
       {/* Add/Edit Modal */}
       <UltraModal
         opened={modalOpen}

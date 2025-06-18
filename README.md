@@ -15,7 +15,7 @@ my-app/
 ## Prerequisites
 
 - Node.js (v14 or higher)
-- npm or pnpm
+- Yarn package manager
 - MySQL database
 
 ## Getting Started
@@ -24,7 +24,7 @@ my-app/
 
 ```bash
 git clone <repository-url>
-cd my-app
+cd reactsms
 ```
 
 ### 2. Environment Setup
@@ -39,8 +39,21 @@ Update the `.env` file with your database credentials and other configuration va
 
 ### 3. Install Dependencies
 
+Option A - Use the setup script:
+
 ```bash
-npm run install:all
+# Windows
+setup.bat
+
+# Unix/Linux/macOS
+chmod +x setup.sh
+./setup.sh
+```
+
+Option B - Manual installation:
+
+```bash
+yarn install:all
 ```
 
 This will install dependencies for the root project, client, and server.
@@ -56,37 +69,39 @@ The server will sync the database schema on startup.
 Start both the frontend and backend concurrently:
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 This will start:
+
 - Frontend at: http://localhost:3001
 - Backend at: http://localhost:8080
 - API Documentation at: http://localhost:8080/api-docs
 
 ## Scripts
 
-- `npm run dev` - Start both client and server in development mode
-- `npm run client` - Start only the client
-- `npm run server` - Start only the server
-- `npm run install:all` - Install all dependencies
-- `npm run build` - Build the React client for production
-- `npm run start` - Start the production server
-- `npm run test` - Run tests for both client and server
-- `npm run lint` - Run linting for both client and server
+- `yarn dev` - Start both client and server in development mode
+- `yarn client` - Start only the client
+- `yarn server` - Start only the server
+- `yarn install:all` - Install all dependencies
+- `yarn build` - Build the React client for production
+- `yarn start` - Start the production server
+- `yarn test` - Run tests for both client and server
+- `yarn lint` - Run linting for both client and server
 
 ## Production Deployment
 
 1. Build the client:
+
    ```bash
-   npm run build
+   yarn build
    ```
 
 2. Set the environment variable `NODE_ENV=production` in your `.env` file
 
 3. Start the production server:
    ```bash
-   npm run start
+   yarn start
    ```
 
 In production mode, the Express server will serve the built React app from the `client/build` directory.
@@ -98,12 +113,14 @@ API documentation is available at `/api-docs` when the server is running.
 ## Technologies
 
 ### Frontend
+
 - React.js
 - Mantine UI
 - Axios
 - React Router
 
 ### Backend
+
 - Node.js
 - Express.js
 - Sequelize ORM

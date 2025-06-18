@@ -1,4 +1,3 @@
-import React from "react";
 import {
   TextInput,
   PasswordInput,
@@ -96,7 +95,7 @@ const getInputStyles = (theme: any, variant: InputVariant, glow: boolean) => {
   };
 };
 
-export const UltraInput: React.FC<UltraInputProps> = ({
+export const UltraInput = ({
   variant = "default",
   glow = false,
   style,
@@ -123,7 +122,7 @@ export const UltraInput: React.FC<UltraInputProps> = ({
   );
 };
 
-export const UltraPassword: React.FC<UltraPasswordProps> = ({
+export const UltraPassword = ({
   variant = "default",
   glow = false,
   style,
@@ -150,7 +149,7 @@ export const UltraPassword: React.FC<UltraPasswordProps> = ({
   );
 };
 
-export const UltraTextarea: React.FC<UltraTextareaProps> = ({
+export const UltraTextarea = ({
   variant = "default",
   glow = false,
   style,
@@ -177,7 +176,7 @@ export const UltraTextarea: React.FC<UltraTextareaProps> = ({
   );
 };
 
-export const UltraSelect: React.FC<UltraSelectProps> = ({
+export const UltraSelect = ({
   variant = "default",
   glow = false,
   style,
